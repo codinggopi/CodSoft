@@ -1,0 +1,73 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# Environment Variables
+.env
+.env.local
+.env.production
+quizsphere\backend\.env
+
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Database
+*.db
+*.sqlite3
+
+# Build / Distribution
+build/
+dist/
+*.egg-info/
+
+# Python Cache
+.pytest_cache/
+.mypy_cache/
+.coverage
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Uploads
+uploads/
+media/
+
+# Node Modules (if any frontend tools used)
+node_modules/
+
+# Vercel
+.vercel/
+
+# Render
+.render/
+
+# Temporary Files
+tmp/
+temp/
+
+# Secrets
+secrets.json
+credentials.json
+
+# MySQL Dumps
+*.sql.gz
+*.dump
+
+# Backup Files
+*.bak
+*.backup
