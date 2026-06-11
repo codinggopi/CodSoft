@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import inspect
-from .database.db import engine, Base
-from .routers import auth, quizzes, attempts, leaderboard, users
+from database.db import engine, Base
+from routers import auth, quizzes, attempts, leaderboard, users
 import logging
 
 logger = logging.getLogger(__name__)
