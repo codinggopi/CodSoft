@@ -7,14 +7,14 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# Create database tables
-Base.metadata.create_all(bind=engine)
-
 app = FastAPI(title="QuizSphere API", version="1.0.0")
 
-# Startup validation: verify required columns exist
+# Startup database initialization and validation
 @app.on_event("startup")
-def validate_schema():
+def startup_event():
+    # Create database tables if they do not exist
+    Base.metadata.create_all(bind=engine)
+    
     required_user_columns = {"avatar_url", "bio"}
     inspector = inspect(engine)
     try:

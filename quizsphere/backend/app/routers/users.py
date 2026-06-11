@@ -4,7 +4,7 @@ from sqlalchemy.sql import func
 from database.db import get_db
 from models import models
 from schemas import schemas
-from auth import get_current_user
+from routers.auth import get_current_user
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
