@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take Quiz - QuizSphere</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/darkmode.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-dots">
+    <div class="quiz-interface-container">
+        <header class="quiz-nav glass">
+            <div class="container">
+                <div class="quiz-nav-content">
+                    <div class="quiz-info-header">
+                        <h2 id="quiz-title">Loading Quiz...</h2>
+                        <span class="badge" id="category-badge">Category</span>
+                    </div>
+                    <div class="timer-wrapper">
+                        <div class="timer-circle">
+                            <svg class="progress-ring" width="60" height="60">
+                                <circle class="progress-ring__circle-bg" stroke="#e2e8f0" stroke-width="4" fill="transparent" r="26" cx="30" cy="30"/>
+                                <circle class="progress-ring__circle" stroke="#6366F1" stroke-width="4" fill="transparent" r="26" cx="30" cy="30" id="timer-progress"/>
+                            </svg>
+                            <span id="quiz-timer" class="timer-text">00:00</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-danger" id="quit-quiz-btn">Quit</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="container quiz-main">
+            <!-- Loading State -->
+            <div id="quiz-loading" class="skeleton-container">
+                <div class="skeleton skeleton-title mb-4"></div>
+                <div class="skeleton skeleton-card mb-4" style="height: 300px;"></div>
+                <div class="skeleton skeleton-text" style="width: 60%;"></div>
+            </div>
+
+            <!-- Error State -->
+            <div id="quiz-error" class="glass card-modern p-5 text-center" style="display: none;">
+                <i class="fas fa-exclamation-circle text-danger fa-4x mb-4"></i>
+                <h2 class="mb-3">Unable to load quiz data.</h2>
+                <p class="text-muted mb-4">We encountered a problem while fetching the questions. Please check your connection and try again.</p>
+                <button class="btn btn-primary btn-lg" onclick="location.reload()">
+                    <i class="fas fa-redo"></i> Retry Now
+                </button>
+            </div>
+
+            <div class="quiz-layout" id="quiz-content" style="display: none;">
+                <div class="question-column">
+                    <div class="progress-tracker mb-4">
+                        <div class="d-flex justify-between mb-2">
+                            <span class="text-muted">Question <span id="current-q-num">1</span> of <span id="total-q-num">0</span></span>
+                            <span class="font-bold"><span id="progress-percent">0</span>% Complete</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div id="progress-bar" class="progress-bar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="question-card glass card-modern p-4 fade-in" id="question-card">
+                        <h3 id="question-text" class="mb-4">Loading your next challenge...</h3>
+                        <div class="options-grid" id="options-container">
+                            <!-- Options injected here -->
+                        </div>
+                    </div>
+
+                    <div class="quiz-controls mt-4">
+                        <button id="prev-btn" class="btn btn-secondary" disabled>
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <div class="center-controls">
+                            <button id="next-btn" class="btn btn-primary">
+                                Next Question <i class="fas fa-arrow-right"></i>
+                            </button>
+                            <button id="submit-quiz-btn" class="btn btn-primary" style="display: none;">
+                                Finish Quiz <i class="fas fa-check-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="navigator-column glass card-modern p-3">
+                    <h4>Question Navigator</h4>
+                    <p class="text-muted mb-3">Jump to any question</p>
+                    <div id="question-navigator" class="navigator-grid">
+                        <!-- Navigator dots injected here -->
+                    </div>
+                    <div class="navigator-legend mt-3">
+                        <div class="legend-item"><span class="dot-sample answered"></span> Answered</div>
+                        <div class="legend-item"><span class="dot-sample current"></span> Current</div>
+                        <div class="legend-item"><span class="dot-sample"></span> Unanswered</div>
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/quiz.js"></script>
+</body>
+</html>

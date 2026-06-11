@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizSphere - Online Quiz Maker</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/darkmode.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar" id="main-nav">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-brain"></i> QuizSphere
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="active">Home</a>
+                <a href="quiz-list.html">Browse</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <div id="auth-links" class="nav-actions">
+                    <a href="login.html" class="btn btn-ghost">Login</a>
+                    <a href="register.html" class="btn btn-primary">Sign Up</a>
+                </div>
+                <div id="user-links" class="nav-actions" style="display: none;">
+                    <a href="dashboard.html" class="btn btn-ghost">Dashboard</a>
+                    <a href="profile.html" class="btn btn-ghost">Profile</a>
+                    <a href="#" id="logout-btn" class="btn btn-secondary">Logout</a>
+                    <div class="user-avatar-nav" id="user-avatar">U</div>
+                </div>
+                <button id="theme-toggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <div class="hero-text" data-aos="fade-right">
+                <span class="badge">#1 Quiz Platform</span>
+                <h1>Master Any Subject with <span class="gradient-text">Interactive Quizzes</span></h1>
+                <p>Join over 5,000+ learners and creators. Build your knowledge, compete in global leaderboards, and achieve your learning goals with QuizSphere.</p>
+                <div class="hero-btns">
+                    <a href="create-quiz.html" class="btn btn-primary btn-lg" data-auth-required>
+                        <i class="fas fa-plus"></i> Create Quiz
+                    </a>
+                    <a href="quiz-list.html" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-play"></i> Take a Quiz
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual" data-aos="fade-left">
+                <div class="floating-card glass card-1">
+                    <i class="fas fa-trophy"></i>
+                    <span>Rank #1</span>
+                </div>
+                <div class="floating-card glass card-2">
+                    <i class="fas fa-check-circle"></i>
+                    <span>98% Score</span>
+                </div>
+                <div class="illustration-container">
+                    <i class="fas fa-laptop-code main-icon"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card-modern glass" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="stat-icon"><i class="fas fa-book"></i></div>
+                    <h3 class="counter" data-target="10000">0</h3>
+                    <p>Quizzes Created</p>
+                </div>
+                <div class="stat-card-modern glass" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <h3 class="counter" data-target="5000">0</h3>
+                    <p>Active Users</p>
+                </div>
+                <div class="stat-card-modern glass" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3 class="counter" data-target="50000">0</h3>
+                    <p>Total Attempts</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="categories">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Explore <span class="gradient-text">Categories</span></h2>
+                <p>Choose from a wide range of topics and start learning today.</p>
+            </div>
+            <div class="category-grid" id="category-list" data-aos="fade-up">
+                <!-- Categories will be injected here -->
+            </div>
+        </div>
+    </section>
+
+    <section class="featured-quizzes">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Featured <span class="gradient-text">Quizzes</span></h2>
+                <p>Hand-picked quizzes to challenge your skills.</p>
+            </div>
+            <div class="quiz-grid" id="featured-quiz-list" data-aos="fade-up">
+                <!-- Featured quizzes will be injected here -->
+            </div>
+            <div class="center-btn">
+                <a href="quiz-list.html" class="btn btn-secondary">View All Quizzes</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-logo-section">
+                    <a href="index.html" class="logo">
+                        <i class="fas fa-brain"></i> QuizSphere
+                    </a>
+                    <p>The world's most engaging platform for learning and competition through interactive quizzes.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-btn"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="quiz-list.html">Browse Quizzes</a></li>
+                        <li><a href="leaderboard.html">Leaderboard</a></li>
+                        <li><a href="login.html">Sign In</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Categories</h4>
+                    <ul>
+                        <li><a href="#">Web Development</a></li>
+                        <li><a href="#">Python</a></li>
+                        <li><a href="#">Data Structures</a></li>
+                        <li><a href="#">Machine Learning</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> support@quizsphere.com</li>
+                        <li><i class="fas fa-phone"></i> +1 (555) 000-0000</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Silicon Valley, CA</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 QuizSphere. Built with ❤️ for CodSoft.</p>
+                <div class="footer-legal">
+                    <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/quiz.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const categories = [
+                { name: 'Web Development', icon: 'fa-laptop-code' },
+                { name: 'Python', icon: 'fa-snake' },
+                { name: 'Java', icon: 'fa-coffee' },
+                { name: 'DBMS', icon: 'fa-database' },
+                { name: 'OS', icon: 'fa-microchip' },
+                { name: 'AI & ML', icon: 'fa-robot' },
+                { name: 'Data Structures', icon: 'fa-project-diagram' },
+                { name: 'Algorithms', icon: 'fa-subscript' }
+            ];
+            const categoryList = document.getElementById('category-list');
+            categories.forEach(cat => {
+                const div = document.createElement('div');
+                div.className = 'category-card glass';
+                div.innerHTML = `
+                    <div class="category-icon-box">
+                        <i class="fas ${cat.icon}"></i>
+                    </div>
+                    <h3>${cat.name}</h3>
+                    <span class="category-count">10+ Quizzes</span>
+                `;
+                div.onclick = () => window.location.href = `quiz-list.html?category=${cat.name}`;
+                categoryList.appendChild(div);
+            });
+        });
+    </script>
+</body>
+</html>

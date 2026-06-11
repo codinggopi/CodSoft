@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Quizzes - QuizSphere</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/darkmode.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body class="bg-dots">
+    <nav class="navbar scrolled" id="main-nav">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-brain"></i> QuizSphere
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="quiz-list.html" class="active">Browse</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <div id="auth-links" class="nav-actions">
+                    <a href="login.html" class="btn btn-ghost">Login</a>
+                    <a href="register.html" class="btn btn-primary">Sign Up</a>
+                </div>
+                <div id="user-links" class="nav-actions" style="display: none;">
+                    <a href="dashboard.html" class="btn btn-ghost">Dashboard</a>
+                    <a href="profile.html" class="btn btn-ghost">Profile</a>
+                    <a href="#" id="logout-btn" class="btn btn-secondary">Logout</a>
+                    <div class="user-avatar-nav" id="user-avatar">U</div>
+                </div>
+                <button id="theme-toggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container quiz-list-page">
+        <header class="list-header text-center" data-aos="fade-down">
+            <h1 class="gradient-text">Browse Quizzes</h1>
+            <p class="text-muted">Discover and challenge yourself with community quizzes.</p>
+            
+            <div class="search-box-wrapper">
+                <div class="search-box glass">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-quiz" placeholder="Search by title, creator, or topic...">
+                </div>
+            </div>
+        </header>
+
+        <div class="filter-section glass card-modern" data-aos="fade-up">
+            <div class="filter-group">
+                <label><i class="fas fa-filter"></i> Category</label>
+                <select id="filter-category" class="form-control">
+                    <option value="">All Categories</option>
+                    <option value="Java">Java</option>
+                    <option value="Python">Python</option>
+                    <option value="Web Development">Web Development</option>
+                    <option value="Data Structures">Data Structures</option>
+                    <option value="Algorithms">Algorithms</option>
+                    <option value="Machine Learning">Machine Learning</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label><i class="fas fa-signal"></i> Difficulty</label>
+                <select id="filter-difficulty" class="form-control">
+                    <option value="">All Difficulties</option>
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label><i class="fas fa-sort-amount-down"></i> Sort By</label>
+                <select id="sort-quiz" class="form-control">
+                    <option value="newest">Newest First</option>
+                    <option value="popular">Most Popular</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="quiz-grid" id="quiz-list-container">
+            <!-- Loading Skeletons -->
+            <div class="quiz-card skeleton" style="height: 300px;"></div>
+            <div class="quiz-card skeleton" style="height: 300px;"></div>
+            <div class="quiz-card skeleton" style="height: 300px;"></div>
+            <div class="quiz-card skeleton" style="height: 300px;"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/quiz.js"></script>
+</body>
+</html>

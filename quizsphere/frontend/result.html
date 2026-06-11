@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Result - QuizSphere</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/darkmode.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+</head>
+<body class="bg-dots">
+    <div class="container result-page-container">
+        <div class="result-header text-center mb-5" data-aos="fade-down">
+            <h1 class="gradient-text">Quiz Complete!</h1>
+            <p class="text-muted">Here's how you performed today.</p>
+        </div>
+
+        <div class="result-layout">
+            <div class="score-section glass card-modern p-4 text-center" data-aos="zoom-in">
+                <div class="score-ring-container">
+                    <svg class="score-ring" width="200" height="200">
+                        <circle class="score-ring__circle-bg" stroke="#e2e8f0" stroke-width="12" fill="transparent" r="85" cx="100" cy="100"/>
+                        <circle class="score-ring__circle" stroke="#6366F1" stroke-width="12" stroke-linecap="round" fill="transparent" r="85" cx="100" cy="100" id="score-progress"/>
+                    </svg>
+                    <div class="score-content">
+                        <span id="score-percent" class="score-num">0%</span>
+                        <span class="score-label">Final Score</span>
+                    </div>
+                </div>
+                <div class="badge-container mt-4">
+                    <div id="performance-badge" class="badge badge-lg">Analyzing...</div>
+                </div>
+            </div>
+
+            <div class="stats-breakdown glass card-modern p-4" data-aos="fade-left">
+                <h3>Performance Summary</h3>
+                <div class="stats-list mt-4">
+                    <div class="stat-row">
+                        <div class="stat-info">
+                            <i class="fas fa-question-circle text-primary"></i>
+                            <span>Total Questions</span>
+                        </div>
+                        <span id="res-total" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-info">
+                            <i class="fas fa-check-circle text-success"></i>
+                            <span>Correct Answers</span>
+                        </div>
+                        <span id="res-correct" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-info">
+                            <i class="fas fa-times-circle text-danger"></i>
+                            <span>Wrong Answers</span>
+                        </div>
+                        <span id="res-wrong" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-info">
+                            <i class="fas fa-clock text-warning"></i>
+                            <span>Time Taken</span>
+                        </div>
+                        <span id="res-time" class="stat-value">--:--</span>
+                    </div>
+                </div>
+
+                <div class="result-actions mt-5">
+                    <a href="dashboard.html" class="btn btn-primary w-full mb-3">
+                        <i class="fas fa-home"></i> Back to Dashboard
+                    </a>
+                    <div class="d-flex gap-2">
+                        <a href="quiz-list.html" class="btn btn-secondary flex-1">
+                            <i class="fas fa-search"></i> Browse Quizzes
+                        </a>
+                        <button id="share-result-btn" class="btn btn-secondary flex-1">
+                            <i class="fas fa-share-alt"></i> Share
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/quiz.js"></script>
+</body>
+</html>

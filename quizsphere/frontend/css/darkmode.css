@@ -1,0 +1,56 @@
+/* 
+    QuizSphere Dark Mode Design System
+*/
+
+body.dark-mode {
+    /* Dark Mode Palette */
+    --bg-light: #0F172A;
+    --card-light: rgba(30, 41, 59, 0.7);
+    --text-main: #F1F5F9;
+    --text-muted: #94A3B8;
+    --border-light: rgba(51, 65, 85, 0.5);
+    
+    /* Dark Mode Glassmorphism */
+    --glass-bg: rgba(30, 41, 59, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    
+    background-color: var(--bg-light);
+}
+
+body.dark-mode .form-control {
+    background: #1E293B;
+    border-color: #334155;
+    color: white;
+}
+
+body.dark-mode .form-control:focus {
+    border-color: var(--primary);
+}
+
+body.dark-mode .btn-secondary {
+    background: #1E293B;
+    border-color: #334155;
+    color: white;
+}
+
+body.dark-mode .btn-secondary:hover {
+    background: #334155;
+}
+
+body.dark-mode .stats {
+    background: #1E293B;
+}
+
+body.dark-mode th {
+    background: #334155;
+    color: white;
+}
+
+body.dark-mode .nav-links a {
+    color: #CBD5E1;
+}
+
+body.dark-mode .nav-links a:hover,
+body.dark-mode .nav-links a.active {
+    color: var(--primary-light);
+}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - QuizSphere</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/darkmode.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body class="bg-dots">
+    <nav class="navbar scrolled" id="main-nav">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-brain"></i> QuizSphere
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="quiz-list.html">Browse</a>
+                <a href="leaderboard.html" class="active">Leaderboard</a>
+                <div id="auth-links" class="nav-actions">
+                    <a href="login.html" class="btn btn-ghost">Login</a>
+                    <a href="register.html" class="btn btn-primary">Sign Up</a>
+                </div>
+                <div id="user-links" class="nav-actions" style="display: none;">
+                    <a href="dashboard.html" class="btn btn-ghost">Dashboard</a>
+                    <a href="profile.html" class="btn btn-ghost">Profile</a>
+                    <a href="#" id="logout-btn" class="btn btn-secondary">Logout</a>
+                    <div class="user-avatar-nav" id="user-avatar">U</div>
+                </div>
+                <button id="theme-toggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container leaderboard-container">
+        <div class="section-header text-center mb-5" data-aos="fade-down">
+            <h1 class="gradient-text">Global Leaderboard</h1>
+            <p class="text-muted">Top performers across all quizzes.</p>
+        </div>
+
+        <div class="podium-section mb-5" id="podium-container" data-aos="zoom-in">
+            <!-- Podium injected here -->
+        </div>
+
+        <div class="table-responsive glass card-modern" data-aos="fade-up">
+            <table class="modern-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>User</th>
+                        <th>Quiz</th>
+                        <th>Score</th>
+                        <th>Percentage</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body">
+                    <!-- Other entries injected here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/leaderboard.js"></script>
+</body>
+</html>

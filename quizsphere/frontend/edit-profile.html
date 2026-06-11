@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - QuizSphere</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/darkmode.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body class="bg-dots">
+    <nav class="navbar scrolled" id="main-nav">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-brain"></i> QuizSphere
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="quiz-list.html">Browse</a>
+                <a href="dashboard.html">Dashboard</a>
+                <div id="user-links" class="nav-actions">
+                    <a href="profile.html" class="btn btn-ghost">Back to Profile</a>
+                </div>
+                <button id="theme-toggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container edit-profile-container">
+        <div class="glass card-modern edit-profile-card" data-aos="zoom-in">
+            <h1 class="gradient-text mb-4">Edit Your Profile</h1>
+            <p class="text-muted mb-5">Keep your information up to date to stay relevant in the community.</p>
+
+            <form id="edit-profile-form">
+                <!-- Avatar Upload Section -->
+                <div class="profile-pic-upload">
+                    <div class="current-avatar-preview" id="avatar-preview">
+                        <span id="avatar-letter">U</span>
+                        <img id="avatar-img" src="" style="display: none;">
+                    </div>
+                    <div class="upload-actions">
+                        <div class="upload-btn-wrapper">
+                            <button class="btn btn-secondary" type="button">
+                                <i class="fas fa-camera"></i> Change Photo
+                            </button>
+                            <input type="file" id="avatar-upload" accept="image/*">
+                        </div>
+                        <button type="button" id="remove-avatar-btn" class="btn btn-ghost text-danger">Remove</button>
+                    </div>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label>Full Name</label>
+                    <input type="text" id="edit-fullname" class="form-control" required placeholder="Your full name">
+                </div>
+
+                <div class="form-group mb-4">
+                    <label>Email Address</label>
+                    <input type="email" id="edit-email" class="form-control" required placeholder="name@example.com">
+                </div>
+
+                <div class="form-group mb-5">
+                    <label>Bio</label>
+                    <textarea id="edit-bio" class="form-control" rows="4" placeholder="Tell the community about yourself..."></textarea>
+                </div>
+
+                <div class="details-actions">
+                    <button type="submit" class="btn btn-primary btn-lg" id="save-profile-btn">
+                        <i class="fas fa-check-circle"></i> Save Changes
+                    </button>
+                    <a href="profile.html" class="btn btn-ghost btn-lg">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Load current data
+            const user = await auth.getUser();
+            if (!user) return;
+
+            document.getElementById('edit-fullname').value = user.full_name;
+            document.getElementById('edit-email').value = user.email;
+            document.getElementById('edit-bio').value = user.bio || '';
+            
+            updateAvatarPreview(user);
+
+            // 2. Avatar Preview Logic
+            const uploadInput = document.getElementById('avatar-upload');
+            uploadInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const container = document.getElementById('avatar-preview');
+                        container.innerHTML = `<img src="${event.target.result}" class="avatar-img-round">`;
+                        container.classList.add('has-image');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // 3. Remove Avatar Logic
+            document.getElementById('remove-avatar-btn').onclick = () => {
+                const container = document.getElementById('avatar-preview');
+                container.innerHTML = user.full_name.charAt(0).toUpperCase();
+                container.classList.remove('has-image');
+                uploadInput.value = '';
+            };
+
+            // 4. Save Changes logic
+            document.getElementById('edit-profile-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const saveBtn = document.getElementById('save-profile-btn');
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+                const avatarImg = document.querySelector('#avatar-preview img');
+                const updateData = {
+                    full_name: document.getElementById('edit-fullname').value,
+                    email: document.getElementById('edit-email').value,
+                    bio: document.getElementById('edit-bio').value,
+                    avatar_url: avatarImg ? avatarImg.src : null
+                };
+
+                try {
+                    const response = await fetch(`${API_URL}/auth/me`, {
+                        method: 'PUT',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${auth.getToken()}`
+                        },
+                        body: JSON.stringify(updateData)
+                    });
+
+                    if (response.ok) {
+                        showToast('Success', 'Profile updated successfully!', 'success');
+                        setTimeout(() => window.location.href = 'profile.html', 1500);
+                    } else {
+                        const data = await response.json();
+                        showToast('Error', data.detail || 'Update failed', 'danger');
+                        saveBtn.disabled = false;
+                        saveBtn.innerText = 'Save Changes';
+                    }
+                } catch (err) {
+                    console.error(err);
+                    saveBtn.disabled = false;
+                }
+            });
+        });
+
+        function updateAvatarPreview(user) {
+            const container = document.getElementById('avatar-preview');
+            auth.renderAvatar(container, user);
+        }
+    </script>
+</body>
+</html>

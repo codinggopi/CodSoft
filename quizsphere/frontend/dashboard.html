@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - QuizSphere</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/darkmode.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body class="bg-dots">
+    <nav class="navbar scrolled" id="main-nav">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-brain"></i> QuizSphere
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="quiz-list.html">Browse</a>
+                <a href="dashboard.html" class="active">Dashboard</a>
+                <div id="user-links" class="nav-actions">
+                    <a href="profile.html" class="btn btn-ghost">Profile</a>
+                    <a href="#" id="logout-btn" class="btn btn-secondary">Logout</a>
+                    <div class="user-avatar-nav" id="user-avatar">U</div>
+                </div>
+                <button id="theme-toggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container dashboard-container">
+        <!-- Dashboard Loading State -->
+        <div id="dashboard-loading" class="skeleton-container p-5">
+            <div class="skeleton skeleton-title mb-4" style="width: 40%;"></div>
+            <div class="skeleton-grid-stats mb-5">
+                <div class="skeleton skeleton-card" style="height: 150px;"></div>
+                <div class="skeleton skeleton-card" style="height: 150px;"></div>
+                <div class="skeleton skeleton-card" style="height: 150px;"></div>
+                <div class="skeleton skeleton-card" style="height: 150px;"></div>
+            </div>
+            <div class="skeleton skeleton-card" style="height: 300px;"></div>
+        </div>
+
+        <div id="dashboard-content" style="display: none;">
+            <header class="dashboard-header mb-5" data-aos="fade-down">
+            <div>
+                <h1 class="gradient-text">Welcome back, <span id="user-name">Explorer</span>!</h1>
+                <p class="text-muted">Ready for your next learning challenge?</p>
+            </div>
+            <a href="create-quiz.html" class="btn btn-primary btn-lg">
+                <i class="fas fa-plus"></i> Create New Quiz
+            </a>
+        </header>
+
+        <section class="user-stats-grid mb-5">
+            <div class="stat-card-modern glass" data-aos="zoom-in" data-aos-delay="100">
+                <div class="stat-icon"><i class="fas fa-plus-circle"></i></div>
+                <h3 id="quizzes-created">0</h3>
+                <p>Quizzes Created</p>
+            </div>
+            <div class="stat-card-modern glass" data-aos="zoom-in" data-aos-delay="200">
+                <div class="stat-icon"><i class="fas fa-tasks"></i></div>
+                <h3 id="quizzes-attempted">0</h3>
+                <p>Quizzes Attempted</p>
+            </div>
+            <div class="stat-card-modern glass" data-aos="zoom-in" data-aos-delay="300">
+                <div class="stat-icon"><i class="fas fa-star"></i></div>
+                <h3 id="avg-score">0%</h3>
+                <p>Average Score</p>
+            </div>
+            <div class="stat-card-modern glass" data-aos="zoom-in" data-aos-delay="400">
+                <div class="stat-icon"><i class="fas fa-medal"></i></div>
+                <h3 id="highest-score">0%</h3>
+                <p>Highest Score</p>
+            </div>
+        </section>
+
+        <div class="dashboard-layout">
+            <div class="main-content">
+                <section class="my-quizzes-section mb-5" data-aos="fade-right">
+                    <div class="section-header-inline mb-4">
+                        <h2>My Quizzes</h2>
+                        <a href="quiz-list.html" class="btn btn-ghost btn-sm">View All</a>
+                    </div>
+                    <div class="quiz-grid-compact" id="my-quizzes-list">
+                        <!-- My quizzes injected here -->
+                        <div class="empty-state glass p-5 text-center">
+                            <i class="fas fa-folder-open empty-illustration"></i>
+                            <p>You haven't created any quizzes yet.</p>
+                            <a href="create-quiz.html" class="btn btn-primary mt-3">Start Creating</a>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="recent-history-section" data-aos="fade-up">
+                    <div class="section-header-inline mb-4">
+                        <h2>Recent Attempts</h2>
+                    </div>
+                    <div class="table-responsive glass card-modern">
+                        <table class="modern-table">
+                            <thead>
+                                <tr>
+                                    <th>Quiz Title</th>
+                                    <th>Date</th>
+                                    <th>Score</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attempt-history-body">
+                                <!-- History injected here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div> <!-- Close dashboard-content -->
+    </div> <!-- Close dashboard-container -->
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+</html>

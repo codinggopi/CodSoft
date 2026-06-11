@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Details - QuizSphere</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/darkmode.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body class="bg-dots">
+    <nav class="navbar scrolled" id="main-nav">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-brain"></i> QuizSphere
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="quiz-list.html">Browse</a>
+                <a href="dashboard.html">Dashboard</a>
+                <div id="user-links" class="nav-actions" style="display: none;">
+                    <a href="dashboard.html" class="btn btn-ghost">Dashboard</a>
+                    <a href="profile.html" class="btn btn-ghost">Profile</a>
+                    <a href="#" id="logout-btn" class="btn btn-secondary">Logout</a>
+                    <div class="user-avatar-nav" id="user-avatar">U</div>
+                </div>
+                <button id="theme-toggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container quiz-details-hero">
+        <!-- Skeleton Loader -->
+        <div id="details-skeleton" class="skeleton skeleton-hero glass"></div>
+
+        <!-- Details Content -->
+        <div id="details-content" style="display: none;">
+            <div class="glass details-hero-card card-modern" data-aos="zoom-in">
+                <div class="details-meta-badges">
+                    <span id="detail-category" class="badge">Category</span>
+                    <span id="detail-difficulty" class="difficulty-badge">Medium</span>
+                </div>
+                
+                <h1 id="detail-title" class="gradient-text mb-3">Quiz Title</h1>
+                <p id="detail-desc" class="text-muted mb-5">Description goes here...</p>
+
+                <div class="details-info-grid">
+                    <div class="info-stat-item">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Questions</span>
+                        <h4 id="detail-questions">0</h4>
+                    </div>
+                    <div class="info-stat-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Duration</span>
+                        <h4><span id="detail-timer">0</span>m</h4>
+                    </div>
+                    <div class="info-stat-item">
+                        <i class="fas fa-user-edit"></i>
+                        <span>Creator</span>
+                        <h4 id="detail-creator">--</h4>
+                    </div>
+                </div>
+
+                <div class="details-actions">
+                    <button id="start-quiz-btn" class="btn btn-primary btn-lg">
+                        <i class="fas fa-play"></i> Start Quiz Now
+                    </button>
+                    <a href="quiz-list.html" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/quiz.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const detailId = new URLSearchParams(window.location.search).get('id');
+            if (!detailId) return;
+
+            try {
+                const response = await fetch(`${API_URL}/quizzes/${detailId}`);
+                const quiz = await response.json();
+                
+                // Update UI
+                document.getElementById('detail-title').innerText = quiz.title;
+                document.getElementById('detail-desc').innerText = quiz.description || 'No description provided.';
+                document.getElementById('detail-category').innerText = quiz.category;
+                
+                const diffBadge = document.getElementById('detail-difficulty');
+                diffBadge.innerText = quiz.difficulty;
+                diffBadge.className = `difficulty-badge difficulty-${quiz.difficulty.toLowerCase()}`;
+                
+                document.getElementById('detail-questions').innerText = quiz.question_count;
+                document.getElementById('detail-timer').innerText = quiz.timer;
+                document.getElementById('detail-creator').innerText = quiz.creator_name;
+
+                // Hide skeleton, show content
+                document.getElementById('details-skeleton').style.display = 'none';
+                document.getElementById('details-content').style.display = 'block';
+                
+                // Re-init AOS
+                AOS.refresh();
+
+                document.getElementById('start-quiz-btn').onclick = () => {
+                    checkAuthAndRedirect(`take-quiz.html?id=${detailId}`);
+                };
+            } catch (err) {
+                console.error(err);
+            }
+        });
+    </script>
+</body>
+</html>

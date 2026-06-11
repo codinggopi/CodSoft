@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - QuizSphere</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/darkmode.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body class="bg-dots">
+    <nav class="navbar scrolled" id="main-nav">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-brain"></i> QuizSphere
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="quiz-list.html">Browse</a>
+                <a href="dashboard.html">Dashboard</a>
+                <div id="user-links" class="nav-actions">
+                    <a href="#" id="logout-btn" class="btn btn-secondary">Logout</a>
+                    <div class="user-avatar-nav" id="user-avatar">U</div>
+                </div>
+                <button id="theme-toggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container profile-dashboard">
+        <!-- Profile Loading State -->
+        <div id="profile-loading" class="skeleton-container p-5">
+            <div class="skeleton skeleton-hero mb-4"></div>
+            <div class="skeleton-grid-stats mb-4">
+                <div class="skeleton skeleton-card"></div>
+                <div class="skeleton skeleton-card"></div>
+                <div class="skeleton skeleton-card"></div>
+                <div class="skeleton skeleton-card"></div>
+            </div>
+        </div>
+
+        <!-- Profile Content -->
+        <div id="profile-content" style="display: none;">
+            <!-- Profile Header -->
+            <header class="profile-header-card glass card-modern" data-aos="fade-down">
+            <div class="profile-avatar-wrapper">
+                <div class="profile-avatar-circle" id="profile-avatar-large">U</div>
+            </div>
+            <h1 id="profile-fullname" class="gradient-text">Loading...</h1>
+            <p id="profile-email" class="text-muted mb-2">user@example.com</p>
+            <p id="profile-bio" class="profile-bio-text mb-3">No bio provided yet.</p>
+            <div class="badge mb-4">Member Since: <span id="profile-joined">--</span></div>
+            <div>
+                <a href="edit-profile.html" class="btn btn-primary">
+                    <i class="fas fa-edit"></i> Edit Profile
+                </a>
+            </div>
+        </header>
+
+        <!-- Stats Row -->
+        <div class="profile-stats-row" data-aos="fade-up" data-aos-delay="100">
+            <div class="profile-stat-card glass card-modern">
+                <i class="fas fa-plus-circle"></i>
+                <h4 id="quizzes-created">0</h4>
+                <p>Quizzes Created</p>
+            </div>
+            <div class="profile-stat-card glass card-modern">
+                <i class="fas fa-tasks"></i>
+                <h4 id="quizzes-attempted">0</h4>
+                <p>Quizzes Attempted</p>
+            </div>
+            <div class="profile-stat-card glass card-modern">
+                <i class="fas fa-star"></i>
+                <h4 id="avg-score">0%</h4>
+                <p>Average Score</p>
+            </div>
+            <div class="profile-stat-card glass card-modern">
+                <i class="fas fa-medal"></i>
+                <h4 id="highest-score">0%</h4>
+                <p>Highest Score</p>
+            </div>
+        </div>
+
+        <div class="profile-content-grid">
+            <!-- Recent Activity -->
+            <section class="recent-activity glass card-modern p-4" data-aos="fade-right">
+                <h3 class="mb-4">Recent Activity</h3>
+                <div class="table-responsive">
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th>Quiz</th>
+                                <th>Score</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attempt-history-body">
+                            <!-- Injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Achievements -->
+            <section class="achievements glass card-modern p-4" data-aos="fade-left">
+                <h3 class="mb-4">Achievements</h3>
+                <div class="achievement-badges">
+                    <div class="achievement-item">
+                        <i class="fas fa-award text-warning"></i>
+                        <span class="small font-bold">Quiz Master</span>
+                    </div>
+                    <div class="achievement-item">
+                        <i class="fas fa-bolt text-primary"></i>
+                        <span class="small font-bold">Fast Learner</span>
+                    </div>
+                    <div class="achievement-item locked">
+                        <i class="fas fa-crown"></i>
+                        <span class="small font-bold">Top Performer</span>
+                    </div>
+                    <div class="achievement-item locked">
+                        <i class="fas fa-fire"></i>
+                        <span class="small font-bold">7 Day Streak</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div> <!-- Close profile-content -->
+    </div> <!-- Close profile-dashboard -->
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+</html>
