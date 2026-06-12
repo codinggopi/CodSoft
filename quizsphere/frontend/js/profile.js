@@ -124,7 +124,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <td><span class="font-bold">${attempt.quiz_title}</span></td>
                         <td>${new Date(attempt.attempted_at).toLocaleDateString()}</td>
                         <td>${attempt.score} Correct</td>
-                        <td><span class="badge ${statusClass}">${attempt.percentage.toFixed(1)}%</span></td>
+                        <td style="display: flex; gap: 10px; align-items: center;">
+                            <span class="badge ${statusClass}">${attempt.percentage.toFixed(1)}%</span>
+                            <button class="btn btn-ghost btn-sm" onclick='viewHistoricalReport(${JSON.stringify(attempt).replace(/'/g, "&#39;")})' title="View & Download Report">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </td>
                     `;
                     historyBody.appendChild(row);
                 });
@@ -136,6 +141,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 });
+
+window.viewHistoricalReport = function(attempt) {
+    localStorage.setItem('last_result', JSON.stringify({
+        score: attempt.score,
+        percentage: attempt.percentage,
+        quizTitle: attempt.quiz_title,
+        timeTaken: undefined
+    }));
+    window.location.href = 'result.html';
+};
 
 function animateCounter(id, target) {
     const obj = document.getElementById(id);

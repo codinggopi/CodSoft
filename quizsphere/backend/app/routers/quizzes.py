@@ -95,7 +95,16 @@ def update_quiz(
     if db_quiz.creator_id != current_user.id:
         raise HTTPException(status_code=403, detail="Not authorized to update this quiz")
     
-    for key, value in quiz_update.dict().items():
+    update_data = quiz_update.dict(exclude_unset=True)
+    
+    if "questions" in update_data:
+        questions_data = update_data.pop("questions")
+        db.query(models.Question).filter(models.Question.quiz_id == quiz_id).delete()
+        for q in questions_data:
+            new_q = models.Question(quiz_id=quiz_id, **q)
+            db.add(new_q)
+            
+    for key, value in update_data.items():
         setattr(db_quiz, key, value)
     
     db.commit()

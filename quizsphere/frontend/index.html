@@ -174,14 +174,14 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const categories = [
-                { name: 'Web Development', icon: 'fa-laptop-code' },
-                { name: 'Python', icon: 'fa-snake' },
-                { name: 'Java', icon: 'fa-coffee' },
-                { name: 'DBMS', icon: 'fa-database' },
-                { name: 'OS', icon: 'fa-microchip' },
-                { name: 'AI & ML', icon: 'fa-robot' },
-                { name: 'Data Structures', icon: 'fa-project-diagram' },
-                { name: 'Algorithms', icon: 'fa-subscript' }
+                { name: 'Web Development', icon: 'fas fa-laptop-code' },
+                { name: 'Python', icon: 'fab fa-python' },
+                { name: 'Java', icon: 'fab fa-java' },
+                { name: 'DBMS', icon: 'fas fa-database' },
+                { name: 'OS', icon: 'fas fa-microchip' },
+                { name: 'AI & ML', icon: 'fas fa-robot' },
+                { name: 'Data Structures', icon: 'fas fa-project-diagram' },
+                { name: 'Algorithms', icon: 'fas fa-subscript' }
             ];
             const categoryList = document.getElementById('category-list');
             categories.forEach(cat => {
@@ -189,7 +189,7 @@
                 div.className = 'category-card glass';
                 div.innerHTML = `
                     <div class="category-icon-box">
-                        <i class="fas ${cat.icon}"></i>
+                        <i class="${cat.icon}"></i>
                     </div>
                     <h3>${cat.name}</h3>
                     <span class="category-count">10+ Quizzes</span>

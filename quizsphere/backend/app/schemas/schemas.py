@@ -64,7 +64,7 @@ class QuizCreate(QuizBase):
     questions: List[QuestionCreate]
 
 class QuizUpdate(QuizBase):
-    pass
+    questions: Optional[List[QuestionCreate]] = None
 
 class QuizResponse(QuizBase):
     id: int

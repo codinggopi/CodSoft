@@ -127,12 +127,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const createQuizForm = document.getElementById('create-quiz-form');
     if (createQuizForm) {
+        const editQuizId = new URLSearchParams(window.location.search).get('edit');
+        if (editQuizId) {
+            const pageTitle = document.querySelector('.page-title');
+            if (pageTitle) pageTitle.innerText = 'Edit Quiz';
+            const pageSub = document.querySelector('.page-subtitle');
+            if (pageSub) pageSub.innerText = 'Update your quiz details and questions';
+            const sBtn = createQuizForm.querySelector('button[type="submit"]');
+            if (sBtn) sBtn.innerText = 'Update Quiz Now';
+            
+            fetch(`${API_URL}/quizzes/${editQuizId}`)
+                .then(res => res.json())
+                .then(quiz => {
+                    document.getElementById('quiz-title').value = quiz.title;
+                    document.getElementById('quiz-desc').value = quiz.description || '';
+                    document.getElementById('quiz-category').value = quiz.category;
+                    document.getElementById('quiz-difficulty').value = quiz.difficulty;
+                    document.getElementById('quiz-timer').value = quiz.timer;
+                    return fetch(`${API_URL}/quizzes/${editQuizId}/questions`);
+                })
+                .then(res => res.json())
+                .then(questions => {
+                    if (questions.length > 0) {
+                        questionsContainer.innerHTML = '';
+                        questionCount = 0;
+                        questions.forEach(q => {
+                            addQuestion();
+                            const cards = document.querySelectorAll('.question-builder-card');
+                            const lastCard = cards[cards.length - 1];
+                            lastCard.querySelector('.q-text').value = q.question_text;
+                            lastCard.querySelector('.opt-a').value = q.option_a;
+                            lastCard.querySelector('.opt-b').value = q.option_b;
+                            lastCard.querySelector('.opt-c').value = q.option_c;
+                            lastCard.querySelector('.opt-d').value = q.option_d;
+                            lastCard.querySelector('.q-correct').value = q.correct_answer;
+                        });
+                    }
+                })
+                .catch(err => console.error('Error loading quiz for edit', err));
+        }
+
         createQuizForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const submitBtn = createQuizForm.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publishing...';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + (editQuizId ? 'Updating...' : 'Publishing...');
 
             const quizData = {
                 title: document.getElementById('quiz-title').value,
@@ -156,8 +196,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             try {
-                const response = await fetch(`${API_URL}/quizzes/`, {
-                    method: 'POST',
+                const url = editQuizId ? `${API_URL}/quizzes/${editQuizId}` : `${API_URL}/quizzes/`;
+                const method = editQuizId ? 'PUT' : 'POST';
+                const response = await fetch(url, {
+                    method: method,
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${auth.getToken()}`
@@ -166,12 +208,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (response.ok) {
-                    showToast('Success', 'Quiz published successfully!', 'success');
+                    showToast('Success', editQuizId ? 'Quiz updated successfully!' : 'Quiz published successfully!', 'success');
                     setTimeout(() => window.location.href = 'dashboard.html', 1500);
                 } else {
-                    showToast('Error', 'Failed to publish quiz', 'danger');
+                    showToast('Error', editQuizId ? 'Failed to update quiz' : 'Failed to publish quiz', 'danger');
                     submitBtn.disabled = false;
-                    submitBtn.innerText = 'Publish Quiz Now';
+                    submitBtn.innerText = editQuizId ? 'Update Quiz Now' : 'Publish Quiz Now';
                 }
             } catch (err) {
                 console.error(err);
@@ -381,6 +423,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (response.ok) {
                     const result = await response.json();
+                    result.timeTaken = totalTime - timeLeft;
+                    const titleEl = document.getElementById('quiz-title');
+                    result.quizTitle = titleEl ? titleEl.innerText : 'Quiz';
                     localStorage.setItem('last_result', JSON.stringify(result));
                     window.location.href = 'result.html';
                 }
@@ -433,17 +478,71 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('res-total').innerText = Math.round(result.score / (result.percentage / 100)) || 0;
             document.getElementById('res-wrong').innerText = (document.getElementById('res-total').innerText - result.score) || 0;
             
+            if (result.timeTaken !== undefined) {
+                const mins = Math.floor(result.timeTaken / 60);
+                const secs = result.timeTaken % 60;
+                document.getElementById('res-time').innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }
+
+            if (result.quizTitle) {
+                const subtitle = document.querySelector('.result-header .text-muted');
+                if (subtitle) {
+                    subtitle.innerText = `You completed: ${result.quizTitle}`;
+                }
+            }
+            
             const badge = document.getElementById('performance-badge');
             if (percent >= 80) {
-                badge.innerText = '🏆 Excellent Master';
-                badge.className = 'badge badge-lg bg-success text-white';
+                badge.innerHTML = '<i class="fas fa-trophy"></i> Excellent Master!';
+                badge.style.color = '#6366f1';
                 launchConfetti();
             } else if (percent >= 60) {
-                badge.innerText = '🌟 Great Job';
-                badge.className = 'badge badge-lg bg-primary text-white';
+                badge.innerHTML = '<i class="fas fa-trophy"></i> Great Job!';
+                badge.style.color = '#6366f1';
             } else {
-                badge.innerText = '📚 Keep Learning';
-                badge.className = 'badge badge-lg bg-warning text-white';
+                badge.innerHTML = '<i class="fas fa-book-reader"></i> Keep Learning!';
+                badge.style.color = '#718096';
+            }
+
+            const shareBtn = document.getElementById('share-result-btn');
+            if (shareBtn) {
+                shareBtn.addEventListener('click', () => {
+                    const resultLayout = document.getElementById('result-capture-area');
+                    if (!resultLayout) return;
+                    
+                    if (!confirm('Would you like to download your quiz report as an image?')) {
+                        return;
+                    }
+                    
+                    const originalBtnContent = shareBtn.innerHTML;
+                    shareBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+                    shareBtn.disabled = true;
+
+                    if (typeof html2canvas === 'undefined') {
+                        alert('Error: Image generation library not loaded.');
+                        shareBtn.innerHTML = originalBtnContent;
+                        shareBtn.disabled = false;
+                        return;
+                    }
+
+                    html2canvas(resultLayout, {
+                        backgroundColor: document.body.classList.contains('dark-mode') ? '#1e1e2d' : '#ffffff',
+                        scale: 2
+                    }).then(canvas => {
+                        const link = document.createElement('a');
+                        link.download = `Quiz-Result-${result.quizTitle ? result.quizTitle.replace(/\s+/g, '-') : 'Score'}.png`;
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                        
+                        shareBtn.innerHTML = originalBtnContent;
+                        shareBtn.disabled = false;
+                    }).catch(err => {
+                        console.error('Error generating image:', err);
+                        shareBtn.innerHTML = originalBtnContent;
+                        shareBtn.disabled = false;
+                        alert('Failed to generate image. Please try again.');
+                    });
+                });
             }
         }
     }

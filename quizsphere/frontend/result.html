@@ -8,78 +8,107 @@
     <link rel="stylesheet" href="css/darkmode.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body class="bg-dots">
-    <div class="container result-page-container">
-        <div class="result-header text-center mb-5" data-aos="fade-down">
-            <h1 class="gradient-text">Quiz Complete!</h1>
-            <p class="text-muted">Here's how you performed today.</p>
+    <div class="container result-page-container" style="max-width: 600px; margin: 40px auto;">
+        
+        <!-- The area to be captured by html2canvas -->
+        <div id="result-capture-area" class="glass card-modern" style="background: #ffffff; border-radius: 16px; padding: 40px 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.05);">
+            
+            <div class="result-header text-center mb-4">
+                <h1 style="color: #0b132b; font-weight: 800; font-size: 2.5rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px;">FINAL REPORT</h1>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 15px;">
+                    <hr style="flex: 1; border: none; border-top: 1px solid #6366f1; max-width: 100px;">
+                    <i class="fas fa-star" style="color: #6366f1; font-size: 1.2rem;"></i>
+                    <hr style="flex: 1; border: none; border-top: 1px solid #6366f1; max-width: 100px;">
+                </div>
+                <p style="color: #4a5568; font-weight: 600; font-size: 1.1rem;" class="text-muted">Performance Summary</p>
+            </div>
+
+            <div class="score-section text-center mb-5">
+                <div class="score-ring-container" style="display: inline-block; position: relative;">
+                    <svg class="score-ring" width="220" height="220">
+                        <circle class="score-ring__circle-bg" stroke="#e2e8f0" stroke-width="14" fill="transparent" r="95" cx="110" cy="110"/>
+                        <circle class="score-ring__circle" stroke="#6366F1" stroke-width="14" stroke-linecap="round" fill="transparent" r="95" cx="110" cy="110" id="score-progress"/>
+                    </svg>
+                    <div class="score-content" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                        <span id="score-percent" class="score-num" style="font-size: 3rem; font-weight: 800; color: #6366f1; display: block; line-height: 1;">0%</span>
+                        <span class="score-label" style="font-size: 0.9rem; font-weight: 600; color: #718096; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; display: block;">Final Score</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-breakdown" style="border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0;">
+                <div style="background-color: #7952F5; color: white; text-align: center; padding: 12px; font-weight: 700; letter-spacing: 1px; font-size: 0.9rem;">
+                    SUMMARY OVERVIEW
+                </div>
+                <div class="stats-list" style="background: white; padding: 10px 20px;">
+                    <div class="stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #f1f5f9;">
+                        <div class="stat-info" style="display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background: #F3F0FF; display: flex; align-items: center; justify-content: center; color: #1a202c; font-size: 1rem;">
+                                <i class="fas fa-question"></i>
+                            </div>
+                            <span style="font-weight: 500; color: #2d3748;">Total Questions</span>
+                        </div>
+                        <span id="res-total" class="stat-value" style="font-weight: 700; font-size: 1.1rem; color: #1a202c;">0</span>
+                    </div>
+                    <div class="stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #f1f5f9;">
+                        <div class="stat-info" style="display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background: #F3F0FF; display: flex; align-items: center; justify-content: center; color: #1a202c; font-size: 1rem;">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span style="font-weight: 500; color: #2d3748;">Correct Answers</span>
+                        </div>
+                        <span id="res-correct" class="stat-value" style="font-weight: 700; font-size: 1.1rem; color: #1a202c;">0</span>
+                    </div>
+                    <div class="stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #f1f5f9;">
+                        <div class="stat-info" style="display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background: #F3F0FF; display: flex; align-items: center; justify-content: center; color: #1a202c; font-size: 1rem;">
+                                <i class="fas fa-times"></i>
+                            </div>
+                            <span style="font-weight: 500; color: #2d3748;">Wrong Answers</span>
+                        </div>
+                        <span id="res-wrong" class="stat-value" style="font-weight: 700; font-size: 1.1rem; color: #1a202c;">0</span>
+                    </div>
+                    <div class="stat-row" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0;">
+                        <div class="stat-info" style="display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background: #F3F0FF; display: flex; align-items: center; justify-content: center; color: #1a202c; font-size: 1rem;">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <span style="font-weight: 500; color: #2d3748;">Time Taken</span>
+                        </div>
+                        <span id="res-time" class="stat-value" style="font-weight: 700; font-size: 1.1rem; color: #1a202c;">--:--</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <div id="performance-badge" style="color: #6366f1; font-weight: 700; font-size: 1.3rem;">
+                    <i class="fas fa-trophy"></i> Analyzing...
+                </div>
+                <p style="color: #718096; font-size: 0.9rem; margin-top: 8px;">Keep up the good work and continue improving.</p>
+            </div>
+
+            <hr style="margin: 25px 0 15px 0; border: none; border-top: 1px solid #cbd5e0;">
+            <div class="text-center" style="color: #718096; font-size: 0.85rem;">
+                Thank you for completing the quiz.
+            </div>
         </div>
 
-        <div class="result-layout">
-            <div class="score-section glass card-modern p-4 text-center" data-aos="zoom-in">
-                <div class="score-ring-container">
-                    <svg class="score-ring" width="200" height="200">
-                        <circle class="score-ring__circle-bg" stroke="#e2e8f0" stroke-width="12" fill="transparent" r="85" cx="100" cy="100"/>
-                        <circle class="score-ring__circle" stroke="#6366F1" stroke-width="12" stroke-linecap="round" fill="transparent" r="85" cx="100" cy="100" id="score-progress"/>
-                    </svg>
-                    <div class="score-content">
-                        <span id="score-percent" class="score-num">0%</span>
-                        <span class="score-label">Final Score</span>
-                    </div>
-                </div>
-                <div class="badge-container mt-4">
-                    <div id="performance-badge" class="badge badge-lg">Analyzing...</div>
-                </div>
+        <!-- Action Buttons (outside layout so they don't appear in the downloaded PNG) -->
+        <div class="result-actions mt-4">
+            <div class="d-flex gap-2 mb-3">
+                <a href="dashboard.html" class="btn btn-primary flex-1">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <button id="share-result-btn" class="btn btn-secondary flex-1">
+                    <i class="fas fa-download"></i> Download Report
+                </button>
             </div>
-
-            <div class="stats-breakdown glass card-modern p-4" data-aos="fade-left">
-                <h3>Performance Summary</h3>
-                <div class="stats-list mt-4">
-                    <div class="stat-row">
-                        <div class="stat-info">
-                            <i class="fas fa-question-circle text-primary"></i>
-                            <span>Total Questions</span>
-                        </div>
-                        <span id="res-total" class="stat-value">0</span>
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-info">
-                            <i class="fas fa-check-circle text-success"></i>
-                            <span>Correct Answers</span>
-                        </div>
-                        <span id="res-correct" class="stat-value">0</span>
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-info">
-                            <i class="fas fa-times-circle text-danger"></i>
-                            <span>Wrong Answers</span>
-                        </div>
-                        <span id="res-wrong" class="stat-value">0</span>
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-info">
-                            <i class="fas fa-clock text-warning"></i>
-                            <span>Time Taken</span>
-                        </div>
-                        <span id="res-time" class="stat-value">--:--</span>
-                    </div>
-                </div>
-
-                <div class="result-actions mt-5">
-                    <a href="dashboard.html" class="btn btn-primary w-full mb-3">
-                        <i class="fas fa-home"></i> Back to Dashboard
-                    </a>
-                    <div class="d-flex gap-2">
-                        <a href="quiz-list.html" class="btn btn-secondary flex-1">
-                            <i class="fas fa-search"></i> Browse Quizzes
-                        </a>
-                        <button id="share-result-btn" class="btn btn-secondary flex-1">
-                            <i class="fas fa-share-alt"></i> Share
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <a href="quiz-list.html" class="btn btn-ghost w-full">
+                <i class="fas fa-search"></i> Browse More Quizzes
+            </a>
         </div>
     </div>
 
