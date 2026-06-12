@@ -1,6 +1,5 @@
 const API_URL = 'http://localhost:8000';
 
-// Auth State Management
 const auth = {
     getToken: () => localStorage.getItem('access_token'),
     setToken: (token) => localStorage.setItem('access_token', token),
@@ -14,11 +13,9 @@ const auth = {
             });
             if (response.ok) return await response.json();
             
-            // If token is invalid or expired
             if (response.status === 401) {
                 console.warn('Session expired, clearing token');
                 auth.removeToken();
-                // Only redirect if not already on an auth page
                 const isAuthPage = window.location.pathname.includes('login.html') || 
                                     window.location.pathname.includes('register.html');
                 if (!isAuthPage) {
@@ -42,7 +39,6 @@ const auth = {
     }
 };
 
-// Route Guard
 const protectedRoutes = ['dashboard.html', 'profile.html', 'create-quiz.html', 'take-quiz.html', 'result.html'];
 const currentPage = window.location.pathname.split('/').pop();
 
@@ -50,11 +46,9 @@ if (protectedRoutes.includes(currentPage) && !auth.isLoggedIn()) {
     window.location.href = 'login.html?redirect=' + currentPage;
 }
 
-// UI Elements for Auth
 const initAuth = async () => {
     console.log('QuizSphere UI Initializing...');
 
-    // 1. Initialize AOS IMMEDIATELY to prevent hidden content
     try {
         if (typeof AOS !== 'undefined') {
             AOS.init({
@@ -70,7 +64,6 @@ const initAuth = async () => {
         console.error('AOS init failed:', e);
     }
 
-    // 2. Update Navbar state
     const authLinks = document.getElementById('auth-links');
     const userLinks = document.getElementById('user-links');
     const userNameDisplay = document.getElementById('user-name-nav');
@@ -95,7 +88,6 @@ const initAuth = async () => {
         if (userLinks) userLinks.style.display = 'none';
     }
 
-    // 3. Logout logic
     if (logoutBtn) {
         logoutBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -104,7 +96,6 @@ const initAuth = async () => {
         });
     }
 
-    // 4. Theme Toggle logic
     if (themeToggle) {
         const currentTheme = localStorage.getItem('theme') || 'light';
         if (currentTheme === 'dark') {
@@ -120,7 +111,6 @@ const initAuth = async () => {
         });
     }
 
-    // 5. Auth Modal Logic
     window.showAuthModal = (message = "Please login or create an account to continue.") => {
         const modalHtml = `
             <div id="auth-modal" class="modal-overlay fade-in">
@@ -143,7 +133,6 @@ const initAuth = async () => {
         document.body.insertAdjacentHTML('beforeend', modalHtml);
     };
 
-    // 6. Global Toast Function
     window.showToast = (title, message, type = 'success') => {
         const toastHtml = `
             <div class="toast-notification ${type} fade-in">
@@ -166,7 +155,6 @@ const initAuth = async () => {
         }, 3000);
     };
 
-    // 7. Intercept protected actions
     document.querySelectorAll('[data-auth-required]').forEach(el => {
         el.addEventListener('click', (e) => {
             if (!auth.isLoggedIn()) {
@@ -176,7 +164,6 @@ const initAuth = async () => {
         });
     });
 
-    // 8. Animated Counters
     const counters = document.querySelectorAll('.counter');
     const speed = 200;
 
@@ -211,7 +198,6 @@ const initAuth = async () => {
         observer.observe(statsSection);
     }
 
-    // 9. Sticky Navbar Logic
     const navbar = document.getElementById('main-nav');
     if (navbar) {
         window.addEventListener('scroll', () => {
@@ -223,7 +209,6 @@ const initAuth = async () => {
         });
     }
 
-    // 10. Login/Register Form Handlers (If on those pages)
     const loginForm = document.getElementById('login-form');
     if (loginForm) {
         console.log('Login form found, attaching listener...');
@@ -241,7 +226,6 @@ const initAuth = async () => {
             const originalBtnText = submitBtn.innerText;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
 
-            // FastAPI OAuth2PasswordRequestForm expects application/x-www-form-urlencoded
             const params = new URLSearchParams();
             params.append('username', email);
             params.append('password', password);
@@ -326,7 +310,6 @@ const initAuth = async () => {
         });
     }
 
-    // 11. Password Visibility Toggle
     const togglePassword = document.getElementById('toggle-password');
     const passwordInput = document.getElementById('password');
     if (togglePassword && passwordInput) {
@@ -338,7 +321,6 @@ const initAuth = async () => {
         });
     }
 
-    // 12. Password Strength Meter
     const strengthBar = document.getElementById('strength-bar');
     if (passwordInput && strengthBar) {
         passwordInput.addEventListener('input', () => {

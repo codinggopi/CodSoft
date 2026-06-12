@@ -1,6 +1,4 @@
-// Quiz Logic for QuizSphere SaaS
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. MULTI-STEP FORM LOGIC
     const formSteps = document.querySelectorAll('.form-step');
     const nextBtns = document.querySelectorAll('.next-step');
     const prevBtns = document.querySelectorAll('.prev-step');
@@ -29,12 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById(`step-${stepNumber}`).classList.add('active');
         document.getElementById(`step-${stepNumber}-indicator`).classList.add('active');
         
-        // Mark previous steps as completed
         for (let i = 1; i < stepNumber; i++) {
             document.getElementById(`step-${i}-indicator`).classList.add('completed');
         }
 
-        // Update Review Step if moving to step 3
         if (stepNumber == 3) {
             updateReview();
         }
@@ -73,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('review-questions').innerText = `${qCount} Questions`;
     }
 
-    // 2. QUESTION BUILDER LOGIC
     const questionsContainer = document.getElementById('questions-container');
     const addQuestionBtn = document.getElementById('add-question-btn');
     let questionCount = 0;
@@ -130,7 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (questionCount === 0) addQuestion();
     }
 
-    // Form Submission
     const createQuizForm = document.getElementById('create-quiz-form');
     if (createQuizForm) {
         createQuizForm.addEventListener('submit', async (e) => {
@@ -186,7 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3. PREMIUM QUIZ TAKING LOGIC
     const quizTakeId = new URLSearchParams(window.location.search).get('id');
     if (quizTakeId && document.getElementById('question-text')) {
         let currentQuestions = [];
@@ -198,12 +191,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         async function startQuiz() {
             try {
-                // Show loading, hide content
                 document.getElementById('quiz-loading').style.display = 'block';
                 document.getElementById('quiz-content').style.display = 'none';
                 document.getElementById('quiz-error').style.display = 'none';
 
-                // Load Quiz Info
                 const qResponse = await fetch(`${API_URL}/quizzes/${quizTakeId}`);
                 if (!qResponse.ok) throw new Error('Failed to load quiz');
                 const quizInfo = await qResponse.json();
@@ -213,7 +204,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 timeLeft = quizInfo.timer * 60;
                 totalTime = timeLeft;
 
-                // Load Questions
                 const response = await fetch(`${API_URL}/quizzes/${quizTakeId}/questions`);
                 if (!response.ok) throw new Error('Failed to load questions');
                 currentQuestions = await response.json();
@@ -224,7 +214,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 document.getElementById('total-q-num').innerText = currentQuestions.length;
 
-                // Success: Hide loading, show content
                 document.getElementById('quiz-loading').style.display = 'none';
                 document.getElementById('quiz-content').style.display = 'grid';
 
@@ -247,7 +236,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const q = currentQuestions[currentIndex];
             const card = document.getElementById('question-card');
             
-            // 1. Data Validation: Ensure all necessary data exists
             if (!q || !q.question_text || !q.option_a || !q.option_b || !q.option_c || !q.option_d) {
                 card.innerHTML = `
                     <div class="empty-state glass p-5 text-center">
@@ -260,9 +248,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Animation reset
             card.style.animation = 'none';
-            card.offsetHeight; // trigger reflow
+            card.offsetHeight;
             card.style.animation = null;
 
             document.getElementById('current-q-num').innerText = currentIndex + 1;
@@ -284,7 +271,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const btn = document.createElement('button');
                 btn.className = `option-btn ${userAnswers[q.id] === opt.key ? 'selected' : ''}`;
                 
-                // 2. Fixed Display: Ensure option text is rendered properly
                 const optionText = opt.text || "Option data unavailable";
                 
                 btn.innerHTML = `
@@ -427,13 +413,11 @@ document.addEventListener('DOMContentLoaded', () => {
         startQuiz();
     }
 
-    // 5. RESULT PAGE LOGIC ENHANCED
     if (document.getElementById('score-percent')) {
         const result = JSON.parse(localStorage.getItem('last_result'));
         if (result) {
             const percent = Math.round(result.percentage);
             
-            // Animate Score Ring
             setTimeout(() => {
                 const circle = document.getElementById('score-progress');
                 const radius = circle.r.baseVal.value;
@@ -442,7 +426,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const offset = circumference - (percent / 100 * circumference);
                 circle.style.strokeDashoffset = offset;
                 
-                // Animate Number
                 animateValue('score-percent', 0, percent, 1500);
             }, 100);
 
@@ -500,7 +483,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-    // 4. QUIZ LIST LOGIC
     const quizListContainer = document.getElementById('quiz-list-container');
     const searchInput = document.getElementById('search-quiz');
     const catFilter = document.getElementById('filter-category');

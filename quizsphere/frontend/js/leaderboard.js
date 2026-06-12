@@ -1,4 +1,3 @@
-// Leaderboard Logic for QuizSphere SaaS
 document.addEventListener('DOMContentLoaded', async () => {
     const leaderboardBody = document.getElementById('leaderboard-body');
     const podiumContainer = document.getElementById('podium-container');
@@ -8,11 +7,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             const response = await fetch(`${API_URL}/leaderboard/`);
             const entries = await response.json();
             
-            // Render Podium (Top 3)
             const top3 = entries.slice(0, 3);
             renderPodium(top3);
 
-            // Render Table (Rank 4+)
             const rest = entries.slice(3);
             leaderboardBody.innerHTML = '';
             
@@ -47,7 +44,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        // Reorder for display: 2, 1, 3
         const displayOrder = [];
         if (top3[1]) displayOrder.push(top3[1]);
         if (top3[0]) displayOrder.push(top3[0]);

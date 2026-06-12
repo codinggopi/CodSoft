@@ -59,7 +59,6 @@ def get_quizzes(
     
     quizzes = query.all()
     
-    # Enrich with creator name and question count
     for q in quizzes:
         q.creator_name = q.creator.full_name
         q.question_count = len(q.questions)

@@ -1,8 +1,6 @@
-// Profile & Dashboard Logic for QuizSphere SaaS
 document.addEventListener('DOMContentLoaded', async () => {
     if (!auth.isLoggedIn()) return;
 
-    // Show loading, hide content
     const profileLoading = document.getElementById('profile-loading');
     const profileContent = document.getElementById('profile-content');
     const dashLoading = document.getElementById('dashboard-loading');
@@ -13,7 +11,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (dashLoading) dashLoading.style.display = 'block';
     if (dashContent) dashContent.style.display = 'none';
 
-    // Load Profile Info
     const profileFullname = document.getElementById('profile-fullname');
     const userNameNav = document.getElementById('user-name');
     if (profileFullname || userNameNav) {
@@ -43,7 +40,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 userNameNav.innerText = user.full_name.split(' ')[0];
             }
 
-            // Hide loading, show content
             if (profileLoading) profileLoading.style.display = 'none';
             if (profileContent) profileContent.style.display = 'block';
             if (dashLoading) dashLoading.style.display = 'none';
@@ -55,7 +51,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Load Stats (Dashboard)
     if (document.getElementById('quizzes-created')) {
         try {
             const response = await fetch(`${API_URL}/users/stats`, {
@@ -73,7 +68,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Load My Quizzes
     const myQuizzesList = document.getElementById('my-quizzes-list');
     if (myQuizzesList) {
         try {
@@ -113,7 +107,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Load Attempt History
     const historyBody = document.getElementById('attempt-history-body');
     if (historyBody) {
         try {

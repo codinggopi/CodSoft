@@ -2,7 +2,6 @@ from pydantic import BaseModel, EmailStr
 from typing import List, Optional
 from datetime import datetime
 
-# User Schemas
 class UserBase(BaseModel):
     full_name: str
     email: EmailStr
@@ -29,7 +28,6 @@ class UserResponse(UserBase):
     class Config:
         from_attributes = True
 
-# Token Schemas
 class Token(BaseModel):
     access_token: str
     token_type: str
@@ -37,7 +35,6 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     email: Optional[str] = None
 
-# Question Schemas
 class QuestionBase(BaseModel):
     question_text: str
     option_a: str
@@ -56,7 +53,6 @@ class QuestionResponse(QuestionBase):
     class Config:
         from_attributes = True
 
-# Quiz Schemas
 class QuizBase(BaseModel):
     title: str
     description: Optional[str] = None
@@ -80,7 +76,6 @@ class QuizResponse(QuizBase):
     class Config:
         from_attributes = True
 
-# Attempt Schemas
 class AttemptBase(BaseModel):
     quiz_id: int
     score: int
@@ -88,7 +83,7 @@ class AttemptBase(BaseModel):
 
 class AttemptCreate(BaseModel):
     quiz_id: int
-    answers: List[dict] # List of {"question_id": int, "selected_option": str}
+    answers: List[dict]
 
 class AttemptResponse(AttemptBase):
     id: int
@@ -99,7 +94,6 @@ class AttemptResponse(AttemptBase):
     class Config:
         from_attributes = True
 
-# Leaderboard Schema
 class LeaderboardEntry(BaseModel):
     rank: int
     user_name: str

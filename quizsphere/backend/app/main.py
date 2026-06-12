@@ -9,10 +9,8 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title="QuizSphere API", version="1.0.0")
 
-# Startup database initialization and validation
 @app.on_event("startup")
 def startup_event():
-    # Create database tables if they do not exist
     Base.metadata.create_all(bind=engine)
     
     required_user_columns = {"avatar_url", "bio"}
@@ -31,16 +29,14 @@ def startup_event():
     except Exception as exc:
         logger.error("Schema validation failed: %s", exc)
 
-# CORS Configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify the frontend URL
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Include Routers
 app.include_router(auth.router)
 app.include_router(quizzes.router)
 app.include_router(attempts.router)

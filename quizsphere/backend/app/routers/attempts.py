@@ -21,7 +21,6 @@ def submit_quiz(
     total_questions = len(quiz.questions)
     correct_answers = 0
     
-    # Map questions for faster lookup
     questions_map = {q.id: q.correct_answer for q in quiz.questions}
     
     for ans in attempt_data.answers:
