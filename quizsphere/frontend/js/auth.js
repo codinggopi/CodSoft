@@ -344,3 +344,15 @@ if (document.readyState === 'loading') {
 } else {
     initAuth();
 }
+
+// Mobile Menu Toggle
+document.addEventListener("DOMContentLoaded", () => {
+    const toggleBtn = document.getElementById("mobile-menu-btn");
+    const navLinks = document.querySelector(".nav-links");
+    if (toggleBtn && navLinks) {
+        toggleBtn.addEventListener("click", () => {
+            navLinks.classList.toggle("active");
+        });
+    }
+});
+
