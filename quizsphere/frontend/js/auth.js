@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8000';
+const API_URL = 'https://quizsphere-bay.vercel.app';
 
 const auth = {
     getToken: () => localStorage.getItem('access_token'),
