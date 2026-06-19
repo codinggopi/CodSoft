@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Profile | CareerConnect</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .profile-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .form-grid {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: 1fr 1fr;
+        }
+        .full-width {
+            grid-column: 1 / -1;
+        }
+    </style>
+</head>
+<body class="flex flex-col" style="min-height: 100vh;">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container flex justify-between items-center">
+            <a href="index.html" class="nav-brand"><i class="fas fa-briefcase"></i> CareerConnect</a>
+            <div class="nav-links" id="navLinks">
+            </div>
+        </div>
+    </nav>
+
+    <div class="container animate-fade-in section-padding" style="flex: 1;">
+        <div class="profile-container">
+            <div class="flex justify-between items-center mb-6 border-bottom pb-4">
+                <h1 style="font-size: 1.8rem;">Company Profile</h1>
+                <a href="edit-company-profile.html" class="btn btn-outline" id="editBtn">Edit Profile</a>
+            </div>
+
+            <form id="companyForm">
+                <div class="form-grid">
+                    <div class="full-width" style="text-align: center; margin-bottom: 1rem;">
+                        <img id="logoPreview" src="https://via.placeholder.com/150" alt="Company Logo" style="width: 120px; height: 120px; border-radius: 12px; object-fit: cover; border: 3px solid var(--border-color); margin-bottom: 1rem;">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">Company Name</label>
+                        <input type="text" id="companyName" class="form-control" disabled required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Industry</label>
+                        <input type="text" id="industry" class="form-control" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Company Size</label>
+                        <select id="size" class="form-control" disabled>
+                            <option value="">Select Size</option>
+                            <option value="1-10">1-10 employees</option>
+                            <option value="11-50">11-50 employees</option>
+                            <option value="51-200">51-200 employees</option>
+                            <option value="201-500">201-500 employees</option>
+                            <option value="500+">500+ employees</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Location (HQ)</label>
+                        <input type="text" id="location" class="form-control" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Founded Year</label>
+                        <input type="number" id="foundedYear" class="form-control" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Website URL</label>
+                        <input type="url" id="website" class="form-control" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">LinkedIn URL</label>
+                        <input type="url" id="linkedin" class="form-control" disabled>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">About Company (Description)</label>
+                        <textarea id="description" class="form-control" rows="4" disabled></textarea>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label class="form-label">Mission Statement</label>
+                        <textarea id="mission" class="form-control" rows="3" disabled></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">Vision Statement</label>
+                        <textarea id="vision" class="form-control" rows="3" disabled></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">Company Benefits</label>
+                        <textarea id="benefits" class="form-control" rows="3" disabled></textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="assets/js/theme.js"></script>
+    <script>
+        const API_URL = "http://127.0.0.1:8000";
+        let isEditing = false;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/companies/me`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    const company = await response.json();
+                    document.getElementById('companyName').value = company.name || '';
+                    document.getElementById('industry').value = company.industry || '';
+                    document.getElementById('size').value = company.size || '';
+                    document.getElementById('location').value = company.location || '';
+                    document.getElementById('foundedYear').value = company.founded_year || '';
+                    document.getElementById('website').value = company.website || '';
+                    document.getElementById('linkedin').value = company.linkedin || '';
+                    document.getElementById('description').value = company.description || '';
+                    document.getElementById('mission').value = company.mission || '';
+                    document.getElementById('vision').value = company.vision || '';
+                    document.getElementById('benefits').value = company.benefits || '';
+                    if (company.logo_url) {
+                        document.getElementById('logoPreview').src = company.logo_url;
+                    }
+                }
+            } catch (err) {
+                console.error('Error fetching company profile:', err);
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

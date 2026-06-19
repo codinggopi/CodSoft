@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | CareerConnect</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .saas-container { max-width: 1400px; width: 92%; margin: 0 auto; padding: 2rem 0; }
+        .saas-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px; box-shadow: var(--shadow); }
+        .saas-section { margin-top: 32px; margin-bottom: 48px; }
+    </style>
+</head>
+
+<body class="flex flex-col" style="min-height: 100vh;">
+    <nav class="navbar">
+        <div class="container flex justify-between items-center">
+            <a href="index.html" class="nav-brand"><i class="fas fa-briefcase"></i> CareerConnect</a>
+            <div class="nav-links" id="navLinks">
+                <!-- Links injected by theme.js -->
+            </div>
+        </div>
+    </nav>
+
+    <div class="saas-container animate-fade-in" style="flex: 1;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 2rem;">Account Settings</h1>
+
+        <div class="saas-card saas-section">
+            <h3 class="mb-6 border-bottom pb-2">Change Password</h3>
+            <form id="formPassword">
+                <div class="form-group">
+                    <label class="form-label">Current Password</label>
+                    <input type="password" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">New Password</label>
+                    <input type="password" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Confirm New Password</label>
+                    <input type="password" class="form-control" required>
+                </div>
+                <div class="flex justify-end mt-4">
+                    <button type="submit" class="btn btn-primary">Update Password</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="saas-card saas-section">
+            <h3 class="mb-6 border-bottom pb-2">Notification Preferences</h3>
+            <div class="form-group" style="display: flex; align-items: center; gap: 1rem;">
+                <input type="checkbox" id="notifEmail" checked style="width: 20px; height: 20px;">
+                <label for="notifEmail" class="form-label mb-0" style="margin: 0;">Email Notifications for New Applicants</label>
+            </div>
+            <div class="form-group" style="display: flex; align-items: center; gap: 1rem;">
+                <input type="checkbox" id="notifMarketing" style="width: 20px; height: 20px;">
+                <label for="notifMarketing" class="form-label mb-0" style="margin: 0;">Marketing & Newsletter Emails</label>
+            </div>
+            <div class="flex justify-end mt-4">
+                <button type="button" class="btn btn-primary" onclick="alert('Preferences saved!')">Save Preferences</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Expanded Footer -->
+    <footer class="footer-advanced mt-auto">
+        <div class="container">
+            <div class="flex gap-8 justify-between mb-8" style="flex-wrap: wrap;">
+                <div style="flex: 2; min-width: 300px;">
+                    <h3 style="font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: white; margin-bottom: 1rem;">
+                        <i class="fas fa-briefcase"></i> CareerConnect
+                    </h3>
+                    <p style="opacity: 0.8; margin-bottom: 1.5rem; max-width: 400px;">Enterprise-grade recruitment software for modern companies.</p>
+                </div>
+            </div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; display: flex; justify-content: space-between; flex-wrap: wrap; opacity: 0.7; font-size: 0.875rem;">
+                <p>&copy; 2026 CareerConnect. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/theme.js"></script>
+    <script>
+        document.getElementById('formPassword').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert("Password updated successfully!");
+            e.target.reset();
+        });
+
+        function logoutUser(e) {
+            e.preventDefault();
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+
+</html>

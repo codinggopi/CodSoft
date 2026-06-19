@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Details | CareerConnect</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="flex flex-col" style="min-height: 100vh;">
+    <nav class="navbar">
+        <div class="container flex justify-between items-center">
+            <a href="index.html" class="nav-brand"><i class="fas fa-briefcase"></i> CareerConnect</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="jobs.html">Find Jobs</a>
+                <a href="career-resources.html" style="color: var(--primary-color);">Resources</a>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
+                    <i id="theme-icon" class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container animate-fade-in section-padding" style="flex: 1; max-width: 800px;" id="articleContainer">
+        <!-- Content loaded dynamically -->
+    </div>
+
+    <!-- Expanded Footer -->
+    <footer class="footer-advanced mt-auto">
+        <div class="container">
+            <div class="flex gap-8 justify-between mb-8" style="flex-wrap: wrap;">
+                <div style="flex: 2; min-width: 300px;">
+                    <h3 style="font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: white; margin-bottom: 1rem;"><i class="fas fa-briefcase"></i> CareerConnect</h3>
+                    <p style="opacity: 0.8; margin-bottom: 1.5rem; max-width: 400px;">Empowering professionals and companies to build better futures together.</p>
+                </div>
+            </div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; display: flex; justify-content: space-between; flex-wrap: wrap; opacity: 0.7; font-size: 0.875rem;">
+                <p>&copy; 2026 CareerConnect. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/theme.js"></script>
+    <script>
+        const articles = {
+            "1": {
+                title: "How to write a resume that gets noticed",
+                category: "Resume Tips",
+                date: "June 10, 2026",
+                content: `
+                    <p class="text-lg text-muted mb-6">In today's highly competitive job market, your resume needs to stand out immediately. Recruiters spend an average of 6 seconds reviewing a resume before deciding whether to keep it or discard it.</p>
+                    <h3 class="mb-4">1. Keep it Concise</h3>
+                    <p class="text-muted mb-4">Limit your resume to one or two pages. Focus only on relevant experience and achievements rather than listing every job you've ever had.</p>
+                    <h3 class="mb-4">2. Use Action Verbs</h3>
+                    <p class="text-muted mb-4">Start your bullet points with strong action verbs like "Led", "Developed", "Spearheaded", or "Optimized". Avoid passive phrases.</p>
+                    <h3 class="mb-4">3. Quantify Your Achievements</h3>
+                    <p class="text-muted mb-4">Numbers speak louder than words. Instead of saying "Improved performance", say "Improved application performance by 40% through code optimization".</p>
+                `
+            },
+            "2": {
+                title: "Top 10 Technical Interview Questions",
+                category: "Interview Prep",
+                date: "June 12, 2026",
+                content: `
+                    <p class="text-lg text-muted mb-6">Preparing for a technical interview can be daunting. Knowing what questions to expect is half the battle.</p>
+                    <h3 class="mb-4">1. Data Structures and Algorithms</h3>
+                    <p class="text-muted mb-4">Be prepared to explain how to reverse a linked list, find the shortest path in a graph, or optimize a search algorithm. Practice on platforms like LeetCode or HackerRank.</p>
+                    <h3 class="mb-4">2. System Design</h3>
+                    <p class="text-muted mb-4">"How would you design Twitter?" is a classic. Focus on scalability, database choices, load balancing, and caching strategies.</p>
+                    <h3 class="mb-4">3. Behavioral Questions</h3>
+                    <p class="text-muted mb-4">Don't forget the STAR method (Situation, Task, Action, Result). Be ready to discuss a time you failed, handled a conflict, or learned a new technology quickly.</p>
+                `
+            },
+            "3": {
+                title: "Optimizing Your LinkedIn Profile",
+                category: "Networking",
+                date: "June 14, 2026",
+                content: `
+                    <p class="text-lg text-muted mb-6">Your LinkedIn profile is often your first impression with recruiters. Make it count.</p>
+                    <h3 class="mb-4">1. A Professional Headshot</h3>
+                    <p class="text-muted mb-4">Profiles with professional photos receive 14x more profile views. Ensure your face is clearly visible and you are dressed appropriately for your industry.</p>
+                    <h3 class="mb-4">2. Compelling Headline</h3>
+                    <p class="text-muted mb-4">Don't just list your current job title. Add your core skills and the value you bring. E.g., "Full Stack Developer | React & Node.js | Building Scalable Web Apps".</p>
+                    <h3 class="mb-4">3. Engaging Summary</h3>
+                    <p class="text-muted mb-4">Write your summary in the first person. Tell your story, what you are passionate about, and what you are looking for next.</p>
+                `
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            const container = document.getElementById('articleContainer');
+
+            if (id && articles[id]) {
+                const article = articles[id];
+                container.innerHTML = `
+                    <div class="mb-8">
+                        <span class="badge badge-primary mb-4" style="font-size: 1rem; padding: 0.5rem 1rem;">${article.category}</span>
+                        <h1 style="font-size: 3rem; line-height: 1.2;" class="mb-4">${article.title}</h1>
+                        <p class="text-muted"><i class="fas fa-calendar-alt mr-2"></i> Published on ${article.date}</p>
+                    </div>
+                    <div class="card" style="padding: 3rem; background: var(--card-bg);">
+                        ${article.content}
+                    </div>
+                    <div class="mt-8">
+                        <a href="career-resources.html" class="btn btn-outline"><i class="fas fa-arrow-left mr-2"></i> Back to Resources</a>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="text-center">
+                        <h1 class="mb-4">Article Not Found</h1>
+                        <p class="text-muted mb-8">The resource you are looking for does not exist.</p>
+                        <a href="career-resources.html" class="btn btn-primary">Browse Resources</a>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | CareerConnect</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="flex flex-col" style="min-height: 100vh;">
+    <nav class="navbar" style="border-bottom: 2px solid #374151;">
+        <div class="container flex justify-between items-center">
+            <a href="index.html" class="nav-brand"><i class="fas fa-briefcase"></i> CareerConnect Admin</a>
+            <div class="nav-links">
+                <span id="userNameDisplay" style="font-weight: 600; color: var(--primary-color);"></span>
+                <button onclick="logout()" class="btn btn-outline" style="padding: 0.5rem 1rem;">Logout</button>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
+                    <i id="theme-icon" class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container animate-fade-in mt-8 mb-8" style="flex: 1;">
+        <h1 class="mb-8" style="font-size: 2rem;">System Administration</h1>
+        
+        <!-- Dashboard Stats -->
+        <div class="flex gap-4 mb-8" style="flex-wrap: wrap;">
+            <div class="card text-center flex-col justify-center" style="flex: 1; min-width: 200px; border-left: 5px solid #475569;">
+                <i class="fas fa-users text-muted mb-2" style="font-size: 2rem;"></i>
+                <h2 id="totalUsers" style="font-size: 2.5rem; color: var(--text-color);">0</h2>
+                <p class="text-muted">Total Users</p>
+            </div>
+            <div class="card text-center flex-col justify-center" style="flex: 1; min-width: 200px; border-left: 5px solid #64748B;">
+                <i class="fas fa-briefcase text-muted mb-2" style="font-size: 2rem;"></i>
+                <h2 id="totalJobs" style="font-size: 2.5rem; color: var(--text-color);">0</h2>
+                <p class="text-muted">Total Jobs</p>
+            </div>
+            <div class="card text-center flex-col justify-center" style="flex: 1; min-width: 200px; border-left: 5px solid #94A3B8;">
+                <i class="fas fa-file-alt text-muted mb-2" style="font-size: 2rem;"></i>
+                <h2 id="totalApps" style="font-size: 2.5rem; color: var(--text-color);">0</h2>
+                <p class="text-muted">Total Applications</p>
+            </div>
+        </div>
+
+        <!-- Admin Controls -->
+        <div class="card mb-8">
+            <h2 class="mb-4" style="font-size: 1.25rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">System Jobs Management</h2>
+            <div id="adminJobsList" class="flex flex-col gap-4">
+                <p class="text-muted">Loading all jobs in system...</p>
+            </div>
+        </div>
+    </div>
+
+    <footer style="background-color: #0F172A;">
+        <div class="container flex justify-between items-center" style="flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <h3 style="font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: white;"><i class="fas fa-shield-alt"></i> CareerConnect Admin</h3>
+            </div>
+            <div style="opacity: 0.8; color: white;">
+                &copy; 2026 CareerConnect. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/theme.js"></script>
+    <script>
+        const API_URL = "http://127.0.0.1:8000";
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            const userStr = localStorage.getItem('user');
+            if (!token || !userStr) {
+                window.location.href = 'login.html';
+                return;
+            }
+            const user = JSON.parse(userStr);
+            if (user.role !== 'admin') {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            document.getElementById('userNameDisplay').textContent = `Hi, Admin ${user.name}`;
+
+            await loadAdminData(token);
+        });
+
+        async function loadAdminData(token) {
+            try {
+                // Fetch jobs
+                const jobsRes = await fetch(`${API_URL}/jobs/`);
+                if (jobsRes.ok) {
+                    const jobs = await jobsRes.json();
+                    document.getElementById('totalJobs').textContent = jobs.length;
+                    
+                    const jobsList = document.getElementById('adminJobsList');
+                    if(jobs.length === 0) {
+                        jobsList.innerHTML = `<p class="text-muted text-center py-4">No jobs in the system.</p>`;
+                    } else {
+                        jobsList.innerHTML = jobs.map(job => `
+                            <div class="flex justify-between items-center" style="padding: 1rem; border: 1px solid var(--border-color); border-radius: 0.375rem; background: var(--input-bg); flex-wrap: wrap; gap: 1rem;">
+                                <div>
+                                    <h4 style="color: var(--primary-color);">${job.title}</h4>
+                                    <p class="text-sm text-muted mt-1"><i class="fas fa-building"></i> ${job.company} | ID: #${job.id}</p>
+                                </div>
+                                <button onclick="deleteJob(${job.id})" class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.875rem; color: var(--danger); border-color: var(--danger);">Force Delete</button>
+                            </div>
+                        `).join('');
+                    }
+                }
+
+                // Fetch applications
+                const appsRes = await fetch(`${API_URL}/applications/`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (appsRes.ok) {
+                    const apps = await appsRes.json();
+                    document.getElementById('totalApps').textContent = apps.length;
+                    // Note: Mocking total users since there's no endpoint for fetching all users.
+                    document.getElementById('totalUsers').textContent = Math.max(3, apps.length + 2);
+                }
+            } catch(e) { console.error(e); }
+        }
+
+        async function deleteJob(jobId) {
+            if(!confirm("SYSTEM WARNING: Are you sure you want to permanently delete this job?")) return;
+            const token = localStorage.getItem('token');
+            const res = await fetch(`${API_URL}/jobs/${jobId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if(res.ok) {
+                window.location.reload();
+            } else {
+                alert("Failed to delete job");
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

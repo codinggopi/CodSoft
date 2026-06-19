@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applicants | CareerConnect</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .saas-container { max-width: 1400px; width: 92%; margin: 0 auto; padding: 2rem 0; }
+        .saas-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px; box-shadow: var(--shadow); }
+        .saas-section { margin-top: 32px; margin-bottom: 48px; }
+        .badge-primary { background: rgba(59, 130, 246, 0.1); color: var(--primary-color); }
+        .badge-success { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .badge-danger { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+        .badge { padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; display: inline-flex; align-items: center; justify-content: center; }
+    </style>
+</head>
+
+<body class="flex flex-col" style="min-height: 100vh;">
+    <nav class="navbar">
+        <div class="container flex justify-between items-center">
+            <a href="index.html" class="nav-brand"><i class="fas fa-briefcase"></i> CareerConnect</a>
+            <div class="nav-links" id="navLinks">
+                <!-- Links injected by theme.js -->
+            </div>
+        </div>
+    </nav>
+
+    <div class="saas-container animate-fade-in" style="flex: 1;">
+        <div class="flex justify-between items-center mb-6 mt-4">
+            <h1 style="font-size: 2.5rem; margin: 0;">Review Applicants</h1>
+            <p class="text-muted m-0">Manage candidates for all your active job listings.</p>
+        </div>
+
+        <div class="saas-section saas-card">
+            <div class="overflow-x-auto">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--border-color); color: var(--text-muted); font-size: 0.875rem;">
+                            <th style="padding: 1rem 0.5rem; font-weight: 500;">Candidate</th>
+                            <th style="padding: 1rem 0.5rem; font-weight: 500;">Applied Job</th>
+                            <th style="padding: 1rem 0.5rem; font-weight: 500;">Date</th>
+                            <th style="padding: 1rem 0.5rem; font-weight: 500;">Status</th>
+                            <th style="padding: 1rem 0.5rem; font-weight: 500;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dashAppsList">
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted">Loading applicants...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Expanded Footer -->
+    <footer class="footer-advanced mt-auto">
+        <div class="container">
+            <div class="flex gap-8 justify-between mb-8" style="flex-wrap: wrap;">
+                <div style="flex: 2; min-width: 300px;">
+                    <h3 style="font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: white; margin-bottom: 1rem;">
+                        <i class="fas fa-briefcase"></i> CareerConnect
+                    </h3>
+                    <p style="opacity: 0.8; margin-bottom: 1.5rem; max-width: 400px;">Enterprise-grade recruitment software for modern companies.</p>
+                </div>
+            </div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; display: flex; justify-content: space-between; flex-wrap: wrap; opacity: 0.7; font-size: 0.875rem;">
+                <p>&copy; 2026 CareerConnect. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/theme.js"></script>
+    <script>
+        const API_URL = "http://127.0.0.1:8000";
+        let currentUser = null;
+        let allAppsData = [];
+        let jobMap = {};
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            const userStr = localStorage.getItem('user');
+            if (!token || !userStr) { window.location.href = 'login.html'; return; }
+            currentUser = JSON.parse(userStr);
+            if (currentUser.role !== 'employer') { window.location.href = 'index.html'; return; }
+
+            fetchApps(token);
+        });
+
+        async function fetchApps(token) {
+            try {
+                // Fetch Jobs first to populate jobMap
+                const jobsRes = await fetch(`${API_URL}/jobs/`);
+                if (jobsRes.ok) {
+                    const allJobs = await jobsRes.json();
+                    const myJobsData = allJobs.filter(j => j.employer_id === currentUser.id);
+                    myJobsData.forEach(j => { jobMap[j.id] = j.title; });
+                }
+
+                // Fetch Apps
+                const appsRes = await fetch(`${API_URL}/applications/`, { headers: { 'Authorization': `Bearer ${token}` } });
+                if (appsRes.ok) {
+                    allAppsData = await appsRes.json();
+                    renderAppsTable();
+                } else {
+                    document.getElementById('dashAppsList').innerHTML = '<tr><td colspan="5" class="text-center py-4 text-danger">Failed to load applicants.</td></tr>';
+                }
+            } catch (e) {
+                console.error("Data load error:", e);
+                document.getElementById('dashAppsList').innerHTML = '<tr><td colspan="5" class="text-center py-4 text-danger">Error loading applicants.</td></tr>';
+            }
+        }
+
+        function renderAppsTable() {
+            const tbody = document.getElementById('dashAppsList');
+            if (allAppsData.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-8 text-muted">No applicants found.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = allAppsData.map(app => {
+                const candidateDataStr = localStorage.getItem(`candidate_${app.candidate_id}`);
+                let candidateName = `Candidate #${app.candidate_id}`;
+                if (candidateDataStr) { candidateName = JSON.parse(candidateDataStr).name || candidateName; }
+                const jobTitle = jobMap[app.job_id] || `Job #${app.job_id}`;
+                const dateApplied = new Date(app.created_at).toLocaleDateString();
+
+                let sClass = 'badge-primary';
+                if (app.status === 'Accepted') sClass = 'badge-success';
+                else if (app.status === 'Rejected') sClass = 'badge-danger';
+
+                return `
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 1rem 0.5rem; font-weight: 500;">
+                        <div class="flex items-center gap-3">
+                            <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(candidateName)}&background=166534&color=fff" style="width: 32px; height: 32px; border-radius: 50%;">
+                            ${candidateName}
+                        </div>
+                    </td>
+                    <td style="padding: 1rem 0.5rem; color: var(--text-muted); font-size: 0.875rem;">${jobTitle}</td>
+                    <td style="padding: 1rem 0.5rem; color: var(--text-muted); font-size: 0.875rem;">${dateApplied}</td>
+                    <td style="padding: 1rem 0.5rem;"><span class="badge ${sClass}">${app.status}</span></td>
+                    <td style="padding: 1rem 0.5rem;">
+                        <div class="flex gap-2">
+                            <button onclick="updateAppStatus(${app.id}, 'Accepted')" class="btn" style="background: rgba(34,197,94,0.1); color: var(--success); padding: 0.25rem 0.5rem; border-radius: 6px;" title="Hire"><i class="fas fa-check"></i></button>
+                            <button onclick="updateAppStatus(${app.id}, 'Rejected')" class="btn" style="background: rgba(239,68,68,0.1); color: var(--danger); padding: 0.25rem 0.5rem; border-radius: 6px;" title="Reject"><i class="fas fa-times"></i></button>
+                            <button onclick="viewApplicantResume(${app.candidate_id}, '${app.resume_path}')" class="btn btn-outline" style="padding: 0.25rem 0.5rem; border-radius: 6px;" title="View Resume"><i class="fas fa-file-pdf"></i></button>
+                        </div>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        async function updateAppStatus(appId, newStatus) {
+            const token = localStorage.getItem('token');
+            const formData = new FormData();
+            formData.append("status_update", newStatus);
+            try {
+                const res = await fetch(`${API_URL}/applications/status/${appId}`, { method: 'PUT', headers: { 'Authorization': `Bearer ${token}` }, body: formData });
+                if (res.ok) { fetchApps(token); }
+                else { alert("Failed to update status"); }
+            } catch (e) { console.error(e); }
+        }
+
+        window.viewApplicantResume = function (candidateId, resumePath) {
+            const resumeDataStr = localStorage.getItem(`resume_${candidateId}`);
+            if (resumeDataStr) {
+                const resumeData = JSON.parse(resumeDataStr);
+                if (resumeData.dataUrl) {
+                    const pdfWindow = window.open("");
+                    if (pdfWindow) {
+                        pdfWindow.document.write(`<iframe width='100%' height='100%' src='${resumeData.dataUrl}'></iframe>`);
+                        pdfWindow.document.body.style.margin = "0";
+                        return;
+                    }
+                }
+            }
+            alert(`Viewing Resume File: ${resumePath.split('/').pop()}`);
+        }
+
+        function logoutUser(e) {
+            e.preventDefault();
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+
+</html>

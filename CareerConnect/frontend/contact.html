@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | CareerConnect</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="flex flex-col" style="min-height: 100vh;">
+    <nav class="navbar">
+        <div class="container flex justify-between items-center">
+            <a href="index.html" class="nav-brand"><i class="fas fa-briefcase"></i> CareerConnect</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="jobs.html">Find Jobs</a>
+                <a href="about.html">About</a>
+                <a href="contact.html" style="color: var(--primary-color);">Contact</a>
+                <a href="login.html" class="btn btn-outline" style="padding: 0.5rem 1rem;" id="loginLink">Login</a>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
+                    <i id="theme-icon" class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container animate-fade-in" style="flex: 1; padding: 4rem 1.5rem; display: flex; gap: 4rem; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 300px;" class="scroll-reveal">
+            <h1 class="mb-4" style="font-size: 2.5rem; color: var(--primary-color);">Get in Touch</h1>
+            <p class="text-muted mb-8 text-lg">Have a question or need assistance? Fill out the form and our team will get back to you shortly.</p>
+            
+            <div class="mb-4 card" style="padding: 1.5rem; border-left: 5px solid var(--secondary-color);">
+                <h3 class="mb-2"><i class="fas fa-envelope text-primary"></i> Email</h3>
+                <p class="text-muted">support@careerconnect.com</p>
+            </div>
+            <div class="mb-4 card" style="padding: 1.5rem; border-left: 5px solid var(--secondary-color);">
+                <h3 class="mb-2"><i class="fas fa-phone text-primary"></i> Phone</h3>
+                <p class="text-muted">+1 (555) 123-4567</p>
+            </div>
+        </div>
+
+        <div class="card scroll-reveal" style="flex: 1; min-width: 300px;">
+            <form onsubmit="event.preventDefault(); alert('Message sent successfully!'); this.reset();">
+                <div class="form-group">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Subject</label>
+                    <input type="text" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Message</label>
+                    <textarea class="form-control" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-full">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Expanded Footer -->
+    <footer class="footer-advanced mt-auto">
+        <div class="container">
+            <div class="flex gap-8 justify-between mb-8" style="flex-wrap: wrap;">
+                <div style="flex: 2; min-width: 300px;">
+                    <h3 style="font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: white; margin-bottom: 1rem;"><i class="fas fa-briefcase"></i> CareerConnect</h3>
+                    <p style="opacity: 0.8; margin-bottom: 1.5rem; max-width: 400px;">Empowering professionals and companies to build better futures together. Your dream career starts here.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 150px;">
+                    <h4>Quick Links</h4>
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About Us</a>
+                    <a href="contact.html">Contact Us</a>
+                    <a href="jobs.html">Browse Jobs</a>
+                </div>
+                <div style="flex: 1; min-width: 150px;">
+                    <h4>Job Categories</h4>
+                    <a href="#">Technology</a>
+                    <a href="#">Finance</a>
+                    <a href="#">Marketing</a>
+                    <a href="#">Design</a>
+                </div>
+                <div style="flex: 1; min-width: 150px;">
+                    <h4>Resources</h4>
+                    <a href="#">Resume Guide</a>
+                    <a href="#">Interview Tips</a>
+                    <a href="#">Career Blog</a>
+                    <a href="#">FAQ</a>
+                </div>
+                <div style="flex: 1.5; min-width: 250px;">
+                    <h4>Subscribe to Newsletter</h4>
+                    <p style="opacity: 0.8; font-size: 0.875rem; margin-bottom: 1rem;">Get the latest job updates directly to your inbox.</p>
+                    <form class="flex" onsubmit="event.preventDefault(); alert('Subscribed!');">
+                        <input type="email" placeholder="Email Address" style="padding: 0.75rem; border: none; border-radius: 0.25rem 0 0 0.25rem; outline: none; width: 100%;" required>
+                        <button type="submit" style="padding: 0.75rem 1rem; border: none; background: var(--accent-color); color: white; border-radius: 0 0.25rem 0.25rem 0; cursor: pointer; font-weight: bold;">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; display: flex; justify-content: space-between; flex-wrap: wrap; opacity: 0.7; font-size: 0.875rem;">
+                <p>&copy; 2026 CareerConnect. All rights reserved.</p>
+                <div class="flex gap-4">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="assets/js/theme.js"></script>
+    <script>
+        const token = localStorage.getItem('token');
+        const loginLink = document.getElementById('loginLink');
+        if (token && loginLink) {
+            loginLink.textContent = "Dashboard";
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            if(user.role === 'admin') loginLink.href = 'admin-dashboard.html';
+            else if(user.role === 'employer') loginLink.href = 'employer-dashboard.html';
+            else loginLink.href = 'candidate-dashboard.html';
+        }
+
+        // Scroll Reveal
+        setTimeout(() => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            });
+            document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+        }, 100);
+    </script>
+</body>
+</html>

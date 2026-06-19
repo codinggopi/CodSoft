@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Resources | CareerConnect</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="flex flex-col" style="min-height: 100vh;">
+    <nav class="navbar">
+        <div class="container flex justify-between items-center">
+            <a href="index.html" class="nav-brand"><i class="fas fa-briefcase"></i> CareerConnect</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="jobs.html">Find Jobs</a>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
+                    <i id="theme-icon" class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container animate-fade-in section-padding" style="flex: 1;">
+        <h1 class="text-center mb-8" style="font-size: 2.5rem;">Career Resources</h1>
+        <p class="text-center text-muted text-lg mb-12 max-w-2xl mx-auto">Expert advice, guides, and tips to help you accelerate your career growth and land your dream job.</p>
+        
+        <div style="display: grid; gap: 2rem; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+            <div class="card" style="padding: 0; overflow: hidden;">
+                <div style="height: 160px; background: linear-gradient(135deg, #10B981, #34D399);"></div>
+                <div style="padding: 1.5rem;">
+                    <span class="badge badge-primary mb-2">Resume Tips</span>
+                    <h3 class="mb-2">How to write a resume that gets noticed</h3>
+                    <p class="text-muted mb-4 text-sm">Learn the exact structure recruiters look for in 2026.</p>
+                    <a href="resource-details.html?id=1" style="color: var(--primary-color); font-weight: 600;">Read More <i class="fas fa-arrow-right text-sm"></i></a>
+                </div>
+            </div>
+            <div class="card" style="padding: 0; overflow: hidden;">
+                <div style="height: 160px; background: linear-gradient(135deg, #F59E0B, #FBBF24);"></div>
+                <div style="padding: 1.5rem;">
+                    <span class="badge badge-warning mb-2">Interview Prep</span>
+                    <h3 class="mb-2">Top 10 Technical Interview Questions</h3>
+                    <p class="text-muted mb-4 text-sm">Master these questions to ace your next engineering interview.</p>
+                    <a href="resource-details.html?id=2" style="color: var(--primary-color); font-weight: 600;">Read More <i class="fas fa-arrow-right text-sm"></i></a>
+                </div>
+            </div>
+            <div class="card" style="padding: 0; overflow: hidden;">
+                <div style="height: 160px; background: linear-gradient(135deg, #3B82F6, #60A5FA);"></div>
+                <div style="padding: 1.5rem;">
+                    <span class="badge badge-primary mb-2">Networking</span>
+                    <h3 class="mb-2">Optimizing Your LinkedIn Profile</h3>
+                    <p class="text-muted mb-4 text-sm">Make your profile a magnet for top recruiters in your industry.</p>
+                    <a href="resource-details.html?id=3" style="color: var(--primary-color); font-weight: 600;">Read More <i class="fas fa-arrow-right text-sm"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Expanded Footer -->
+    <footer class="footer-advanced mt-auto">
+        <div class="container">
+            <div class="flex gap-8 justify-between mb-8" style="flex-wrap: wrap;">
+                <div style="flex: 2; min-width: 300px;">
+                    <h3 style="font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: white; margin-bottom: 1rem;"><i class="fas fa-briefcase"></i> CareerConnect</h3>
+                    <p style="opacity: 0.8; margin-bottom: 1.5rem; max-width: 400px;">Empowering professionals and companies to build better futures together.</p>
+                </div>
+                <div style="flex: 1; min-width: 150px;">
+                    <h4>Quick Links</h4>
+                    <a href="index.html">Home</a>
+                    <a href="jobs.html">Browse Jobs</a>
+                </div>
+            </div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; display: flex; justify-content: space-between; flex-wrap: wrap; opacity: 0.7; font-size: 0.875rem;">
+                <p>&copy; 2026 CareerConnect. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/theme.js"></script>
+</body>
+</html>

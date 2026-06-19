@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | CareerConnect</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="flex flex-col" style="min-height: 100vh;">
+    <nav class="navbar">
+        <div class="container flex justify-between items-center">
+            <a href="index.html" class="nav-brand"><i class="fas fa-briefcase"></i> CareerConnect</a>
+            <div class="nav-links">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
+                    <i id="theme-icon" class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container flex items-center justify-center animate-fade-in" style="flex: 1; padding: 4rem 1.5rem;">
+        <div class="card" style="width: 100%; max-width: 550px; padding: 3rem 2rem;">
+            <h2 class="text-center mb-8" style="color: var(--primary-color);">Create an Account</h2>
+            <form id="registerForm">
+                <div class="form-group flex justify-center gap-4 mb-6"
+                    style="background: var(--input-bg); padding: 0.5rem; border-radius: 0.5rem; border: 1px solid var(--border-color);">
+                    <label
+                        style="flex: 1; text-align: center; cursor: pointer; padding: 0.75rem; border-radius: 0.25rem;">
+                        <input type="radio" name="role" value="candidate" checked> Candidate
+                    </label>
+                    <label
+                        style="flex: 1; text-align: center; cursor: pointer; padding: 0.75rem; border-radius: 0.25rem;">
+                        <input type="radio" name="role" value="employer"> Employer
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" id="nameLabel" for="name">Full Name</label>
+                    <input type="text" id="name" class="form-control" required>
+                </div>
+                <div id="employerFields" style="display: none;">
+                    <div class="flex gap-4" style="flex-wrap: wrap;">
+                        <div class="form-group" style="flex: 1;">
+                            <label class="form-label" for="companyName">Company Name</label>
+                            <input type="text" id="companyName" class="form-control">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label class="form-label" for="companyEmail">Company Email</label>
+                            <input type="email" id="companyEmail" class="form-control">
+                        </div>
+                    </div>
+                    <div class="flex gap-4" style="flex-wrap: wrap;">
+                        <div class="form-group" style="flex: 1;">
+                            <label class="form-label" for="industry">Industry</label>
+                            <input type="text" id="industry" class="form-control">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label class="form-label" for="website">Company Website (Optional)</label>
+                            <input type="url" id="website" class="form-control" placeholder="https://">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-4" style="flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label" for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label" for="phone">Phone Number</label>
+                        <input type="tel" id="phone" class="form-control" required>
+                    </div>
+                </div>
+                <div class="flex gap-4" style="flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label" for="password">Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="password" class="form-control" required>
+                            <i class="fas fa-eye password-toggle"></i>
+                        </div>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label" for="confirmPassword">Confirm Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="confirmPassword" class="form-control" required>
+                            <i class="fas fa-eye password-toggle"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mt-2">
+                    <label class="form-label" for="securityQuestion">Security Question</label>
+                    <select id="securityQuestion" class="form-control" required style="appearance: auto; background-color: var(--input-bg);">
+                        <option value="">Select a security question</option>
+                        <option value="What is your favorite color?">What is your favorite color?</option>
+                        <option value="What is your birth city?">What is your birth city?</option>
+                        <option value="What is your favorite teacher's name?">What is your favorite teacher's name?</option>
+                        <option value="What was your first school name?">What was your first school name?</option>
+                        <option value="What is your favorite movie?">What is your favorite movie?</option>
+                    </select>
+                </div>
+                <div class="form-group mb-6">
+                    <label class="form-label" for="securityAnswer">Security Answer</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-shield-alt"></i>
+                        <input type="text" id="securityAnswer" class="form-control" required placeholder="Enter your secret answer">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-full mt-4" id="registerBtn"
+                    style="padding: 1rem;">Register Account</button>
+            </form>
+            <p class="text-center mt-6 text-muted" style="font-size: 0.875rem;"><br>
+                Already have an account? <a href="login.html"
+                    style="color: var(--primary-color); font-weight: 600;">Login</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script>
+        // Toggle Employer fields
+        const roleRadios = document.querySelectorAll('input[name="role"]');
+        const employerFields = document.getElementById('employerFields');
+        const nameLabel = document.getElementById('nameLabel');
+
+        roleRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.value === 'employer') {
+                    employerFields.style.display = 'block';
+                    nameLabel.textContent = 'Company Name';
+                    document.getElementById('industry').required = true;
+                    document.getElementById('location').required = true;
+                } else {
+                    employerFields.style.display = 'none';
+                    nameLabel.textContent = 'Full Name';
+                    document.getElementById('industry').required = false;
+                    document.getElementById('location').required = false;
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

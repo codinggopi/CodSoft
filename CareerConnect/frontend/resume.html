@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Resume | CareerConnect</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="flex flex-col" style="min-height: 100vh;">
+    <nav class="navbar">
+        <div class="container flex justify-between items-center">
+            <a href="index.html" class="nav-brand"><i class="fas fa-briefcase"></i> CareerConnect</a>
+            <div class="nav-links">
+                <a href="jobs.html">Find Jobs</a>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
+                    <i id="theme-icon" class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container animate-fade-in section-padding" style="flex: 1; max-width: 800px;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 2rem;">Resume Management</h1>
+
+        <!-- Current Resume Section -->
+        <div class="card mb-8">
+            <h2 class="mb-4" style="font-size: 1.25rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">Current Resume</h2>
+            
+            <div id="resumeStatusContainer" class="flex items-center justify-between" style="background: var(--input-bg); padding: 1.5rem; border-radius: 0.5rem; border: 1px solid var(--border-color); flex-wrap: wrap; gap: 1rem;">
+                <p class="text-muted" id="noResumeText">No resume uploaded yet.</p>
+                <!-- Filled dynamically via JS -->
+            </div>
+        </div>
+
+        <!-- Upload New Resume Section -->
+        <div class="card">
+            <h2 class="mb-4" style="font-size: 1.25rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">Upload New Resume</h2>
+            <p class="text-muted mb-6">Supported formats: PDF. Maximum file size: 3MB (Local Storage Limit).</p>
+            
+            <form id="resumeUploadForm" style="border: 2px dashed var(--border-color); padding: 3rem 1.5rem; border-radius: 0.5rem; text-align: center; transition: border-color 0.3s;" onmouseover="this.style.borderColor='var(--secondary-color)'" onmouseout="this.style.borderColor='var(--border-color)'">
+                <i class="fas fa-cloud-upload-alt text-muted mb-4" style="font-size: 3rem;"></i>
+                <div class="form-group mb-4" style="max-width: 300px; margin: 0 auto;">
+                    <input type="file" id="resumeFile" class="form-control" accept=".pdf" required>
+                </div>
+                <button type="submit" class="btn btn-primary" id="uploadBtn">Upload Resume</button>
+                <div id="uploadProgress" class="mt-4" style="display: none; color: var(--text-muted);">
+                    <i class="fas fa-spinner fa-spin mr-2"></i> Processing file...
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Expanded Footer -->
+    <footer class="footer-advanced mt-auto">
+        <div class="container">
+            <div class="flex gap-8 justify-between mb-8" style="flex-wrap: wrap;">
+                <div style="flex: 2; min-width: 300px;">
+                    <h3 style="font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: white; margin-bottom: 1rem;"><i class="fas fa-briefcase"></i> CareerConnect</h3>
+                    <p style="opacity: 0.8; margin-bottom: 1.5rem; max-width: 400px;">Empowering professionals and companies to build better futures together.</p>
+                </div>
+                <div style="flex: 1; min-width: 150px;">
+                    <h4>Quick Links</h4>
+                    <a href="index.html">Home</a>
+                    <a href="jobs.html">Browse Jobs</a>
+                </div>
+            </div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; display: flex; justify-content: space-between; flex-wrap: wrap; opacity: 0.7; font-size: 0.875rem;">
+                <p>&copy; 2026 CareerConnect. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/theme.js"></script>
+    <script>
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            const userStr = localStorage.getItem('user');
+            if (!token || !userStr) {
+                window.location.href = 'login.html';
+                return;
+            }
+            currentUser = JSON.parse(userStr);
+            if (currentUser.role !== 'candidate') {
+                alert('Only candidates can manage resumes.');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            renderResumeStatus();
+        });
+
+        function formatBytes(bytes, decimals = 2) {
+            if (!+bytes) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+        }
+
+        function renderResumeStatus() {
+            const resumeDataStr = localStorage.getItem(`resume_${currentUser.id}`);
+            const container = document.getElementById('resumeStatusContainer');
+
+            if (!resumeDataStr) {
+                container.innerHTML = `<p class="text-muted"><i class="fas fa-exclamation-circle text-warning mr-2"></i> No resume uploaded yet.</p>`;
+                return;
+            }
+
+            const resumeData = JSON.parse(resumeDataStr);
+            container.innerHTML = `
+                <div class="flex items-center gap-4">
+                    <div style="width: 48px; height: 48px; background: rgba(22, 101, 52, 0.1); color: var(--primary-color); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--text-color);">${resumeData.fileName}</h4>
+                        <p class="text-muted text-sm">Uploaded: ${resumeData.uploadDate} | Size: ${resumeData.fileSize}</p>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button class="btn btn-outline" onclick="viewResume()" style="padding: 0.5rem 1rem;"><i class="fas fa-eye mr-2"></i> View</button>
+                    <button class="btn btn-outline" onclick="deleteResume()" style="padding: 0.5rem 1rem; color: var(--danger); border-color: var(--danger);"><i class="fas fa-trash-alt mr-2"></i> Delete</button>
+                </div>
+            `;
+        }
+
+        function viewResume() {
+            const resumeDataStr = localStorage.getItem(`resume_${currentUser.id}`);
+            if (resumeDataStr) {
+                const resumeData = JSON.parse(resumeDataStr);
+                if (resumeData.dataUrl) {
+                    const pdfWindow = window.open("");
+                    if(pdfWindow) {
+                        pdfWindow.document.write(`<iframe width='100%' height='100%' src='${resumeData.dataUrl}'></iframe>`);
+                        pdfWindow.document.body.style.margin = "0";
+                    } else {
+                        alert("Please allow popups to view your resume.");
+                    }
+                } else {
+                    alert("Resume data is corrupted. Please re-upload.");
+                }
+            }
+        }
+
+        document.getElementById('resumeUploadForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById('resumeFile');
+            if (fileInput.files.length === 0) return;
+
+            const file = fileInput.files[0];
+            const allowedExtensions = ['pdf'];
+            const fileExt = file.name.split('.').pop().toLowerCase();
+            
+            if (!allowedExtensions.includes(fileExt)) {
+                alert("Only PDF format is fully supported for local browser viewing.");
+                return;
+            }
+            // Enforce 3MB limit to avoid localStorage Quota Exceeded error
+            if (file.size > 3 * 1024 * 1024) {
+                alert("File size exceeds 3MB limit for local browser storage.");
+                return;
+            }
+
+            document.getElementById('uploadBtn').style.display = 'none';
+            document.getElementById('uploadProgress').style.display = 'block';
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    const resumeData = {
+                        fileName: file.name,
+                        fileType: file.type,
+                        fileSize: formatBytes(file.size),
+                        uploadDate: new Date().toLocaleString(),
+                        dataUrl: event.target.result
+                    };
+
+                    localStorage.setItem(`resume_${currentUser.id}`, JSON.stringify(resumeData));
+                    alert("Resume uploaded successfully!");
+                } catch (err) {
+                    if (err.name === 'QuotaExceededError') {
+                        alert("Storage limit exceeded. The file is too large to save locally.");
+                    } else {
+                        alert("An error occurred saving the file.");
+                    }
+                } finally {
+                    fileInput.value = '';
+                    document.getElementById('uploadBtn').style.display = 'inline-flex';
+                    document.getElementById('uploadProgress').style.display = 'none';
+                    renderResumeStatus();
+                }
+            };
+            
+            reader.readAsDataURL(file);
+        });
+
+        function deleteResume() {
+            if (confirm("Are you sure you want to delete your current resume? This action cannot be undone.")) {
+                localStorage.removeItem(`resume_${currentUser.id}`);
+                renderResumeStatus();
+            }
+        }
+    </script>
+</body>
+</html>

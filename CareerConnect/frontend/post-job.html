@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post a Job | CareerConnect</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .saas-container { max-width: 1400px; width: 92%; margin: 0 auto; padding: 2rem 0; }
+        .saas-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px; box-shadow: var(--shadow); }
+        .saas-section { margin-top: 32px; margin-bottom: 48px; }
+        .split-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        @media (min-width: 768px) { .split-grid { grid-template-columns: 1fr 1fr; } }
+    </style>
+</head>
+
+<body class="flex flex-col" style="min-height: 100vh;">
+    <nav class="navbar">
+        <div class="container flex justify-between items-center">
+            <a href="index.html" class="nav-brand"><i class="fas fa-briefcase"></i> CareerConnect</a>
+            <div class="nav-links" id="navLinks">
+                <!-- Links injected by theme.js -->
+            </div>
+        </div>
+    </nav>
+
+    <div class="saas-container animate-fade-in" style="flex: 1;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 2rem;">Post a New Job</h1>
+
+        <div class="saas-card saas-section">
+            <form id="formPostJob">
+                <div class="split-grid">
+                    <div>
+                        <h4 class="mb-4 pb-2 border-bottom">Basic Details</h4>
+                        <div class="form-group"><label class="form-label">Job Title</label><input type="text"
+                                name="title" class="form-control" required></div>
+                        <div class="flex gap-4">
+                            <div class="form-group" style="flex: 1;"><label class="form-label">Department</label><input
+                                    type="text" name="department" class="form-control" placeholder="e.g. Engineering">
+                            </div>
+                            <div class="form-group" style="flex: 1;"><label class="form-label">Location</label><input
+                                    type="text" name="location" class="form-control" required></div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="form-group" style="flex: 1;"><label class="form-label">Employment
+                                    Type</label><select name="job_type" class="form-control">
+                                    <option>Full Time</option>
+                                    <option>Part Time</option>
+                                    <option>Contract</option>
+                                    <option>Remote</option>
+                                </select></div>
+                            <div class="form-group" style="flex: 1;"><label class="form-label">Salary
+                                    Range</label><input type="text" name="salary" class="form-control" required
+                                    placeholder="$80k - $120k"></div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="form-group" style="flex: 1;"><label class="form-label">Experience
+                                    Required</label><select name="experience" class="form-control">
+                                    <option>Entry Level</option>
+                                    <option>Mid Level</option>
+                                    <option>Senior</option>
+                                    <option>Director</option>
+                                </select></div>
+                            <div class="form-group" style="flex: 1;"><label class="form-label">Application
+                                    Deadline</label><input type="date" name="deadline" class="form-control"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="mb-4 pb-2 border-bottom">Job Description</h4>
+                        <div class="form-group"><label class="form-label">Key Responsibilities</label><textarea
+                                name="description" class="form-control" rows="4" required></textarea></div>
+                        <div class="form-group"><label class="form-label">Requirements</label><textarea
+                                name="requirements" class="form-control" rows="3" required></textarea></div>
+                        <div class="form-group"><label class="form-label">Company Benefits</label><textarea
+                                name="benefits" class="form-control" rows="2"
+                                placeholder="Health insurance, 401k, remote work..."></textarea></div>
+                        <div class="form-group"><label class="form-label">Required Skills (comma
+                                separated)</label><input type="text" name="skills" class="form-control" required></div>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-end gap-4 border-top pt-4">
+                    <button type="button" class="btn btn-outline" onclick="window.history.back()">Cancel</button>
+                    <button type="submit" class="btn btn-primary"
+                        style="padding: 0.75rem 2rem; border-radius: 12px; font-weight: 600;">Publish Job
+                        Listing</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Expanded Footer -->
+    <footer class="footer-advanced mt-auto">
+        <div class="container">
+            <div class="flex gap-8 justify-between mb-8" style="flex-wrap: wrap;">
+                <div style="flex: 2; min-width: 300px;">
+                    <h3 style="font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: white; margin-bottom: 1rem;">
+                        <i class="fas fa-briefcase"></i> CareerConnect
+                    </h3>
+                    <p style="opacity: 0.8; margin-bottom: 1.5rem; max-width: 400px;">Enterprise-grade recruitment software for modern companies.</p>
+                </div>
+            </div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; display: flex; justify-content: space-between; flex-wrap: wrap; opacity: 0.7; font-size: 0.875rem;">
+                <p>&copy; 2026 CareerConnect. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/theme.js"></script>
+    <script>
+        const API_URL = "http://127.0.0.1:8000";
+        let currentUser = null;
+        let profileData = {};
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            const userStr = localStorage.getItem('user');
+            if (!token || !userStr) { window.location.href = 'login.html'; return; }
+            currentUser = JSON.parse(userStr);
+            if (currentUser.role !== 'employer') { window.location.href = 'index.html'; return; }
+
+            const dataStr = localStorage.getItem(`company_${currentUser.id}`);
+            if (dataStr) {
+                profileData = JSON.parse(dataStr);
+            }
+        });
+
+        document.getElementById('formPostJob').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+
+            // Format the extended fields into the description and requirements so it saves in standard DB
+            const enhancedDescription = `**Department:** ${form.department.value || 'N/A'}\n**Experience:** ${form.experience.value}\n\n${form.description.value}`;
+            const enhancedRequirements = `${form.requirements.value}\n\n**Benefits:**\n${form.benefits.value}`;
+
+            const jobData = {
+                title: form.title.value,
+                company: profileData.name || currentUser.name,
+                location: form.location.value,
+                job_type: form.job_type.value,
+                salary: form.salary.value,
+                description: enhancedDescription,
+                requirements: enhancedRequirements,
+                skills: form.skills.value
+            };
+
+            const btn = form.querySelector('button[type="submit"]');
+            btn.innerHTML = 'Publishing...';
+            btn.disabled = true;
+
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`${API_URL}/jobs/`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify(jobData) });
+                if (res.ok) {
+                    alert("Job posted successfully!");
+                    window.location.href = 'manage-jobs.html';
+                } else alert("Failed to post job");
+            } catch (e) { console.error(e); } finally {
+                btn.innerHTML = 'Publish Job Listing';
+                btn.disabled = false;
+            }
+        });
+
+        function logoutUser(e) {
+            e.preventDefault();
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+
+</html>

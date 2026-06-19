@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | CareerConnect</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .profile-layout {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: 1fr;
+        }
+        @media (min-width: 768px) {
+            .profile-layout {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (min-width: 1024px) {
+            .profile-layout {
+                grid-template-columns: 4fr 6fr;
+            }
+        }
+        .profile-sidebar, .profile-main {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            height: fit-content;
+        }
+    </style>
+</head>
+<body class="flex flex-col" style="min-height: 100vh;">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container flex justify-between items-center">
+            <a href="index.html" class="nav-brand"><i class="fas fa-briefcase"></i> CareerConnect</a>
+            <div class="nav-links" id="navLinks">
+            </div>
+        </div>
+    </nav>
+
+    <div class="container animate-fade-in section-padding" style="flex: 1;">
+        <div class="flex justify-between items-center mb-8">
+            <h1 style="font-size: 2.5rem;">My Profile</h1>
+            <button class="btn btn-outline" id="editProfileBtn" onclick="toggleEdit()"><i class="fas fa-edit mr-2"></i> Edit Profile</button>
+            <div id="saveActionDiv" style="display: none; display: flex; gap: 1rem;">
+                <button type="button" class="btn btn-outline" onclick="cancelEdit()">Cancel</button>
+                <button type="submit" form="profileForm" class="btn btn-primary">Save Profile</button>
+            </div>
+        </div>
+
+        <form id="profileForm" class="profile-layout">
+            <!-- Left Column: Basic Info -->
+            <div class="profile-sidebar">
+                <div class="flex flex-col items-center mb-8">
+                    <img id="profileImagePreview" src="" alt="Profile" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary-color); margin-bottom: 1.5rem;">
+                    <div class="form-group w-full mb-0">
+                        <label class="form-label text-sm">Profile Image URL / Upload</label>
+                        <input type="url" id="profileImageInput" class="form-control" disabled placeholder="https://example.com/avatar.jpg">
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-4">
+                    <div class="form-group mb-0">
+                        <label class="form-label">Full Name</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="profileName" class="form-control" disabled required>
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label">Email Address</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="profileEmail" class="form-control" disabled required>
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label">Phone Number</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-phone"></i>
+                            <input type="tel" id="profilePhone" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="form-label">Location</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <input type="text" id="profileLocation" class="form-control" disabled placeholder="e.g. New York, NY">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Professional Details -->
+            <div class="profile-main">
+                <h3 class="mb-6" style="border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">Professional Details</h3>
+                
+                <div class="form-group">
+                    <label class="form-label">Designation / Job Role</label>
+                    <input type="text" id="profileDesignation" class="form-control" disabled placeholder="e.g. HR Manager, Talent Acquisition Specialist">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Bio / Summary</label>
+                    <textarea id="profileBio" class="form-control" rows="4" disabled placeholder="Tell candidates about yourself and what you look for..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Skills (comma separated)</label>
+                    <input type="text" id="profileSkills" class="form-control" disabled placeholder="Recruiting, Sourcing, Technical Interviews">
+                </div>
+
+                <div class="flex gap-4 mb-4" style="flex-wrap: wrap;">
+                    <div class="form-group mb-0" style="flex: 1;">
+                        <label class="form-label">LinkedIn URL</label>
+                        <div class="input-with-icon">
+                            <i class="fab fa-linkedin"></i>
+                            <input type="url" id="profileLinkedin" class="form-control" disabled placeholder="https://linkedin.com/in/yourprofile">
+                        </div>
+                    </div>
+                    <div class="form-group mb-0" style="flex: 1;">
+                        <label class="form-label">Portfolio URL</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-globe"></i>
+                            <input type="url" id="profilePortfolio" class="form-control" disabled placeholder="https://yourportfolio.com">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mt-6">
+                    <label class="form-label">Experience</label>
+                    <textarea id="profileExperience" class="form-control" rows="4" disabled placeholder="E.g., 5+ years recruitment experience"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Education</label>
+                    <textarea id="profileEducation" class="form-control" rows="3" disabled placeholder="E.g., B.S. Human Resources, University of Technology (2016-2020)"></textarea>
+                </div>
+
+                <div class="form-group mb-0">
+                    <label class="form-label">Certifications</label>
+                    <textarea id="profileCertifications" class="form-control" rows="2" disabled placeholder="E.g., PHR, SHRM-CP"></textarea>
+                </div>
+            </div>
+        </form>
+
+        <!-- Danger Zone -->
+        <div class="danger-zone mt-8" style="background: var(--card-bg); border: 2px solid #DC2626; border-radius: 0.5rem; padding: 2rem;">
+            <div class="flex justify-between items-center" style="flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <h3 style="color: #DC2626; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <i class="fas fa-exclamation-triangle"></i> Danger Zone
+                    </h3>
+                    <p class="text-muted" style="margin: 0;">Permanently delete your account and all associated data. This action cannot be undone.</p>
+                </div>
+                <button type="button" class="btn btn-danger" onclick="openDeleteModal()" style="background: #DC2626; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; font-weight: bold; transition: background 0.3s;">Delete Account</button>
+            </div>
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div id="deleteModal" class="saas-modal-overlay" style="display: none; align-items: center; justify-content: center; z-index: 1000; background: rgba(0,0,0,0.6);">
+            <div class="card" style="width: 100%; max-width: 450px; padding: 2rem; background: var(--card-bg);">
+                <h2 style="color: #DC2626; margin-bottom: 1rem;">Delete Account?</h2>
+                <p class="text-muted mb-4">This action cannot be undone. All personal data, company information, job postings, applications and related records will be permanently removed.</p>
+                
+                <div class="form-group mb-6">
+                    <label class="form-label" style="font-weight: bold;">To confirm account deletion, type:<br><span style="color: #DC2626; user-select: none;">DELETE MY ACCOUNT</span></label>
+                    <input type="text" id="deleteConfirmInput" class="form-control" oninput="checkDeleteInput()" placeholder="Type here...">
+                </div>
+
+                <div class="flex justify-end gap-4">
+                    <button type="button" class="btn btn-outline" onclick="closeDeleteModal()">Cancel</button>
+                    <button type="button" id="finalDeleteBtn" class="btn" style="background: #DC2626; color: white; opacity: 0.5; cursor: not-allowed;" onclick="deleteAccount()" disabled>Delete Permanently</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/theme.js"></script>
+    <script>
+        let isEditing = false;
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            const userStr = localStorage.getItem('user');
+            if (!token || !userStr) {
+                window.location.href = 'login.html';
+                return;
+            }
+            currentUser = JSON.parse(userStr);
+            if (currentUser.role !== 'employer') {
+                window.location.href = 'index.html';
+                return;
+            }
+            loadProfileData();
+
+            // Auto-update image preview on input
+            document.getElementById('profileImageInput').addEventListener('input', (e) => {
+                const url = e.target.value || getDefaultPic();
+                document.getElementById('profileImagePreview').src = url;
+            });
+        });
+
+        function getDefaultPic() {
+            return 'https://ui-avatars.com/api/?name=' + encodeURIComponent(currentUser.name) + '&background=166534&color=fff';
+        }
+
+        function loadProfileData() {
+            const profileData = JSON.parse(localStorage.getItem(`employer_profile_${currentUser.id}`) || '{}');
+            
+            document.getElementById('profileName').value = profileData.name || currentUser.name;
+            document.getElementById('profileEmail').value = currentUser.email; 
+            document.getElementById('profilePhone').value = profileData.phone || currentUser.phone || '';
+            document.getElementById('profileImageInput').value = profileData.image || '';
+            document.getElementById('profileLocation').value = profileData.location || '';
+            document.getElementById('profileLinkedin').value = profileData.linkedin || '';
+            document.getElementById('profilePortfolio').value = profileData.portfolio || '';
+            document.getElementById('profileSkills').value = profileData.skills || '';
+            document.getElementById('profileBio').value = profileData.bio || '';
+            document.getElementById('profileExperience').value = profileData.experience || '';
+            document.getElementById('profileEducation').value = profileData.education || '';
+            document.getElementById('profileDesignation').value = profileData.designation || '';
+            
+            // New field for Certifications
+            const certInput = document.getElementById('profileCertifications');
+            if (certInput) certInput.value = profileData.certifications || '';
+            
+            document.getElementById('profileImagePreview').src = profileData.image || getDefaultPic();
+        }
+
+        function toggleEdit() {
+            isEditing = true;
+            document.getElementById('editProfileBtn').style.display = 'none';
+            document.getElementById('saveActionDiv').style.display = 'flex';
+            
+            const inputs = document.querySelectorAll('#profileForm input, #profileForm textarea');
+            inputs.forEach(input => {
+                if(input.id !== 'profileEmail') { 
+                    input.disabled = false;
+                }
+            });
+            document.getElementById('profileName').focus();
+        }
+
+        function cancelEdit() {
+            isEditing = false;
+            document.getElementById('editProfileBtn').style.display = 'inline-flex';
+            document.getElementById('saveActionDiv').style.display = 'none';
+            
+            const inputs = document.querySelectorAll('#profileForm input, #profileForm textarea');
+            inputs.forEach(input => input.disabled = true);
+            
+            loadProfileData(); 
+        }
+
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const profileData = {
+                name: document.getElementById('profileName').value,
+                phone: document.getElementById('profilePhone').value,
+                image: document.getElementById('profileImageInput').value,
+                location: document.getElementById('profileLocation').value,
+                linkedin: document.getElementById('profileLinkedin').value,
+                portfolio: document.getElementById('profilePortfolio').value,
+                skills: document.getElementById('profileSkills').value,
+                bio: document.getElementById('profileBio').value,
+                experience: document.getElementById('profileExperience').value,
+                education: document.getElementById('profileEducation').value,
+                designation: document.getElementById('profileDesignation').value,
+                certifications: document.getElementById('profileCertifications').value
+            };
+
+            localStorage.setItem(`employer_profile_${currentUser.id}`, JSON.stringify(profileData));
+            
+            currentUser.name = profileData.name;
+            currentUser.phone = profileData.phone;
+            localStorage.setItem('user', JSON.stringify(currentUser));
+
+            alert("Profile saved successfully!");
+            cancelEdit(); 
+            window.location.reload();
+        });
+
+        // Delete Account Logic
+        function openDeleteModal() {
+            const m = document.getElementById('deleteModal');
+            m.style.display = 'flex';
+            m.style.opacity = '1';
+            m.style.pointerEvents = 'auto';
+            document.getElementById('deleteConfirmInput').value = '';
+            checkDeleteInput();
+        }
+
+        function closeDeleteModal() {
+            const m = document.getElementById('deleteModal');
+            m.style.display = 'none';
+            m.style.opacity = '0';
+            m.style.pointerEvents = 'none';
+        }
+
+        function checkDeleteInput() {
+            const input = document.getElementById('deleteConfirmInput').value;
+            const btn = document.getElementById('finalDeleteBtn');
+            if (input === 'DELETE MY ACCOUNT') {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.style.cursor = 'pointer';
+            } else {
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+                btn.style.cursor = 'not-allowed';
+            }
+        }
+
+        async function deleteAccount() {
+            const btn = document.getElementById('finalDeleteBtn');
+            btn.innerHTML = 'Deleting...';
+            btn.disabled = true;
+
+            const token = localStorage.getItem('token');
+            const API_URL = 'http://127.0.0.1:8000';
+            
+            try {
+                const res = await fetch(`${API_URL}/users/me`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (res.ok) {
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    alert("Your account has been permanently deleted.");
+                    window.location.href = 'login.html';
+                } else {
+                    const data = await res.json();
+                    alert(data.detail || "Failed to delete account.");
+                    btn.innerHTML = 'Delete Permanently';
+                    btn.disabled = false;
+                }
+            } catch(e) {
+                console.error(e);
+                alert("An error occurred.");
+                btn.innerHTML = 'Delete Permanently';
+                btn.disabled = false;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>
