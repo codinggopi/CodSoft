@@ -53,7 +53,7 @@ class Application(Base):
     id = Column(Integer, primary_key=True, index=True)
     job_id = Column(Integer, ForeignKey("jobs.id"))
     candidate_id = Column(Integer, ForeignKey("users.id"))
-    resume_path = Column(String)
+    resume_url = Column(String)
     cover_letter = Column(Text)
     status = Column(String, default="Pending") # 'Pending', 'Reviewed', 'Shortlisted', 'Interview', 'Hired', 'Rejected'
     created_at = Column(DateTime(timezone=True), server_default=func.now())

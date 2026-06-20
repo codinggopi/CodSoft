@@ -77,7 +77,7 @@ class ApplicationCreate(ApplicationBase):
 class ApplicationResponse(ApplicationBase):
     id: int
     candidate_id: int
-    resume_path: str
+    resume_url: str
     status: str
     created_at: datetime
     class Config:
