@@ -527,6 +527,19 @@ h1, h2, h3, h4, h5, h6 {
   padding-left: 2.5rem;
 }
 
+/* Password Toggle Icon */
+.password-toggle {
+  cursor: pointer;
+  left: auto !important;
+  right: 1rem;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.password-wrapper input {
+  padding-right: 2.5rem !important;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .nav-links {
