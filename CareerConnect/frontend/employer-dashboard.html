@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -70,7 +69,7 @@
 </head>
 
 <body class="flex flex-col" style="min-height: 100vh;">
-    
+
     <nav class="navbar">
         <div class="container flex justify-between items-center">
             <a href="index.html" class="nav-brand"><i class="fas fa-briefcase"></i> CareerConnect</a>
@@ -80,7 +79,7 @@
     </nav>
 
     <div class="container animate-fade-in section-padding" style="flex: 1;">
-        
+
         <div class="welcome-banner">
             <div>
                 <h1 style="font-size: 2rem; margin-bottom: 0.5rem;" id="welcomeName">Welcome back, Employer!</h1>
@@ -96,7 +95,7 @@
             </div>
         </div>
 
-        
+
         <div class="dashboard-grid mb-8">
             <div class="stat-card">
                 <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: var(--primary-color);">
@@ -137,10 +136,12 @@
         </div>
 
         <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr;">
-            
+
             <div class="dashboard-section" style="margin-top: 0;">
                 <div class="flex justify-between items-center mb-6 border-bottom pb-4">
-                    <h2 style="font-size: 1.25rem;"><i class="fas fa-list-alt mr-2 text-primary"></i>Recent Jobs</h2>
+                    <h2 style="font-size: 1.25rem ;padding-left: 0.2rem;"><i
+                            class="fas fa-list-alt mr-2 text-primary"></i>Recent Jobs
+                    </h2>
                     <a href="manage-jobs.html" class="btn btn-outline"
                         style="padding: 0.4rem 1rem; font-size: 0.9rem;">View All</a>
                 </div>
@@ -154,16 +155,16 @@
                             </tr>
                         </thead>
                         <tbody id="recentJobsList">
-                            
+
                             <tr>
-                                <td colspan="3" class="text-center py-4 text-muted">No recent jobs found.</td>
+                                <td colspan="3" class="text-center py-4 text-muted"><br>No recent jobs found.</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            
+
             <div class="dashboard-section" style="margin-top: 0;">
                 <div class="flex justify-between items-center mb-6 border-bottom pb-4">
                     <h2 style="font-size: 1.25rem;"><i class="fas fa-users mr-2" style="color: #10b981;"></i>Recent
@@ -181,9 +182,9 @@
                             </tr>
                         </thead>
                         <tbody id="recentApplicantsList">
-                            
+
                             <tr>
-                                <td colspan="3" class="text-center py-4 text-muted">No recent applicants found.</td>
+                                <td colspan="3" class="text-center py-4 text-muted"><br>No recent applicants found.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -209,7 +210,21 @@
             }
 
             document.getElementById('welcomeName').textContent = `Welcome back, ${user.name}!`;
-            
+            document.getElementById('welcomeCompany').textContent = 'Loading...';
+
+            // Fetch company details
+            const token = localStorage.getItem('token');
+            fetch(`${window.API_URL || 'https://careerconnect-navy.vercel.app'}/companies/me`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+                .then(res => res.json())
+                .then(company => {
+                    document.getElementById('welcomeCompany').textContent = company.name || 'Company Not Set';
+                })
+                .catch(err => {
+                    console.error("Error fetching company:", err);
+                    document.getElementById('welcomeCompany').textContent = 'Company Not Set';
+                });
         });
 
         function logout() {

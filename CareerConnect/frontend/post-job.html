@@ -8,11 +8,37 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .saas-container { max-width: 1400px; width: 92%; margin: 0 auto; padding: 2rem 0; }
-        .saas-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px; box-shadow: var(--shadow); }
-        .saas-section { margin-top: 32px; margin-bottom: 48px; }
-        .split-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
-        @media (min-width: 768px) { .split-grid { grid-template-columns: 1fr 1fr; } }
+        .saas-container {
+            max-width: 1400px;
+            width: 92%;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .saas-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .saas-section {
+            margin-top: 32px;
+            margin-bottom: 48px;
+        }
+
+        .split-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .split-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
     </style>
 </head>
 
@@ -95,21 +121,25 @@
         <div class="container">
             <div class="flex gap-8 justify-between mb-8" style="flex-wrap: wrap;">
                 <div style="flex: 2; min-width: 300px;">
-                    <h3 style="font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: white; margin-bottom: 1rem;">
+                    <h3
+                        style="font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: white; margin-bottom: 1rem;">
                         <i class="fas fa-briefcase"></i> CareerConnect
                     </h3>
-                    <p style="opacity: 0.8; margin-bottom: 1.5rem; max-width: 400px;">Enterprise-grade recruitment software for modern companies.</p>
+                    <p style="opacity: 0.8; margin-bottom: 1.5rem; max-width: 400px;">Enterprise-grade recruitment
+                        software for modern companies.</p>
                 </div>
             </div>
-            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; display: flex; justify-content: space-between; flex-wrap: wrap; opacity: 0.7; font-size: 0.875rem;">
+            <div
+                style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; display: flex; justify-content: space-between; flex-wrap: wrap; opacity: 0.7; font-size: 0.875rem;">
                 <p>&copy; 2026 CareerConnect. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script src="assets/js/theme.js"></script>
+    <script src="assets/js/config.js"></script>
     <script>
-        const API_URL = "http://127.0.0.1:8000";
+        const API_URL = "https://careerconnect-navy.vercel.app";
         let currentUser = null;
         let profileData = {};
 
@@ -155,8 +185,14 @@
                 if (res.ok) {
                     alert("Job posted successfully!");
                     window.location.href = 'manage-jobs.html';
-                } else alert("Failed to post job");
-            } catch (e) { console.error(e); } finally {
+                } else {
+                    const errData = await res.json().catch(() => ({}));
+                    alert("Failed to post job: " + (errData.detail || res.statusText));
+                }
+            } catch (e) { 
+                console.error(e); 
+                alert("Network or script error: " + e.message);
+            } finally {
                 btn.innerHTML = 'Publish Job Listing';
                 btn.disabled = false;
             }

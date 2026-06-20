@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,12 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body class="flex flex-col" style="min-height: 100vh;">
     <nav class="navbar">
         <div class="container flex justify-between items-center">
             <a href="index.html" class="nav-brand"><i class="fas fa-briefcase"></i> CareerConnect</a>
             <div class="nav-links">
-                <a href="jobs.html">Find Jobs</a>
                 <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
                     <i id="theme-icon" class="fas fa-moon"></i>
                 </button>
@@ -25,24 +26,32 @@
 
         <!-- Current Resume Section -->
         <div class="card mb-8">
-            <h2 class="mb-4" style="font-size: 1.25rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">Current Resume</h2>
-            
-            <div id="resumeStatusContainer" class="flex items-center justify-between" style="background: var(--input-bg); padding: 1.5rem; border-radius: 0.5rem; border: 1px solid var(--border-color); flex-wrap: wrap; gap: 1rem;">
-                <p class="text-muted" id="noResumeText">No resume uploaded yet.</p>
+            <h2 class="mb-4"
+                style="font-size: 1.25rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
+                Current Resume</h2>
+
+            <div id="resumeStatusContainer" class="flex items-center justify-between"
+                style="background: var(--input-bg); padding: 1.5rem; border-radius: 0.5rem; border: 1px solid var(--border-color); flex-wrap: wrap; gap: 1rem;">
+                <p class="text-muted" id="noResumeText">No resume uploaded yet.</p><br>
                 <!-- Filled dynamically via JS -->
             </div>
         </div>
 
         <!-- Upload New Resume Section -->
         <div class="card">
-            <h2 class="mb-4" style="font-size: 1.25rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">Upload New Resume</h2>
-            <p class="text-muted mb-6">Supported formats: PDF. Maximum file size: 3MB (Local Storage Limit).</p>
-            
-            <form id="resumeUploadForm" style="border: 2px dashed var(--border-color); padding: 3rem 1.5rem; border-radius: 0.5rem; text-align: center; transition: border-color 0.3s;" onmouseover="this.style.borderColor='var(--secondary-color)'" onmouseout="this.style.borderColor='var(--border-color)'">
+            <h2 class="mb-4"
+                style="font-size: 1.25rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">Upload
+                New Resume</h2><br>
+            <p class="text-muted mb-6">Supported formats: PDF. Maximum file size: 3MB.</p><br>
+            <br>
+            <form id="resumeUploadForm"
+                style="border: 2px dashed var(--border-color); padding: 3rem 1.5rem; border-radius: 0.5rem; text-align: center; transition: border-color 0.3s;"
+                onmouseover="this.style.borderColor='var(--secondary-color)'"
+                onmouseout="this.style.borderColor='var(--border-color)'">
                 <i class="fas fa-cloud-upload-alt text-muted mb-4" style="font-size: 3rem;"></i>
                 <div class="form-group mb-4" style="max-width: 300px; margin: 0 auto;">
                     <input type="file" id="resumeFile" class="form-control" accept=".pdf" required>
-                </div>
+                </div><br>
                 <button type="submit" class="btn btn-primary" id="uploadBtn">Upload Resume</button>
                 <div id="uploadProgress" class="mt-4" style="display: none; color: var(--text-muted);">
                     <i class="fas fa-spinner fa-spin mr-2"></i> Processing file...
@@ -56,8 +65,12 @@
         <div class="container">
             <div class="flex gap-8 justify-between mb-8" style="flex-wrap: wrap;">
                 <div style="flex: 2; min-width: 300px;">
-                    <h3 style="font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: white; margin-bottom: 1rem;"><i class="fas fa-briefcase"></i> CareerConnect</h3>
-                    <p style="opacity: 0.8; margin-bottom: 1.5rem; max-width: 400px;">Empowering professionals and companies to build better futures together.</p>
+                    <h3
+                        style="font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: white; margin-bottom: 1rem;">
+                        <i class="fas fa-briefcase"></i> CareerConnect
+                    </h3>
+                    <p style="opacity: 0.8; margin-bottom: 1.5rem; max-width: 400px;">Empowering professionals and
+                        companies to build better futures together.</p>
                 </div>
                 <div style="flex: 1; min-width: 150px;">
                     <h4>Quick Links</h4>
@@ -65,7 +78,8 @@
                     <a href="jobs.html">Browse Jobs</a>
                 </div>
             </div>
-            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; display: flex; justify-content: space-between; flex-wrap: wrap; opacity: 0.7; font-size: 0.875rem;">
+            <div
+                style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; display: flex; justify-content: space-between; flex-wrap: wrap; opacity: 0.7; font-size: 0.875rem;">
                 <p>&copy; 2026 CareerConnect. All rights reserved.</p>
             </div>
         </div>
@@ -122,8 +136,11 @@
                     </div>
                 </div>
                 <div class="flex gap-2">
-                    <button class="btn btn-outline" onclick="viewResume()" style="padding: 0.5rem 1rem;"><i class="fas fa-eye mr-2"></i> View</button>
-                    <button class="btn btn-outline" onclick="deleteResume()" style="padding: 0.5rem 1rem; color: var(--danger); border-color: var(--danger);"><i class="fas fa-trash-alt mr-2"></i> Delete</button>
+                    <button class="btn btn-outline" onclick="viewResume()" style="padding: 0.5rem 1rem;"><i
+                            class="fas fa-eye mr-2"></i> View</button><br><br>
+                    <button class="btn btn-outline" onclick="deleteResume()"
+                        style="padding: 0.5rem 1rem; color: var(--danger); border-color: var(--danger);"><i
+                            class="fas fa-trash-alt mr-2"></i> Delete</button>
                 </div>
             `;
         }
@@ -134,7 +151,7 @@
                 const resumeData = JSON.parse(resumeDataStr);
                 if (resumeData.dataUrl) {
                     const pdfWindow = window.open("");
-                    if(pdfWindow) {
+                    if (pdfWindow) {
                         pdfWindow.document.write(`<iframe width='100%' height='100%' src='${resumeData.dataUrl}'></iframe>`);
                         pdfWindow.document.body.style.margin = "0";
                     } else {
@@ -154,7 +171,7 @@
             const file = fileInput.files[0];
             const allowedExtensions = ['pdf'];
             const fileExt = file.name.split('.').pop().toLowerCase();
-            
+
             if (!allowedExtensions.includes(fileExt)) {
                 alert("Only PDF format is fully supported for local browser viewing.");
                 return;
@@ -169,7 +186,7 @@
             document.getElementById('uploadProgress').style.display = 'block';
 
             const reader = new FileReader();
-            reader.onload = function(event) {
+            reader.onload = function (event) {
                 try {
                     const resumeData = {
                         fileName: file.name,
@@ -194,7 +211,7 @@
                     renderResumeStatus();
                 }
             };
-            
+
             reader.readAsDataURL(file);
         });
 
@@ -206,4 +223,5 @@
         }
     </script>
 </body>
+
 </html>

@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,18 +16,21 @@
             max-width: 800px;
             margin: 0 auto;
         }
+
         .form-grid {
             display: grid;
             gap: 1.5rem;
             grid-template-columns: 1fr 1fr;
         }
+
         .full-width {
             grid-column: 1 / -1;
         }
     </style>
 </head>
+
 <body class="flex flex-col" style="min-height: 100vh;">
-    
+
     <nav class="navbar">
         <div class="container flex justify-between items-center">
             <a href="index.html" class="nav-brand"><i class="fas fa-briefcase"></i> CareerConnect</a>
@@ -45,9 +48,14 @@
             <form id="companyForm">
                 <div class="form-grid">
                     <div class="full-width" style="text-align: center; margin-bottom: 1rem;">
-                        <img id="logoPreview" src="https://via.placeholder.com/150" alt="Company Logo" style="width: 120px; height: 120px; border-radius: 12px; object-fit: cover; border: 3px solid var(--border-color); margin-bottom: 1rem;">
+                        <img id="logoPreview" src="https://via.placeholder.com/150" alt="Company Logo"
+                            style="width: 120px; height: 120px; border-radius: 12px; object-fit: cover; border: 3px solid var(--border-color); margin-bottom: 1rem;">
                         <div class="form-group mb-0" id="logoInputGroup">
-                            <input type="text" id="logoUrl" class="form-control text-center" placeholder="Logo Image URL">
+                            <label class="btn btn-outline" style="cursor: pointer;">
+                                Choose from Gallery
+                                <input type="file" id="logoUpload" accept="image/*" style="display: none;">
+                            </label>
+                            <input type="hidden" id="logoUrl">
                         </div>
                     </div>
 
@@ -97,7 +105,7 @@
                         <label class="form-label">About Company (Description)</label>
                         <textarea id="description" class="form-control" rows="4"></textarea>
                     </div>
-                    
+
                     <div class="form-group full-width">
                         <label class="form-label">Mission Statement</label>
                         <textarea id="mission" class="form-control" rows="3"></textarea>
@@ -110,11 +118,14 @@
 
                     <div class="form-group full-width">
                         <label class="form-label">Company Benefits</label>
-                        <textarea id="benefits" class="form-control" rows="3" placeholder="Health insurance, remote work, 401k..."></textarea>
+                        <textarea id="benefits" class="form-control" rows="3"
+                            placeholder="Health insurance, remote work, 401k..."></textarea>
                     </div>
 
-                    <div class="full-width mt-4" id="saveActions" style="display: flex; justify-content: flex-end; gap: 1rem;">
-                        <button type="button" class="btn btn-outline" onclick="window.location.href='company-profile.html'">Cancel</button>
+                    <div class="full-width mt-4" id="saveActions"
+                        style="display: flex; justify-content: flex-end; gap: 1rem;">
+                        <button type="button" class="btn btn-outline"
+                            onclick="window.location.href='company-profile.html'">Cancel</button>
                         <button type="submit" class="btn btn-primary">Save Changes</button>
                     </div>
                 </div>
@@ -129,8 +140,17 @@
             const token = localStorage.getItem('token');
             if (!token) { window.location.href = 'login.html'; return; }
 
-            document.getElementById('logoUrl').addEventListener('input', (e) => {
-                document.getElementById('logoPreview').src = e.target.value || 'https://via.placeholder.com/150';
+            document.getElementById('logoUpload').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (evt) {
+                        const dataUrl = evt.target.result;
+                        document.getElementById('logoPreview').src = dataUrl;
+                        document.getElementById('logoUrl').value = dataUrl;
+                    };
+                    reader.readAsDataURL(file);
+                }
             });
 
             try {
@@ -162,7 +182,7 @@
         document.getElementById('companyForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const token = localStorage.getItem('token');
-            
+
             const payload = {
                 name: document.getElementById('companyName').value,
                 industry: document.getElementById('industry').value,
@@ -202,4 +222,5 @@
         }
     </script>
 </body>
+
 </html>

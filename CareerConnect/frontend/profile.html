@@ -365,7 +365,7 @@
             btn.disabled = true;
 
             const token = localStorage.getItem('token');
-            const API_URL = 'http://localhost:8000'; // Adjust as needed
+            const API_URL = 'https://careerconnect-navy.vercel.app';
 
             try {
                 const res = await fetch(`${API_URL}/users/me`, {

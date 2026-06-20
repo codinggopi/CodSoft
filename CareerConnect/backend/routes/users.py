@@ -105,19 +105,15 @@ def forgot_password_verify_answer(req: schemas.VerifyAnswerRequest, db: Session 
     if not auth.verify_password(req.answer.strip().lower(), user.security_answer):
         raise HTTPException(status_code=401, detail="Incorrect security answer")
     
-    # Generate 6 digit OTP
-    otp = str(random.randint(100000, 999999))
+    reset_token = str(uuid.uuid4())
     otp_store[req.email] = {
-        "otp": otp,
+        "otp": "CAPTCHA_BYPASS",
         "expires_at": time.time() + 300, # 5 minutes
         "attempts": 0,
-        "reset_token": None
+        "reset_token": reset_token
     }
     
-    # Simulated email send
-    print(f"OTP for {req.email} is {otp}")
-    
-    return {"message": "Answer verified, OTP sent"}
+    return {"message": "Answer verified", "reset_token": reset_token}
 
 @router.post("/forgot-password/verify-otp")
 def forgot_password_verify_otp(req: schemas.VerifyOTPRequest):

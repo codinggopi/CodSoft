@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : "https://careerconnect-navy.vercel.app";
 
 window.demoJobs = [
     { id: 'demo-1', title: 'Frontend Developer', company: 'TechNova', location: 'San Francisco, CA', salary: '$120k - $140k', job_type: 'Full Time', skills: 'React, HTML, CSS', description: 'Build beautiful UIs.', requirements: '3+ years React' },
@@ -9,7 +9,7 @@ window.demoJobs = [
     { id: 'demo-6', title: 'Full Stack Developer', company: 'DigitalEdge', location: 'Toronto, CA', salary: '$100k - $125k', job_type: 'Remote', skills: 'MERN Stack', description: 'Build end-to-end features.', requirements: 'MongoDB, Express, React, Node' }
 ];
 
-window.generateJobCard = function(job, isDemo = false) {
+window.generateJobCard = function (job, isDemo = false) {
     // Generate a placeholder logo character based on company name
     const initial = job.company ? job.company.charAt(0).toUpperCase() : 'C';
     // Simple hash for consistent colors
@@ -95,13 +95,13 @@ async function fetchJobs() {
     const typeInput = document.getElementById('searchType');
     const experienceInput = document.getElementById('searchExperience');
     const remoteInput = document.getElementById('searchRemote');
-    
+
     const keyword = keywordInput ? keywordInput.value.toLowerCase() : '';
     const locationStr = locationInput ? locationInput.value.toLowerCase() : '';
     const type = typeInput ? typeInput.value : '';
     const experience = experienceInput ? experienceInput.value : '';
     const isRemote = remoteInput ? remoteInput.checked : false;
-    
+
     // Check if on home page
     const isHomePage = window.location.pathname.endsWith('index.html') || window.location.pathname === '/';
 
@@ -110,7 +110,7 @@ async function fetchJobs() {
         let jobs = [];
         if (response.ok) {
             jobs = await response.json();
-            
+
             // Filter real jobs
             if (keyword) jobs = jobs.filter(j => j.title.toLowerCase().includes(keyword) || j.company.toLowerCase().includes(keyword) || j.skills.toLowerCase().includes(keyword));
             if (locationStr) jobs = jobs.filter(j => j.location.toLowerCase().includes(locationStr));
@@ -118,7 +118,7 @@ async function fetchJobs() {
             if (experience) jobs = jobs.filter(j => (j.description || '').includes(experience) || (j.requirements || '').includes(experience));
             if (isRemote) jobs = jobs.filter(j => j.location.toLowerCase().includes('remote') || j.job_type.toLowerCase() === 'remote');
         }
-        
+
         // Apply limit for Home Page
         if (isHomePage && jobs.length > 0) {
             jobs = jobs.slice(0, 3);
@@ -137,7 +137,7 @@ async function fetchJobs() {
             if (locationStr) dJobs = dJobs.filter(j => j.location.toLowerCase().includes(locationStr));
             if (type) dJobs = dJobs.filter(j => j.job_type === type);
             if (isRemote) dJobs = dJobs.filter(j => j.location.toLowerCase().includes('remote') || j.job_type.toLowerCase() === 'remote');
-            
+
             if (isHomePage) {
                 dJobs = dJobs.slice(0, 3);
             }
@@ -168,6 +168,6 @@ async function fetchJobs() {
         }
     } catch (error) {
         console.error("Error fetching jobs:", error);
-        jobsList.innerHTML = `<p class="text-danger">Error connecting to server.</p>`;
+        jobsList.innerHTML = `<p class="text-danger">Sorry No jobs available</p>`;
     }
 }

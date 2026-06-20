@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body class="flex flex-col" style="min-height: 100vh;">
     <nav class="navbar">
         <div class="container flex justify-between items-center">
@@ -14,9 +16,6 @@
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="jobs.html" style="color: var(--primary-color);">Find Jobs</a>
-                <a href="career-resources.html">Resources</a>
-                <a href="login.html" class="btn btn-outline" style="padding: 0.5rem 1rem;" id="loginLink">Login</a>
-                <a href="register.html" class="btn btn-primary" style="padding: 0.5rem 1rem;" id="registerLink">Register</a>
                 <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
                     <i id="theme-icon" class="fas fa-moon"></i>
                 </button>
@@ -28,20 +27,24 @@
         <div class="jobs-layout">
             <!-- Sidebar -->
             <aside class="card h-fit" style="position: sticky; top: 100px;">
-                <div class="flex justify-between items-center mb-6" style="border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
+                <div class="flex justify-between items-center mb-6"
+                    style="border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
                     <h3 style="font-size: 1.25rem;"><i class="fas fa-filter mr-2 text-primary"></i> Filters</h3>
-                    <button type="button" class="btn" style="padding: 0.25rem; background: none; border: none; color: var(--text-muted); font-size: 0.875rem; text-decoration: underline;" onclick="document.getElementById('searchForm').reset(); fetchJobs();">Clear</button>
-                </div>
+                    <button type="button" class="btn"
+                        style="padding: 0.25rem; background: none; border: none; color: var(--text-muted); font-size: 0.875rem; text-decoration: underline;"
+                        onclick="document.getElementById('searchForm').reset(); fetchJobs();">Clear</button>
+                </div><br>
 
                 <form id="searchForm" class="flex flex-col gap-4">
                     <div class="form-group mb-0">
                         <label class="form-label" style="font-size: 0.875rem;">Search</label>
                         <div class="input-with-icon">
                             <i class="fas fa-search"></i>
-                            <input type="text" id="searchKeyword" class="form-control" placeholder="Job Title or Keyword">
+                            <input type="text" id="searchKeyword" class="form-control"
+                                placeholder="Job Title or Keyword">
                         </div>
                     </div>
-                    
+
                     <div class="form-group mb-0">
                         <label class="form-label" style="font-size: 0.875rem;">Location</label>
                         <div class="input-with-icon">
@@ -72,8 +75,10 @@
                     </div>
 
                     <div class="form-group mb-0 mt-2">
-                        <label class="flex items-center" style="cursor: pointer; font-size: 0.875rem; font-weight: 500;">
-                            <input type="checkbox" id="searchRemote" style="margin-right: 0.5rem; transform: scale(1.2);"> Remote Only
+                        <label class="flex items-center"
+                            style="cursor: pointer; font-size: 0.875rem; font-weight: 500;">
+                            <input type="checkbox" id="searchRemote"
+                                style="margin-right: 0.5rem; transform: scale(1.2);"> Remote Only
                         </label>
                     </div>
 
@@ -86,7 +91,8 @@
                 <div class="flex justify-between items-center mb-6" style="flex-wrap: wrap; gap: 1rem;">
                     <h1 style="font-size: 2rem;">Explore Opportunities</h1>
                     <div class="text-muted" style="font-size: 0.875rem;">
-                        Showing <span id="jobsCount" style="font-weight: 600; color: var(--text-color);">0</span> results
+                        Showing <span id="jobsCount" style="font-weight: 600; color: var(--text-color);">0</span>
+                        results
                     </div>
                 </div>
 
@@ -106,8 +112,12 @@
         <div class="container">
             <div class="flex gap-8 justify-between mb-8" style="flex-wrap: wrap;">
                 <div style="flex: 2; min-width: 300px;">
-                    <h3 style="font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: white; margin-bottom: 1rem;"><i class="fas fa-briefcase"></i> CareerConnect</h3>
-                    <p style="opacity: 0.8; margin-bottom: 1.5rem; max-width: 400px;">Empowering professionals and companies to build better futures together. Your dream career starts here.</p>
+                    <h3
+                        style="font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: white; margin-bottom: 1rem;">
+                        <i class="fas fa-briefcase"></i> CareerConnect
+                    </h3>
+                    <p style="opacity: 0.8; margin-bottom: 1.5rem; max-width: 400px;">Empowering professionals and
+                        companies to build better futures together. Your dream career starts here.</p>
                 </div>
                 <div style="flex: 1; min-width: 150px;">
                     <h4>Quick Links</h4>
@@ -118,12 +128,16 @@
                 <div style="flex: 1.5; min-width: 250px;">
                     <h4>Subscribe to Newsletter</h4>
                     <form class="flex" onsubmit="event.preventDefault(); alert('Subscribed!');">
-                        <input type="email" placeholder="Email Address" style="padding: 0.75rem; border: none; border-radius: 0.25rem 0 0 0.25rem; outline: none; width: 100%;" required>
-                        <button type="submit" style="padding: 0.75rem 1rem; border: none; background: var(--accent-color); color: white; border-radius: 0 0.25rem 0.25rem 0; cursor: pointer;">Subscribe</button>
+                        <input type="email" placeholder="Email Address"
+                            style="padding: 0.75rem; border: none; border-radius: 0.25rem 0 0 0.25rem; outline: none; width: 100%;"
+                            required>
+                        <button type="submit"
+                            style="padding: 0.75rem 1rem; border: none; background: var(--accent-color); color: white; border-radius: 0 0.25rem 0.25rem 0; cursor: pointer;">Subscribe</button>
                     </form>
                 </div>
             </div>
-            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; display: flex; justify-content: space-between; flex-wrap: wrap; opacity: 0.7; font-size: 0.875rem;">
+            <div
+                style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; display: flex; justify-content: space-between; flex-wrap: wrap; opacity: 0.7; font-size: 0.875rem;">
                 <p>&copy; 2026 CareerConnect. All rights reserved.</p>
             </div>
         </div>
@@ -132,4 +146,5 @@
     <script src="assets/js/theme.js"></script>
     <script src="assets/js/jobs.js"></script>
 </body>
+
 </html>

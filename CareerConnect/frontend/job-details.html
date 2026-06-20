@@ -67,7 +67,7 @@
                 isDemo = true;
             } else {
                 try {
-                    const res = await fetch(`http://127.0.0.1:8000/jobs/`);
+                    const res = await fetch(`https://careerconnect-navy.vercel.app/jobs/`);
                     if (res.ok) {
                         const jobs = await res.json();
                         job = jobs.find(j => j.id == jobId);
@@ -148,7 +148,7 @@
                 relatedJobs = window.demoJobs.filter(j => j.id !== jobId).slice(0, 3);
             } else {
                 try {
-                    const res = await fetch(`http://127.0.0.1:8000/jobs/`);
+                    const res = await fetch(`https://careerconnect-navy.vercel.app/jobs/`);
                     if (res.ok) {
                         const allJobs = await res.json();
                         relatedJobs = allJobs.filter(j => j.id != jobId).slice(0, 3);
@@ -224,7 +224,7 @@
                 const formData = new FormData(form);
 
                 try {
-                    const res = await fetch('http://127.0.0.1:8000/applications/apply', {
+                    const res = await fetch('https://careerconnect-navy.vercel.app/applications/apply', {
                         method: 'POST',
                         headers: { 'Authorization': `Bearer ${token}` },
                         body: formData
