@@ -174,7 +174,7 @@ function enforceRouteProtection() {
     const user = userStr ? JSON.parse(userStr) : null;
     const role = user ? user.role : 'guest';
 
-    const candidateRoutes = ['candidate-dashboard.html', 'resume.html', 'profile.html', 'job-details.html', 'jobs.html'];
+    const candidateRoutes = ['candidate-dashboard.html', 'resume.html', 'profile.html', 'job-details.html', 'jobs.html', 'career-resources.html', 'resource-details.html'];
     const employerRoutes = ['employer-dashboard.html', 'employer-profile.html', 'company-profile.html', 'edit-company-profile.html', 'post-job.html', 'manage-jobs.html', 'applicants.html', 'employer-analytics.html'];
     const adminRoutes = ['admin-dashboard.html'];
 

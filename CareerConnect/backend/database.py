@@ -1,11 +1,25 @@
+
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from dotenv import load_dotenv
+import logging
 
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres.krwlwfolnoakexjedfhy:careerconnect123213@aws-1-ap-northeast-1.pooler.supabase.com:6543/postgres"
+load_dotenv()
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
-    
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if not DATABASE_URL:
+    logging.error("DATABASE_URL environment variable not set.")
+    raise ValueError("DATABASE_URL environment variable not set.")
+
+engine = create_engine(
+    DATABASE_URL,
+    pool_pre_ping=True,
+    pool_recycle=300
+)
+
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
