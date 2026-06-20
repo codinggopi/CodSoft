@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,19 +20,19 @@
                 <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
                     <i id="theme-icon" class="fas fa-moon"></i>
                 </button>
-                <!-- Dropdown will be injected by theme.js -->
+                
             </div>
         </div>
     </nav>
 
     <div class="container animate-fade-in mt-8 mb-8" style="flex: 1;">
-        <!-- Welcome Banner -->
+        
         <div class="card mb-8" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; border: none;">
             <h1 style="color: white; font-size: 2.5rem;" id="welcomeBanner">Welcome Back!</h1>
             <p style="opacity: 0.9; font-size: 1.1rem; margin-top: 0.5rem;">Your next career opportunity is waiting. Keep your profile updated to stand out.</p>
         </div>
         
-        <!-- Dashboard Stats -->
+        
         <div class="flex gap-4 mb-8" style="flex-wrap: wrap;">
             <div class="card text-center flex-col justify-center" style="flex: 1; min-width: 200px; border-top: 4px solid var(--primary-color);">
                 <i class="fas fa-paper-plane text-muted mb-2" style="font-size: 2rem;"></i>
@@ -56,9 +57,9 @@
         </div>
 
         <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
-            <!-- Left Column: Activity & Recommended Jobs -->
+            
             <div class="flex flex-col gap-8">
-                <!-- Applications List -->
+                
                 <div class="card">
                     <h2 class="mb-6" style="font-size: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 1rem;">Recent Activity</h2>
                     <div style="overflow-x: auto;">
@@ -77,11 +78,11 @@
                     </div>
                 </div>
 
-                <!-- Recommended Jobs -->
+                
                 <div class="card">
                     <h2 class="mb-6" style="font-size: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 1rem;">Recommended for You</h2>
                     <div class="flex flex-col gap-4">
-                        <!-- Mock Recommended Job -->
+                        
                         <div class="flex justify-between items-center" style="padding: 1rem; border: 1px solid var(--border-color); border-radius: 0.5rem; background: var(--input-bg); flex-wrap: wrap; gap: 1rem;">
                             <div class="flex gap-4 items-center">
                                 <div style="width: 48px; height: 48px; background: rgba(34, 197, 94, 0.1); color: var(--secondary-color); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.25rem;">T</div>
@@ -106,7 +107,7 @@
                 </div>
             </div>
 
-            <!-- Right Column: Quick Actions -->
+            
             <div>
                 <div class="card" style="position: sticky; top: 100px;">
                     <h2 class="mb-6" style="font-size: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 1rem;">Quick Actions</h2>
@@ -126,7 +127,7 @@
         </div>
     </div>
 
-    <!-- Expanded Footer -->
+    
     <footer class="footer-advanced">
         <div class="container">
             <div class="flex gap-8 justify-between mb-8" style="flex-wrap: wrap;">
@@ -154,8 +155,8 @@
     </footer>
 
     <script src="assets/js/theme.js"></script>
+    <script src="assets/js/config.js"></script>
     <script>
-        const API_URL = "http://127.0.0.1:8000";
         document.addEventListener('DOMContentLoaded', async () => {
             const token = localStorage.getItem('token');
             const userStr = localStorage.getItem('user');
@@ -172,17 +173,17 @@
             document.getElementById('welcomeBanner').textContent = `Welcome Back, ${user.name.split(' ')[0]}!`;
 
             try {
-                // Fetch both applications and jobs in parallel
+                
                 const [appsRes, jobsRes] = await Promise.all([
-                    fetch(`${API_URL}/applications/`, { headers: { 'Authorization': `Bearer ${token}` } }),
-                    fetch(`${API_URL}/jobs/`)
+                    fetch(`${API_BASE_URL}/applications/`, { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch(`${API_BASE_URL}/jobs/`)
                 ]);
 
                 if (appsRes.ok && jobsRes.ok) {
                     const apps = await appsRes.json();
                     const jobs = await jobsRes.json();
                     
-                    // Create a map of job_id -> job_title
+                    
                     const jobMap = {};
                     jobs.forEach(j => { jobMap[j.id] = j.title + ' at ' + j.company; });
 
@@ -192,7 +193,7 @@
                     
                     const tbody = document.getElementById('applicationsTableBody');
                     if (apps.length === 0) {
-                        tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted" style="padding: 2rem;">You haven't applied to any jobs yet. <a href="jobs.html" style="color: var(--primary-color);">Browse Jobs</a></td></tr>`;
+                        tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted" style="padding: 2rem;">You haven\'t applied to any jobs yet. <a href="jobs.html" style="color: var(--primary-color);">Browse Jobs</a></td></tr>`;
                     } else {
                         tbody.innerHTML = apps.map(app => {
                             let statusBadge = '';

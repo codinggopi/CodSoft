@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,7 +24,7 @@
         <div class="container flex justify-between items-center">
             <a href="index.html" class="nav-brand"><i class="fas fa-briefcase"></i> CareerConnect</a>
             <div class="nav-links" id="navLinks">
-                <!-- Links injected by theme.js -->
+                
             </div>
         </div>
     </nav>
@@ -56,7 +57,7 @@
         </div>
     </div>
 
-    <!-- Expanded Footer -->
+    
     <footer class="footer-advanced mt-auto">
         <div class="container">
             <div class="flex gap-8 justify-between mb-8" style="flex-wrap: wrap;">
@@ -74,8 +75,8 @@
     </footer>
 
     <script src="assets/js/theme.js"></script>
+    <script src="assets/js/config.js"></script>
     <script>
-        const API_URL = "http://127.0.0.1:8000";
         let currentUser = null;
         let allAppsData = [];
         let jobMap = {};
@@ -92,16 +93,16 @@
 
         async function fetchApps(token) {
             try {
-                // Fetch Jobs first to populate jobMap
-                const jobsRes = await fetch(`${API_URL}/jobs/`);
+                
+                const jobsRes = await fetch(`${API_BASE_URL}/jobs/`);
                 if (jobsRes.ok) {
                     const allJobs = await jobsRes.json();
                     const myJobsData = allJobs.filter(j => j.employer_id === currentUser.id);
                     myJobsData.forEach(j => { jobMap[j.id] = j.title; });
                 }
 
-                // Fetch Apps
-                const appsRes = await fetch(`${API_URL}/applications/`, { headers: { 'Authorization': `Bearer ${token}` } });
+                
+                const appsRes = await fetch(`${API_BASE_URL}/applications/`, { headers: { 'Authorization': `Bearer ${token}` } });
                 if (appsRes.ok) {
                     allAppsData = await appsRes.json();
                     renderAppsTable();
@@ -158,7 +159,7 @@
             const formData = new FormData();
             formData.append("status_update", newStatus);
             try {
-                const res = await fetch(`${API_URL}/applications/status/${appId}`, { method: 'PUT', headers: { 'Authorization': `Bearer ${token}` }, body: formData });
+                const res = await fetch(`${API_BASE_URL}/applications/status/${appId}`, { method: 'PUT', headers: { 'Authorization': `Bearer ${token}` }, body: formData });
                 if (res.ok) { fetchApps(token); }
                 else { alert("Failed to update status"); }
             } catch (e) { console.error(e); }

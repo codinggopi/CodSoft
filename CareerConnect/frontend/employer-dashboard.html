@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -69,7 +70,7 @@
 </head>
 
 <body class="flex flex-col" style="min-height: 100vh;">
-    <!-- Navigation -->
+    
     <nav class="navbar">
         <div class="container flex justify-between items-center">
             <a href="index.html" class="nav-brand"><i class="fas fa-briefcase"></i> CareerConnect</a>
@@ -79,7 +80,7 @@
     </nav>
 
     <div class="container animate-fade-in section-padding" style="flex: 1;">
-        <!-- Welcome Banner -->
+        
         <div class="welcome-banner">
             <div>
                 <h1 style="font-size: 2rem; margin-bottom: 0.5rem;" id="welcomeName">Welcome back, Employer!</h1>
@@ -95,7 +96,7 @@
             </div>
         </div>
 
-        <!-- Statistics -->
+        
         <div class="dashboard-grid mb-8">
             <div class="stat-card">
                 <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: var(--primary-color);">
@@ -136,7 +137,7 @@
         </div>
 
         <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr;">
-            <!-- Recent Jobs -->
+            
             <div class="dashboard-section" style="margin-top: 0;">
                 <div class="flex justify-between items-center mb-6 border-bottom pb-4">
                     <h2 style="font-size: 1.25rem;"><i class="fas fa-list-alt mr-2 text-primary"></i>Recent Jobs</h2>
@@ -153,7 +154,7 @@
                             </tr>
                         </thead>
                         <tbody id="recentJobsList">
-                            <!-- Populated via JS -->
+                            
                             <tr>
                                 <td colspan="3" class="text-center py-4 text-muted">No recent jobs found.</td>
                             </tr>
@@ -162,7 +163,7 @@
                 </div>
             </div>
 
-            <!-- Recent Applicants -->
+            
             <div class="dashboard-section" style="margin-top: 0;">
                 <div class="flex justify-between items-center mb-6 border-bottom pb-4">
                     <h2 style="font-size: 1.25rem;"><i class="fas fa-users mr-2" style="color: #10b981;"></i>Recent
@@ -180,7 +181,7 @@
                             </tr>
                         </thead>
                         <tbody id="recentApplicantsList">
-                            <!-- Populated via JS -->
+                            
                             <tr>
                                 <td colspan="3" class="text-center py-4 text-muted">No recent applicants found.</td>
                             </tr>
@@ -193,6 +194,7 @@
     </div>
 
     <script src="assets/js/theme.js"></script>
+    <script src="assets/js/config.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const userStr = localStorage.getItem('user');
@@ -207,7 +209,7 @@
             }
 
             document.getElementById('welcomeName').textContent = `Welcome back, ${user.name}!`;
-            // Normally fetch company details from backend here
+            
         });
 
         function logout() {

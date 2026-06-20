@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,7 +25,7 @@
     <div class="container animate-fade-in mt-8 mb-8" style="flex: 1;">
         <h1 class="mb-8" style="font-size: 2rem;">System Administration</h1>
         
-        <!-- Dashboard Stats -->
+        
         <div class="flex gap-4 mb-8" style="flex-wrap: wrap;">
             <div class="card text-center flex-col justify-center" style="flex: 1; min-width: 200px; border-left: 5px solid #475569;">
                 <i class="fas fa-users text-muted mb-2" style="font-size: 2rem;"></i>
@@ -43,7 +44,7 @@
             </div>
         </div>
 
-        <!-- Admin Controls -->
+        
         <div class="card mb-8">
             <h2 class="mb-4" style="font-size: 1.25rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">System Jobs Management</h2>
             <div id="adminJobsList" class="flex flex-col gap-4">
@@ -64,8 +65,8 @@
     </footer>
 
     <script src="assets/js/theme.js"></script>
+    <script src="assets/js/config.js"></script>
     <script>
-        const API_URL = "http://127.0.0.1:8000";
         document.addEventListener('DOMContentLoaded', async () => {
             const token = localStorage.getItem('token');
             const userStr = localStorage.getItem('user');
@@ -86,8 +87,8 @@
 
         async function loadAdminData(token) {
             try {
-                // Fetch jobs
-                const jobsRes = await fetch(`${API_URL}/jobs/`);
+                
+                const jobsRes = await fetch(`${API_BASE_URL}/jobs/`);
                 if (jobsRes.ok) {
                     const jobs = await jobsRes.json();
                     document.getElementById('totalJobs').textContent = jobs.length;
@@ -108,14 +109,14 @@
                     }
                 }
 
-                // Fetch applications
-                const appsRes = await fetch(`${API_URL}/applications/`, {
+                
+                const appsRes = await fetch(`${API_BASE_URL}/applications/`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 if (appsRes.ok) {
                     const apps = await appsRes.json();
                     document.getElementById('totalApps').textContent = apps.length;
-                    // Note: Mocking total users since there's no endpoint for fetching all users.
+                    
                     document.getElementById('totalUsers').textContent = Math.max(3, apps.length + 2);
                 }
             } catch(e) { console.error(e); }
@@ -124,7 +125,7 @@
         async function deleteJob(jobId) {
             if(!confirm("SYSTEM WARNING: Are you sure you want to permanently delete this job?")) return;
             const token = localStorage.getItem('token');
-            const res = await fetch(`${API_URL}/jobs/${jobId}`, {
+            const res = await fetch(`${API_BASE_URL}/jobs/${jobId}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });

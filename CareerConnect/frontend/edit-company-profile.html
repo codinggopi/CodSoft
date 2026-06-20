@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +27,7 @@
     </style>
 </head>
 <body class="flex flex-col" style="min-height: 100vh;">
-    <!-- Navigation -->
+    
     <nav class="navbar">
         <div class="container flex justify-between items-center">
             <a href="index.html" class="nav-brand"><i class="fas fa-briefcase"></i> CareerConnect</a>
@@ -122,9 +123,8 @@
     </div>
 
     <script src="assets/js/theme.js"></script>
+    <script src="assets/js/config.js"></script>
     <script>
-        const API_URL = "http://127.0.0.1:8000";
-
         document.addEventListener('DOMContentLoaded', async () => {
             const token = localStorage.getItem('token');
             if (!token) { window.location.href = 'login.html'; return; }
@@ -134,7 +134,7 @@
             });
 
             try {
-                const response = await fetch(`${API_URL}/companies/me`, {
+                const response = await fetch(`${API_BASE_URL}/companies/me`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
@@ -179,7 +179,7 @@
             };
 
             try {
-                const response = await fetch(`${API_URL}/companies/me`, {
+                const response = await fetch(`${API_BASE_URL}/companies/me`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                     body: JSON.stringify(payload)
