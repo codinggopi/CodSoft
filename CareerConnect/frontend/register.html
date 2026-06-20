@@ -125,20 +125,19 @@
         // Toggle Employer fields
         const roleRadios = document.querySelectorAll('input[name="role"]');
         const employerFields = document.getElementById('employerFields');
-        const nameLabel = document.getElementById('nameLabel');
 
         roleRadios.forEach(radio => {
             radio.addEventListener('change', (e) => {
                 if (e.target.value === 'employer') {
                     employerFields.style.display = 'block';
-                    nameLabel.textContent = 'Company Name';
+                    document.getElementById('companyName').required = true;
+                    document.getElementById('companyEmail').required = true;
                     document.getElementById('industry').required = true;
-                    document.getElementById('location').required = true;
                 } else {
                     employerFields.style.display = 'none';
-                    nameLabel.textContent = 'Full Name';
+                    document.getElementById('companyName').required = false;
+                    document.getElementById('companyEmail').required = false;
                     document.getElementById('industry').required = false;
-                    document.getElementById('location').required = false;
                 }
             });
         });
