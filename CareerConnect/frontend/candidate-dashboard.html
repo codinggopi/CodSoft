@@ -37,7 +37,7 @@
         </div>
 
 
-        <div class="flex gap-4 mb-8" style="flex-wrap: wrap;">
+        <div class="stats-grid mb-8">
             <div class="card text-center flex-col justify-center"
                 style="flex: 1; min-width: 200px; border-top: 4px solid var(--primary-color);">
                 <i class="fas fa-paper-plane text-muted mb-2" style="font-size: 2rem;"></i>
@@ -64,7 +64,7 @@
             </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+        <div class="dashboard-grid" style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
 
             <div class="flex flex-col gap-8">
 
@@ -73,7 +73,7 @@
                         style="font-size: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 1rem;">
                         Recent Activity</h2>
                     <div style="overflow-x: auto;">
-                        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <table class="responsive-table" style="width: 100%; border-collapse: collapse; text-align: left;">
                             <thead>
                                 <tr style="border-bottom: 2px solid var(--border-color);">
                                     <th style="padding: 1rem;">Job ID</th>
@@ -134,7 +134,7 @@
 
 
             <div>
-                <div class="card" style="position: sticky; top: 100px; padding-right: 30px;padding-left: 30px;">
+                <div class="card" style="position: sticky; top: 100px; padding: 1.5rem;">
                     <h2 class="mb-6"
                         style="font-size: 1.5rem; text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 1rem;">
                         Quick Actions</h2>
@@ -158,36 +158,19 @@
     </div>
 
 
-    <footer class="footer-advanced">
-        <div class="container">
-            <div class="flex gap-8 justify-between mb-8" style="flex-wrap: wrap;">
-                <div style="flex: 2; min-width: 300px; ">
-                    <h3
-                        style="font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: white; margin-bottom: 1rem;">
-                        <i class="fas fa-briefcase"></i> CareerConnect
-                    </h3>
-                    <p style="opacity: 0.8; margin-bottom: 1.5rem; max-width: 400px;">Empowering professionals and
-                        companies to build better futures together. Your dream career starts here.</p>
-                </div>
-                <div style="flex: 1; min-width: 150px;">
-                    <h4>Quick Links</h4>
-                    <a href="index.html">Home</a>
-                    <a href="jobs.html">Browse Jobs</a>
-                </div>
-                <div style="flex: 1.5; min-width: 250px;">
-                    <h4>Subscribe to Newsletter</h4>
-                    <form class="flex" onsubmit="event.preventDefault(); alert('Subscribed!');">
-                        <input type="email" placeholder="Email Address"
-                            style="padding: 0.75rem; border: none; border-radius: 0.25rem 0 0 0.25rem; outline: none; width: 100%;"
-                            required>
-                        <button type="submit"
-                            style="padding: 0.75rem 1rem; border: none; background: var(--accent-color); color: white; border-radius: 0 0.25rem 0.25rem 0; cursor: pointer;">Subscribe</button>
-                    </form>
-                </div>
+        <footer class="footer-compact mt-auto" style="background: var(--card-bg); border-top: 1px solid var(--border-color); padding: 1.5rem 0; margin-top: auto;">
+        <div class="container flex justify-between items-center" style="flex-wrap: wrap; gap: 1rem;">
+            <div style="font-weight: bold; color: var(--primary-color);">
+                <i class="fas fa-briefcase"></i> CareerConnect
             </div>
-            <div
-                style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; display: flex; justify-content: space-between; flex-wrap: wrap; text-align: center; opacity: 0.7; font-size: 0.875rem;">
-                <p>&copy; 2026 CareerConnect. All rights reserved.</p>
+            <div class="flex gap-4" style="font-size: 0.875rem;">
+                <a href="#" style="color: var(--text-color); text-decoration: none;">About</a>
+                <a href="contact.html" style="color: var(--text-color); text-decoration: none;">Contact</a>
+                <a href="#" style="color: var(--text-color); text-decoration: none;">Privacy</a>
+                <a href="#" style="color: var(--text-color); text-decoration: none;">Terms</a>
+            </div>
+            <div style="font-size: 0.875rem; color: var(--text-muted);">
+                &copy; 2026 CareerConnect
             </div>
         </div>
     </footer>
@@ -243,13 +226,13 @@
 
                             return `
                             <tr style="border-bottom: 1px solid var(--border-color); transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='var(--input-bg)'" onmouseout="this.style.backgroundColor='transparent'">
-                                <td style="padding: 1rem; font-weight: 500;">
+                                <td data-label="Job" style="padding: 1rem; font-weight: 500;">
                                     <a href="job-details.html?id=${app.job_id}" style="color: var(--text-color); text-decoration: none;">
                                         ${jobDisplay}
                                     </a>
                                 </td>
-                                <td style="padding: 1rem; color: var(--text-muted);">${new Date(app.created_at).toLocaleDateString()}</td>
-                                <td style="padding: 1rem;">${statusBadge}</td>
+                                <td data-label="Date Applied" style="padding: 1rem; color: var(--text-muted);">${new Date(app.created_at).toLocaleDateString()}</td>
+                                <td data-label="Status" style="padding: 1rem;">${statusBadge}</td>
                             </tr>
                             `;
                         }).join('');

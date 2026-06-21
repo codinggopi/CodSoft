@@ -26,13 +26,16 @@
     <div class="container animate-fade-in section-padding" style="flex: 1;">
         <div class="jobs-layout">
             <!-- Sidebar -->
-            <aside class="card h-fit" style="position: sticky; top: 100px;">
+            <aside class="card h-fit filter-sidebar" style="position: sticky; top: 100px;">
                 <div class="flex justify-between items-center mb-6"
                     style="border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
                     <h3 style="font-size: 1.25rem;"><i class="fas fa-filter mr-2 text-primary"></i> Filters</h3>
-                    <button type="button" class="btn"
-                        style="padding: 0.25rem; background: none; border: none; color: var(--text-muted); font-size: 0.875rem; text-decoration: underline;"
-                        onclick="document.getElementById('searchForm').reset(); fetchJobs();">Clear</button>
+                    <div>
+                        <button type="button" class="btn"
+                            style="padding: 0.25rem; background: none; border: none; color: var(--text-muted); font-size: 0.875rem; text-decoration: underline;"
+                            onclick="document.getElementById('searchForm').reset(); fetchJobs();">Clear</button>
+                        <button type="button" class="btn mobile-close-btn" style="padding: 0.25rem; background: none; border: none; color: var(--danger); display: none; font-size: 1.25rem;" onclick="document.querySelector('.filter-sidebar').classList.remove('show-mobile-filters')"><i class="fas fa-times"></i></button>
+                    </div>
                 </div><br>
 
                 <form id="searchForm" class="flex flex-col gap-4">
@@ -90,9 +93,14 @@
             <main>
                 <div class="flex justify-between items-center mb-6" style="flex-wrap: wrap; gap: 1rem;">
                     <h1 style="font-size: 2rem;">Explore Opportunities</h1>
-                    <div class="text-muted" style="font-size: 0.875rem;">
-                        Showing <span id="jobsCount" style="font-weight: 600; color: var(--text-color);">0</span>
-                        results
+                    <div style="display: flex; gap: 1rem; align-items: center; width: 100%; justify-content: space-between;" class="flex-row-mobile">
+                        <button class="btn btn-outline mobile-filter-btn" style="display: none; align-items: center; gap: 0.5rem;" onclick="document.querySelector('.filter-sidebar').classList.add('show-mobile-filters')">
+                            <i class="fas fa-filter"></i> Filters
+                        </button>
+                        <div class="text-muted" style="font-size: 0.875rem; text-align: right; flex: 1;">
+                            Showing <span id="jobsCount" style="font-weight: 600; color: var(--text-color);">0</span>
+                            results
+                        </div>
                     </div>
                 </div>
 
@@ -108,37 +116,19 @@
     </div>
 
     <!-- Expanded Footer -->
-    <footer class="footer-advanced mt-auto">
-        <div class="container">
-            <div class="flex gap-8 justify-between mb-8" style="flex-wrap: wrap;">
-                <div style="flex: 2; min-width: 300px;">
-                    <h3
-                        style="font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: white; margin-bottom: 1rem;">
-                        <i class="fas fa-briefcase"></i> CareerConnect
-                    </h3>
-                    <p style="opacity: 0.8; margin-bottom: 1.5rem; max-width: 400px;">Empowering professionals and
-                        companies to build better futures together. Your dream career starts here.</p>
-                </div>
-                <div style="flex: 1; min-width: 150px;">
-                    <h4>Quick Links</h4>
-                    <a href="index.html">Home</a>
-                    <a href="jobs.html">Browse Jobs</a>
-                    <a href="career-resources.html">Resources</a>
-                </div>
-                <div style="flex: 1.5; min-width: 250px;">
-                    <h4>Subscribe to Newsletter</h4>
-                    <form class="flex" onsubmit="event.preventDefault(); alert('Subscribed!');">
-                        <input type="email" placeholder="Email Address"
-                            style="padding: 0.75rem; border: none; border-radius: 0.25rem 0 0 0.25rem; outline: none; width: 100%;"
-                            required>
-                        <button type="submit"
-                            style="padding: 0.75rem 1rem; border: none; background: var(--accent-color); color: white; border-radius: 0 0.25rem 0.25rem 0; cursor: pointer;">Subscribe</button>
-                    </form>
-                </div>
+        <footer class="footer-compact mt-auto" style="background: var(--card-bg); border-top: 1px solid var(--border-color); padding: 1.5rem 0; margin-top: auto;">
+        <div class="container flex justify-between items-center" style="flex-wrap: wrap; gap: 1rem;">
+            <div style="font-weight: bold; color: var(--primary-color);">
+                <i class="fas fa-briefcase"></i> CareerConnect
             </div>
-            <div
-                style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; display: flex; justify-content: space-between; flex-wrap: wrap; opacity: 0.7; font-size: 0.875rem;">
-                <p>&copy; 2026 CareerConnect. All rights reserved.</p>
+            <div class="flex gap-4" style="font-size: 0.875rem;">
+                <a href="#" style="color: var(--text-color); text-decoration: none;">About</a>
+                <a href="contact.html" style="color: var(--text-color); text-decoration: none;">Contact</a>
+                <a href="#" style="color: var(--text-color); text-decoration: none;">Privacy</a>
+                <a href="#" style="color: var(--text-color); text-decoration: none;">Terms</a>
+            </div>
+            <div style="font-size: 0.875rem; color: var(--text-muted);">
+                &copy; 2026 CareerConnect
             </div>
         </div>
     </footer>

@@ -38,16 +38,55 @@
         @media (max-width: 992px) {
             .login-layout {
                 flex-direction: column;
+                display: flex;
             }
 
-            .login-hero {
-                padding: 3rem 1.5rem;
+            .login-left-col {
+                display: contents;
+                /* Allows children to be ordered directly */
+            }
+
+            .login-hero-content {
+                order: 1;
+                padding: 2rem 1rem !important;
+                /* Reduce hero height */
                 text-align: center;
+                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                color: white;
             }
 
             .login-form-container {
-                padding: 3rem 1.5rem;
+                order: 2;
+                padding: 2rem 1rem;
             }
+
+            .login-stats-content {
+                order: 3;
+                padding: 2rem 1rem;
+                background: var(--card-bg);
+                color: var(--text-color);
+                text-align: center;
+            }
+        }
+
+        .social-login-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            background: var(--bg-color-alt);
+            color: var(--text-color);
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: 100%;
+        }
+
+        .social-login-btn:hover {
+            background: var(--border-color);
         }
     </style>
 </head>
@@ -55,36 +94,44 @@
 <body>
     <div class="login-layout">
         <!-- Left Side: Hero Section -->
-        <div class="login-hero animate-fade-in">
-            <a href="index.html" class="mb-8"
-                style="color: white; font-size: 1.5rem; font-weight: bold; display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
-                <i class="fas fa-briefcase"></i> CareerConnect
-            </a>
+        <div class="login-hero animate-fade-in login-left-col">
+            <div class="login-hero-content"
+                style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                <a href="index.html" class="mb-8"
+                    style="color: inherit; font-size: 1.5rem; font-weight: bold; display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+                    <i class="fas fa-briefcase"></i> CareerConnect
+                </a>
 
-            <h1 style="font-size: 3.5rem; line-height: 1.1; margin-bottom: 1.5rem;">Find Your Dream Career Today</h1>
-            <p style="font-size: 1.25rem; opacity: 0.9; margin-bottom: 3rem;">Join thousands of professionals connecting
-                with top employers worldwide.</p>
-
-            <div
-                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 2rem; opacity: 0.9;">
-                <div>
-                    <h2 style="font-size: 2.5rem; margin-bottom: 0.5rem;">50,000+</h2>
-                    <p style="font-weight: 500;">Active Candidates</p>
-                </div>
-                <div>
-                    <h2 style="font-size: 2.5rem; margin-bottom: 0.5rem;">10,000+</h2>
-                    <p style="font-weight: 500;">Jobs Available</p>
-                </div>
-                <div>
-                    <h2 style="font-size: 2.5rem; margin-bottom: 0.5rem;">2,500+</h2>
-                    <p style="font-weight: 500;">Partner Companies</p>
-                </div>
+                <h1 style="font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.1; margin-bottom: 1.5rem;">Find Your
+                    Dream Career Today</h1>
+                <p style="font-size: 1.25rem; opacity: 0.9; margin-bottom: 3rem;">Join thousands of professionals
+                    connecting
+                    with top employers worldwide.</p>
             </div>
 
-            <div class="mt-8" style="opacity: 0.8;">
-                <i class="fas fa-quote-left mb-2 text-2xl"></i>
-                <p style="font-style: italic; font-size: 1.1rem;">"CareerConnect completely transformed my job search.
-                    Highly recommended!"</p>
+            <div class="login-stats-content">
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 2rem; opacity: 0.9;">
+                    <div>
+                        <h2 style="font-size: clamp(1.5rem, 3vw, 2.5rem); margin-bottom: 0.5rem;">50k+</h2>
+                        <p style="font-weight: 500;">Active Candidates</p>
+                    </div>
+                    <div>
+                        <h2 style="font-size: clamp(1.5rem, 3vw, 2.5rem); margin-bottom: 0.5rem;">10k+</h2>
+                        <p style="font-weight: 500;">Jobs Available</p>
+                    </div>
+                    <div>
+                        <h2 style="font-size: clamp(1.5rem, 3vw, 2.5rem); margin-bottom: 0.5rem;">2.5k+</h2>
+                        <p style="font-weight: 500;">Partner Companies</p>
+                    </div>
+                </div>
+
+                <div class="mt-8" style="opacity: 0.8;">
+                    <i class="fas fa-quote-left mb-2 text-2xl"></i>
+                    <p style="font-style: italic; font-size: 1.1rem;">"CareerConnect completely transformed my job
+                        search.
+                        Highly recommended!"</p>
+                </div>
             </div>
         </div>
 
@@ -115,15 +162,31 @@
                             <i class="fas fa-eye password-toggle"></i>
                         </div>
                     </div>
-                    <div class="flex justify-between items-center mb-8 text-muted" style="font-size: 0.875rem;">
-                        <label class="flex items-center" style="cursor: pointer; gap: 0.5rem;">
+                    <div class="flex flex-row-mobile justify-between items-center mb-8 text-muted"
+                        style="font-size: 0.875rem;">
+                        <label class="flex flex-row-mobile items-center" style="cursor: pointer; gap: 0.5rem;">
                             <input type="checkbox"> Remember me
                         </label>
                         <a href="forgot-password.html" style="color: var(--primary-color); font-weight: 500;">Forgot
                             Password?</a>
                     </div>
                     <button type="submit" class="btn btn-primary w-full" id="loginBtn" style="padding: 1rem;">Login to
-                        Dashboard</button>
+                        Dashboard</button><br><br>
+
+                    <div class="mt-6 mb-6 flex flex-row-mobile justify-center items-center gap-4 text-muted">
+                        <hr style="flex: 1; border-color: var(--border-color);">
+                        <span>or continue with</span>
+                        <hr style="flex: 1; border-color: var(--border-color);">
+                    </div><br>
+
+                    <div class="flex gap-4 flex-row-mobile">
+                        <button type="button" class="social-login-btn">
+                            <i class="fab fa-google text-danger"></i> Google
+                        </button>
+                        <button type="button" class="social-login-btn">
+                            <i class="fab fa-linkedin" style="color: #0077b5;"></i> LinkedIn
+                        </button>
+                    </div>
                 </form>
 
                 <!-- New Registration CTA -->

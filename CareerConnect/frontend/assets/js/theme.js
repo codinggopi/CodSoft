@@ -141,7 +141,82 @@ function setupGlobalNavbar() {
 
     navLinks.innerHTML = linksHtml + themeIconHtml;
 
-    const newThemeToggle = document.getElementById('theme-toggle');
+    const navbarContainer = navLinks.parentElement;
+    if (navbarContainer && !document.getElementById('mobile-controls')) {
+        const mobileControls = document.createElement('div');
+        mobileControls.id = 'mobile-controls';
+        mobileControls.className = 'mobile-controls';
+        
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const themeIconClass = currentTheme === 'dark' ? 'fa-sun' : 'fa-moon';
+        
+        mobileControls.innerHTML = `
+            <button id="mobile-theme-toggle" class="theme-toggle" aria-label="Toggle Theme"><i id="mobile-theme-icon" class="fas ${themeIconClass}"></i></button>
+            <button id="mobile-menu-btn" class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+        `;
+        navbarContainer.appendChild(mobileControls);
+
+        const drawer = document.createElement('div');
+        drawer.id = 'mobile-drawer';
+        drawer.className = 'mobile-drawer';
+        
+        let mobileDrawerHtml = '<button id="close-drawer-btn" class="close-drawer-btn"><i class="fas fa-times"></i></button>';
+        mobileDrawerHtml += '<div class="mobile-drawer-links">';
+        if (token && userStr) {
+            const user = JSON.parse(userStr);
+            if (user.role === 'employer') {
+                mobileDrawerHtml += `<a href="index.html">Home</a><a href="post-job.html">Post Job</a><a href="manage-jobs.html">Manage Jobs</a><a href="applicants.html">Applicants</a><a href="company-profile.html">Company Profile</a>`;
+            } else if (user.role === 'candidate') {
+                mobileDrawerHtml += `<a href="index.html">Home</a><a href="jobs.html">Find Jobs</a><a href="candidate-dashboard.html">My Applications</a><a href="resume.html">Resume</a><a href="profile.html">Profile</a>`;
+            } else if (user.role === 'admin') {
+                mobileDrawerHtml += `<a href="index.html">Home</a><a href="admin-dashboard.html">Dashboard</a>`;
+            }
+            mobileDrawerHtml += `<hr style="border-color: var(--border-color); margin: 0.5rem 0;">`;
+            if (user.role === 'employer') mobileDrawerHtml += `<a href="employer-profile.html">My Profile</a>`;
+            if (user.role === 'candidate') mobileDrawerHtml += `<a href="profile.html">My Profile</a>`;
+            if (user.role !== 'admin') mobileDrawerHtml += `<a href="settings.html">Settings</a>`;
+            mobileDrawerHtml += `<a href="#" onclick="logoutUser(event)">Logout</a>`;
+        } else {
+            mobileDrawerHtml += `<a href="index.html">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="login.html">Login</a><a href="register.html">Register</a>`;
+        }
+        mobileDrawerHtml += '</div>';
+        
+        drawer.innerHTML = mobileDrawerHtml;
+        document.body.appendChild(drawer);
+
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            drawer.classList.add('open');
+        });
+        
+        document.getElementById('close-drawer-btn').addEventListener('click', () => {
+            drawer.classList.remove('open');
+        });
+        
+        const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+        const mobileThemeIcon = document.getElementById('mobile-theme-icon');
+        mobileThemeToggle.addEventListener('click', () => {
+            const currTheme = document.documentElement.getAttribute('data-theme');
+            if (currTheme === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                mobileThemeIcon.classList.remove('fa-sun');
+                mobileThemeIcon.classList.add('fa-moon');
+                if(document.getElementById('theme-icon')) {
+                    document.getElementById('theme-icon').classList.remove('fa-sun');
+                    document.getElementById('theme-icon').classList.add('fa-moon');
+                }
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                mobileThemeIcon.classList.remove('fa-moon');
+                mobileThemeIcon.classList.add('fa-sun');
+                if(document.getElementById('theme-icon')) {
+                    document.getElementById('theme-icon').classList.remove('fa-moon');
+                    document.getElementById('theme-icon').classList.add('fa-sun');
+                }
+            }
+        });
+    }    const newThemeToggle = document.getElementById('theme-toggle');
     const newThemeIcon = document.getElementById('theme-icon');
     if (newThemeToggle) {
         newThemeToggle.addEventListener('click', () => {
@@ -164,6 +239,50 @@ function setupGlobalNavbar() {
             newThemeIcon.classList.remove('fa-moon');
             newThemeIcon.classList.add('fa-sun');
         }
+    }
+
+    // --- Bottom Navigation Injection (Mobile) ---
+    if (!document.querySelector('.bottom-nav')) {
+        const bottomNav = document.createElement('nav');
+        bottomNav.className = 'bottom-nav';
+        let bottomHtml = '';
+        const currentPath = window.location.pathname.split('/').pop().split('?')[0];
+
+        if (token && user) {
+            if (user.role === 'candidate') {
+                bottomHtml = `
+                    <a href="candidate-dashboard.html" class="bottom-nav-item ${currentPath==='candidate-dashboard.html'?'active':''}"><i class="fas fa-home"></i><span>Home</span></a>
+                    <a href="jobs.html" class="bottom-nav-item ${currentPath==='jobs.html'?'active':''}"><i class="fas fa-search"></i><span>Jobs</span></a>
+                    <a href="resume.html" class="bottom-nav-item ${currentPath==='resume.html'?'active':''}"><i class="fas fa-file-alt"></i><span>Resume</span></a>
+                    <a href="profile.html" class="bottom-nav-item ${currentPath==='profile.html'?'active':''}"><i class="fas fa-user"></i><span>Profile</span></a>
+                    <a href="settings.html" class="bottom-nav-item ${currentPath==='settings.html'?'active':''}"><i class="fas fa-cog"></i><span>Settings</span></a>
+                `;
+            } else if (user.role === 'employer') {
+                bottomHtml = `
+                    <a href="employer-dashboard.html" class="bottom-nav-item ${currentPath==='employer-dashboard.html'?'active':''}"><i class="fas fa-home"></i><span>Home</span></a>
+                    <a href="post-job.html" class="bottom-nav-item ${currentPath==='post-job.html'?'active':''}"><i class="fas fa-plus-circle"></i><span>Post Job</span></a>
+                    <a href="manage-jobs.html" class="bottom-nav-item ${currentPath==='manage-jobs.html'?'active':''}"><i class="fas fa-briefcase"></i><span>Jobs</span></a>
+                    <a href="applicants.html" class="bottom-nav-item ${currentPath==='applicants.html'?'active':''}"><i class="fas fa-users"></i><span>Applicants</span></a>
+                    <a href="employer-profile.html" class="bottom-nav-item ${currentPath==='employer-profile.html'?'active':''}"><i class="fas fa-user-tie"></i><span>Profile</span></a>
+                `;
+            } else {
+                // Admin or other roles
+                bottomHtml = `
+                    <a href="index.html" class="bottom-nav-item ${currentPath==='index.html'?'active':''}"><i class="fas fa-home"></i><span>Home</span></a>
+                    <a href="#" onclick="logoutUser(event)" class="bottom-nav-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+                `;
+            }
+        } else {
+            // Guest Bottom Nav
+            bottomHtml = `
+                <a href="index.html" class="bottom-nav-item ${currentPath==='index.html'?'active':''}"><i class="fas fa-home"></i><span>Home</span></a>
+                <a href="jobs.html" class="bottom-nav-item ${currentPath==='jobs.html'?'active':''}"><i class="fas fa-search"></i><span>Find Jobs</span></a>
+                <a href="login.html" class="bottom-nav-item ${currentPath==='login.html'?'active':''}"><i class="fas fa-sign-in-alt"></i><span>Login</span></a>
+                <a href="register.html" class="bottom-nav-item ${currentPath==='register.html'?'active':''}"><i class="fas fa-user-plus"></i><span>Register</span></a>
+            `;
+        }
+        bottomNav.innerHTML = bottomHtml;
+        document.body.appendChild(bottomNav);
     }
 }
 

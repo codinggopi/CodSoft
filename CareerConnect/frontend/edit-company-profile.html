@@ -20,7 +20,13 @@
         .form-grid {
             display: grid;
             gap: 1.5rem;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
         }
 
         .full-width {

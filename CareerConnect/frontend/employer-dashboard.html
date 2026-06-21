@@ -64,6 +64,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1.5rem;
         }
     </style>
 </head>
@@ -86,11 +88,11 @@
                 <p style="font-size: 1.1rem; opacity: 0.9;" id="welcomeCompany"><i class="fas fa-building mr-2"></i>
                     Company Name</p>
             </div>
-            <div class="flex gap-4">
+            <div class="flex gap-4 flex-row-mobile" style="width: 100%; justify-content: flex-end;">
                 <a href="edit-company-profile.html" class="btn btn-outline"
-                    style="background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.3);">Edit
+                    style="background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.3); text-align: center; flex: 1;">Edit
                     Company Profile</a>
-                <a href="post-job.html" class="btn" style="background: white; color: var(--primary-color);">Post New
+                <a href="post-job.html" class="btn" style="background: white; color: var(--primary-color); text-align: center; flex: 1;">Post New
                     Job</a>
             </div>
         </div>
@@ -146,7 +148,7 @@
                         style="padding: 0.4rem 1rem; font-size: 0.9rem;">View All</a>
                 </div>
                 <div class="table-responsive">
-                    <table class="table" style="width: 100%; text-align: left; border-collapse: collapse;">
+                    <table class="table responsive-table" style="width: 100%; text-align: left; border-collapse: collapse;">
                         <thead>
                             <tr style="border-bottom: 2px solid var(--border-color);">
                                 <th style="padding: 1rem 0;">Job Title</th>
@@ -173,7 +175,7 @@
                         style="padding: 0.4rem 1rem; font-size: 0.9rem;">View All</a>
                 </div>
                 <div class="table-responsive">
-                    <table class="table" style="width: 100%; text-align: left; border-collapse: collapse;">
+                    <table class="table responsive-table" style="width: 100%; text-align: left; border-collapse: collapse;">
                         <thead>
                             <tr style="border-bottom: 2px solid var(--border-color);">
                                 <th style="padding: 1rem 0;">Candidate</th>

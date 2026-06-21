@@ -86,12 +86,11 @@
             <form action="jobs.html" class="flex gap-4 items-center" style="flex-wrap: wrap;">
                 <div class="input-with-icon" style="flex: 2; min-width: 200px;">
                     <i class="fas fa-search"></i>
-                    <input type="text" name="q" class="form-control" placeholder="Job Title, Skills, or Company"
+                    <input type="text" name="q" class="form-control" placeholder="Job Title, Skills or Company"
                         style="border: none; background: transparent; box-shadow: none;">
                 </div>
-                <div style="width: 1px; height: 30px; background-color: var(--border-color);" class="hidden-mobile">
-                </div>
-                <div class="input-with-icon" style="flex: 1; min-width: 150px;">
+                <div class="search-divider"></div>
+                <div class="input-with-icon" style="flex: 2; min-width: 150px;">
                     <i class="fas fa-map-marker-alt"></i>
                     <input type="text" name="loc" class="form-control" placeholder="Location"
                         style="border: none; background: transparent; box-shadow: none;">
@@ -256,7 +255,7 @@
         <h2 class="text-center mb-8">What Our Users Say</h2>
         <div class="flex gap-4 justify-center" style="flex-wrap: wrap;">
             <div class="card" style="flex: 1; min-width: 300px;">
-                <div class="flex gap-2 text-warning mb-4">
+                <div class="flex flex-row-mobile gap-2 text-warning mb-4">
                     <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
                         class="fas fa-star"></i><i class="fas fa-star"></i>
                 </div>
@@ -272,7 +271,7 @@
                 </div>
             </div>
             <div class="card" style="flex: 1; min-width: 300px;">
-                <div class="flex gap-2 text-warning mb-4">
+                <div class="flex flex-row-mobile gap-2 text-warning mb-4">
                     <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
                         class="fas fa-star"></i><i class="fas fa-star"></i>
                 </div>
@@ -288,7 +287,7 @@
                 </div>
             </div>
             <div class="card" style="flex: 1; min-width: 300px;">
-                <div class="flex gap-2 text-warning mb-4">
+                <div class="flex flex-row-mobile gap-2 text-warning mb-4">
                     <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
                         class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
                 </div>
@@ -404,64 +403,20 @@
     </section>
 
     <!-- Expanded Footer -->
-    <footer class="footer-advanced">
-        <div class="container">
-            <div class="flex gap-8 justify-between mb-8" style="flex-wrap: wrap;">
-                <div style="flex: 2; min-width: 300px;">
-                    <h3
-                        style="font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: white; margin-bottom: 1rem;">
-                        <i class="fas fa-briefcase"></i> CareerConnect
-                    </h3>
-                    <p style="opacity: 0.8; margin-bottom: 1.5rem; max-width: 400px;">Empowering professionals and
-                        companies to build better futures together. Your dream career starts here.</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-                <div style="flex: 1; min-width: 150px;">
-                    <h4>Quick Links</h4>
-                    <a href="index.html">Home</a>
-                    <a href="about.html">About Us</a>
-                    <a href="contact.html">Contact Us</a>
-                    <a href="jobs.html">Browse Jobs</a>
-                </div>
-                <div style="flex: 1; min-width: 150px;">
-                    <h4>Job Categories</h4>
-                    <a href="#">Technology</a>
-                    <a href="#">Finance</a>
-                    <a href="#">Marketing</a>
-                    <a href="#">Design</a>
-                </div>
-                <div style="flex: 1; min-width: 150px;">
-                    <h4>Resources</h4>
-                    <a href="#">Resume Guide</a>
-                    <a href="#">Interview Tips</a>
-                    <a href="#">Career Blog</a>
-                    <a href="#">FAQ</a>
-                </div>
-                <div style="flex: 1.5; min-width: 250px;">
-                    <h4>Subscribe to Newsletter</h4>
-                    <p style="opacity: 0.8; font-size: 0.875rem; margin-bottom: 1rem;">Get the latest job updates
-                        directly to your inbox.</p>
-                    <form class="flex" onsubmit="event.preventDefault(); alert('Subscribed!');">
-                        <input type="email" placeholder="Email Address"
-                            style="padding: 0.75rem; border: none; border-radius: 0.25rem 0 0 0.25rem; outline: none; width: 100%;"
-                            required>
-                        <button type="submit"
-                            style="padding: 0.75rem 1rem; border: none; background: var(--accent-color); color: white; border-radius: 0 0.25rem 0.25rem 0; cursor: pointer; font-weight: bold;">Subscribe</button>
-                    </form>
-                </div>
+    <footer class="footer-compact mt-auto"
+        style="background: var(--card-bg); border-top: 1px solid var(--border-color); padding: 1.5rem 0; margin-top: auto;">
+        <div class="container flex justify-between items-center" style="flex-wrap: wrap; gap: 1rem;">
+            <div style="font-weight: bold; color: var(--primary-color);">
+                <i class="fas fa-briefcase"></i> CareerConnect
             </div>
-            <div
-                style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; display: flex; justify-content: space-between; flex-wrap: wrap; opacity: 0.7; font-size: 0.875rem;">
-                <p>&copy; 2026 CareerConnect. All rights reserved.</p>
-                <div class="flex gap-4">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
-                </div>
+            <div class="flex gap-4" style="font-size: 0.875rem;">
+                <a href="#" style="color: var(--text-color); text-decoration: none;">About</a>
+                <a href="contact.html" style="color: var(--text-color); text-decoration: none;">Contact</a>
+                <a href="#" style="color: var(--text-color); text-decoration: none;">Privacy</a>
+                <a href="#" style="color: var(--text-color); text-decoration: none;">Terms</a>
+            </div>
+            <div style="font-size: 0.875rem; color: var(--text-muted);">
+                &copy; 2026 CareerConnect
             </div>
         </div>
     </footer>

@@ -8,9 +8,25 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .saas-container { max-width: 1400px; width: 92%; margin: 0 auto; padding: 2rem 0; }
-        .saas-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px; box-shadow: var(--shadow); }
-        .saas-section { margin-top: 32px; margin-bottom: 48px; }
+        .saas-container {
+            max-width: 1400px;
+            width: 92%;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .saas-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .saas-section {
+            margin-top: 32px;
+            margin-bottom: 48px;
+        }
     </style>
 </head>
 
@@ -27,8 +43,43 @@
     <div class="saas-container animate-fade-in" style="flex: 1;">
         <h1 style="font-size: 2.5rem; margin-bottom: 2rem;">Account Settings</h1>
 
-        <div class="saas-card saas-section">
-            <h3 class="mb-6 border-bottom pb-2">Change Password</h3>
+        <div class="tabs-header mb-6" style="display: flex; gap: 1rem; border-bottom: 2px solid var(--border-color); overflow-x: auto; white-space: nowrap; padding-bottom: 0.5rem;">
+            <button class="tab-btn active" onclick="switchTab('account', this)" style="background: none; border: none; color: var(--primary-color); font-weight: 600; cursor: pointer; padding: 0.5rem; border-bottom: 2px solid var(--primary-color);">Account</button>
+            <button class="tab-btn" onclick="switchTab('notifications', this)" style="background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer; padding: 0.5rem;">Notifications</button>
+            <button class="tab-btn" onclick="switchTab('privacy', this)" style="background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer; padding: 0.5rem;">Privacy</button>
+            <button class="tab-btn" onclick="switchTab('security', this)" style="background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer; padding: 0.5rem;">Security</button>
+        </div>
+
+        <div id="tab-account" class="tab-content" style="display: block;">
+            <div class="saas-card saas-section" style="display: flex; gap: 2rem; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 250px;">
+                    <h3 class="mb-6 border-bottom pb-2">Localization</h3><br>
+                    <div class="form-group">
+                        <label class="form-label">Timezone</label>
+                        <select class="form-control">
+                            <option>(UTC-08:00) Pacific Time (US & Canada)</option>
+                            <option>(UTC-05:00) Eastern Time (US & Canada)</option>
+                            <option selected>(UTC+00:00) London</option>
+                            <option>(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi</option>
+                            <option>(UTC+09:00) Tokyo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Language</label>
+                        <select class="form-control">
+                            <option selected>English (US)</option>
+                            <option>Spanish</option>
+                            <option>French</option>
+                            <option>German</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-security" class="tab-content" style="display: none;">
+            <div class="saas-card saas-section">
+                <h3 class="mb-6 border-bottom pb-2">Change Password</h3><br>
             <form id="formPassword">
                 <div class="form-group">
                     <label class="form-label" for="currentPassword">Current Password</label>
@@ -59,59 +110,23 @@
                 </div>
             </form>
         </div>
-
-        <div class="saas-card saas-section">
-            <h3 class="mb-6 border-bottom pb-2">Notification Preferences</h3>
             <div class="form-group" style="display: flex; align-items: center; gap: 1rem;">
                 <input type="checkbox" id="notifEmail" checked style="width: 20px; height: 20px;">
-                <label for="notifEmail" class="form-label mb-0" style="margin: 0;">Email Notifications for New Applicants / Jobs</label>
+                <label for="notifEmail" class="form-label mb-0" style="margin: 0;">Email Notifications for New
+                    Applicants / Jobs</label>
             </div>
             <div class="form-group" style="display: flex; align-items: center; gap: 1rem;">
                 <input type="checkbox" id="notifMarketing" style="width: 20px; height: 20px;">
-                <label for="notifMarketing" class="form-label mb-0" style="margin: 0;">Marketing & Newsletter Emails</label>
+                <label for="notifMarketing" class="form-label mb-0" style="margin: 0;">Marketing & Newsletter
+                    Emails</label>
             </div>
             <div class="flex justify-end mt-4">
-                <button type="button" class="btn btn-primary" onclick="alert('Preferences saved!')">Save Preferences</button>
+                <button type="button" class="btn btn-primary" onclick="alert('Preferences saved!')">Save
+                    Preferences</button>
             </div>
-        </div>
-
-        <div class="saas-card saas-section">
-            <h3 class="mb-6 border-bottom pb-2">Privacy & Visibility</h3>
-            <div class="form-group" style="display: flex; align-items: center; gap: 1rem;">
-                <input type="checkbox" id="profileVisible" checked style="width: 20px; height: 20px;">
-                <label for="profileVisible" class="form-label mb-0" style="margin: 0;">Make my profile public</label>
-            </div>
-            <div class="form-group" style="display: flex; align-items: center; gap: 1rem;">
-                <input type="checkbox" id="searchIndexing" style="width: 20px; height: 20px;">
-                <label for="searchIndexing" class="form-label mb-0" style="margin: 0;">Allow search engines to index my profile</label>
-            </div>
-        </div>
-
         <div class="saas-card saas-section" style="display: flex; gap: 2rem; flex-wrap: wrap;">
             <div style="flex: 1; min-width: 250px;">
-                <h3 class="mb-6 border-bottom pb-2">Localization</h3>
-                <div class="form-group">
-                    <label class="form-label">Timezone</label>
-                    <select class="form-control">
-                        <option>(UTC-08:00) Pacific Time (US & Canada)</option>
-                        <option>(UTC-05:00) Eastern Time (US & Canada)</option>
-                        <option selected>(UTC+00:00) London</option>
-                        <option>(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi</option>
-                        <option>(UTC+09:00) Tokyo</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Language</label>
-                    <select class="form-control">
-                        <option selected>English (US)</option>
-                        <option>Spanish</option>
-                        <option>French</option>
-                        <option>German</option>
-                    </select>
-                </div>
-            </div>
-            <div style="flex: 1; min-width: 250px;">
-                <h3 class="mb-6 border-bottom pb-2">Advanced Security</h3>
+                <h3 class="mb-6 border-bottom pb-2">Advanced Security</h3><br>
                 <div class="form-group">
                     <label class="form-label">Two-Factor Authentication (2FA)</label>
                     <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1rem;">Add an extra layer of security to your account.</p>
@@ -126,7 +141,7 @@
         </div>
 
         <div class="saas-card saas-section" style="border: 1px solid #ff4d4f; background: rgba(255, 77, 79, 0.05);">
-            <h3 class="mb-6 border-bottom pb-2" style="color: #ff4d4f;">Danger Zone</h3>
+            <h3 class="mb-6 border-bottom pb-2" style="color: #ff4d4f;">Danger Zone</h3><br>
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
                 <div>
                     <h4 style="margin-bottom: 0.5rem; font-weight: 600;">Deactivate Account</h4>
@@ -142,21 +157,54 @@
                 <button class="btn" style="background: #ff4d4f; color: white;" onclick="if(confirm('Are you sure? This cannot be undone.')) alert('Account deleted.')">Delete Account</button>
             </div>
         </div>
+        </div>
+
+        <div id="tab-notifications" class="tab-content" style="display: none;">
+            <div class="saas-card saas-section">
+                <h3 class="mb-6 border-bottom pb-2">Notification Preferences</h3><br>
+                <div class="form-group" style="display: flex; align-items: center; gap: 1rem;">
+                    <input type="checkbox" id="notifEmail" checked style="width: 20px; height: 20px;">
+                    <label for="notifEmail" class="form-label mb-0" style="margin: 0;">Email Notifications for New Applicants / Jobs</label>
+                </div>
+                <div class="form-group" style="display: flex; align-items: center; gap: 1rem;">
+                    <input type="checkbox" id="notifMarketing" style="width: 20px; height: 20px;">
+                    <label for="notifMarketing" class="form-label mb-0" style="margin: 0;">Marketing & Newsletter Emails</label>
+                </div>
+                <div class="flex justify-end mt-4">
+                    <button type="button" class="btn btn-primary" onclick="alert('Preferences saved!')">Save Preferences</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-privacy" class="tab-content" style="display: none;">
+            <div class="saas-card saas-section">
+                <h3 class="mb-6 border-bottom pb-2">Privacy & Visibility</h3><br>
+            <div class="form-group" style="display: flex; align-items: center; gap: 1rem;">
+                <input type="checkbox" id="profileVisible" checked style="width: 20px; height: 20px;">
+                <label for="profileVisible" class="form-label mb-0" style="margin: 0;">Make my profile public</label>
+            </div>
+            <div class="form-group" style="display: flex; align-items: center; gap: 1rem;">
+                <input type="checkbox" id="searchIndexing" style="width: 20px; height: 20px;">
+                <label for="searchIndexing" class="form-label mb-0" style="margin: 0;">Allow search engines to index my profile</label>
+            </div>
+        </div>
+        </div>
     </div>
 
     <!-- Expanded Footer -->
-    <footer class="footer-advanced mt-auto">
-        <div class="container">
-            <div class="flex gap-8 justify-between mb-8" style="flex-wrap: wrap;">
-                <div style="flex: 2; min-width: 300px;">
-                    <h3 style="font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: white; margin-bottom: 1rem;">
-                        <i class="fas fa-briefcase"></i> CareerConnect
-                    </h3>
-                    <p style="opacity: 0.8; margin-bottom: 1.5rem; max-width: 400px;">Enterprise-grade recruitment software for modern companies.</p>
-                </div>
+        <footer class="footer-compact mt-auto" style="background: var(--card-bg); border-top: 1px solid var(--border-color); padding: 1.5rem 0; margin-top: auto;">
+        <div class="container flex justify-between items-center" style="flex-wrap: wrap; gap: 1rem;">
+            <div style="font-weight: bold; color: var(--primary-color);">
+                <i class="fas fa-briefcase"></i> CareerConnect
             </div>
-            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; display: flex; justify-content: space-between; flex-wrap: wrap; opacity: 0.7; font-size: 0.875rem;">
-                <p>&copy; 2026 CareerConnect. All rights reserved.</p>
+            <div class="flex gap-4" style="font-size: 0.875rem;">
+                <a href="#" style="color: var(--text-color); text-decoration: none;">About</a>
+                <a href="contact.html" style="color: var(--text-color); text-decoration: none;">Contact</a>
+                <a href="#" style="color: var(--text-color); text-decoration: none;">Privacy</a>
+                <a href="#" style="color: var(--text-color); text-decoration: none;">Terms</a>
+            </div>
+            <div style="font-size: 0.875rem; color: var(--text-muted);">
+                &copy; 2026 CareerConnect
             </div>
         </div>
     </footer>
@@ -174,6 +222,19 @@
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             window.location.href = 'index.html';
+        }
+
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.style.color = 'var(--text-muted)';
+                el.style.borderBottom = 'none';
+                el.classList.remove('active');
+            });
+            document.getElementById(`tab-${tabId}`).style.display = 'block';
+            btn.style.color = 'var(--primary-color)';
+            btn.style.borderBottom = '2px solid var(--primary-color)';
+            btn.classList.add('active');
         }
     </script>
 </body>
