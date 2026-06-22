@@ -1,77 +1,92 @@
 # QuizSphere – Full Stack Online Quiz Maker
 
-QuizSphere is a production-ready, full-stack web application that allows users to create, participate in, and manage quizzes. Built for the CodSoft Web Development Internship (Level 2 Task 2).
+QuizSphere is a comprehensive, production-ready full-stack web application designed for creating, taking, and managing interactive online quizzes. It was developed as part of the **CodSoft Web Development Internship (Level 2 Task 2)**.
 
-## Tech Stack
+## ✨ Key Features
 
-- **Frontend:** HTML5, CSS3, Vanilla JavaScript (Modern, Responsive, Dark Mode)
-- **Backend:** Python FastAPI
-- **Database:** MySQL
-- **ORM:** SQLAlchemy
-- **Authentication:** JWT (JSON Web Tokens)
-- **Validation:** Pydantic
+- **Robust User Authentication**: Secure registration, login, and session management powered by JSON Web Tokens (JWT) and bcrypt hashing.
+- **Dynamic Quiz Builder**: Educators and users can easily construct complex quizzes featuring unlimited multiple-choice questions, custom categories, dynamic timers, and difficulty settings.
+- **Interactive Quiz Taking Experience**: A clean, distraction-free interface showing one question at a time, complete with progress tracking, visual feedback, and auto-submission when the timer expires.
+- **Comprehensive Analytics & Dashboards**: Instant post-quiz scoring, performance grading (e.g., Excellent, Needs Improvement), and a personal history dashboard.
+- **Global Leaderboards**: Real-time Top 10 global rankings to foster competition among users.
+- **Modern UI & UX**: Fully responsive layout optimized for Mobile, Tablet, and Desktop displays, featuring a persistent system-wide dark mode toggle.
 
-## Features
+## 🛠️ Technology Stack
 
-- **User Authentication:** Secure Register, Login, and Logout with JWT.
-- **Quiz Creation:** Create quizzes with unlimited multiple-choice questions, categories, and timers.
-- **Quiz Taking:** Interactive quiz interface with one question at a time, progress tracking, and auto-submission.
-- **Dashboard:** Personal statistics, quiz history, and management of created quizzes.
-- **Leaderboard:** Global rankings based on quiz performance.
-- **Dark Mode:** System-wide theme toggle with persistent user preference.
-- **Responsive Design:** Optimized for Mobile, Tablet, and Desktop.
+- **Frontend Environment**: HTML5, CSS3, Vanilla JavaScript
+- **Backend Framework**: Python FastAPI (Asynchronous, high-performance)
+- **Database System**: MySQL (Relational data persistence)
+- **Object-Relational Mapping (ORM)**: SQLAlchemy
+- **Data Validation & Settings**: Pydantic
+- **Security**: JWT (python-jose), Password Hashing (passlib)
 
-## Project Structure
+---
 
-```
+## 📂 Project Structure
+
+```text
 quizsphere/
-├── backend/                # FastAPI Backend
+├── backend/                # FastAPI Application Code
 │   ├── app/
-│   │   ├── auth/          # JWT & Hashing
-│   │   ├── database/      # DB Connection
-│   │   ├── models/        # SQLAlchemy Models
-│   │   ├── routers/       # API Endpoints
-│   │   ├── schemas/       # Pydantic Schemas
-│   │   └── main.py        # Entry Point
-│   ├── requirements.txt
-│   └── .env.example
-├── frontend/               # Vanilla JS Frontend
-│   ├── css/               # Styling & Dark Mode
-│   ├── js/                # Logic (Auth, Quiz, Profile)
-│   └── *.html             # Pages
-└── database_schema.sql     # MySQL Schema
+│   │   ├── auth/          # JWT handling and security logic
+│   │   ├── database/      # MySQL engine configuration
+│   │   ├── models/        # SQLAlchemy database tables
+│   │   ├── routers/       # RESTful API Endpoints
+│   │   ├── schemas/       # Pydantic data validation schemas
+│   │   └── main.py        # FastAPI entry point
+│   ├── requirements.txt   # Python package dependencies
+│   └── .env.example       # Example environment variables
+│
+├── frontend/               # Client-Side Application
+│   ├── css/               # Modular stylesheets and Dark Mode logic
+│   ├── js/                # Vanilla JS controllers (Auth, Quiz, Profile)
+│   └── *.html             # HTML Views
+│
+├── database_schema.sql     # Complete MySQL initialization script
+└── README.md               # Project documentation
 ```
 
-## Setup Instructions
+---
 
-### Backend Setup
-1. Navigate to the `backend` folder.
-2. Install dependencies directly: `pip install -r requirements.txt`.
-3. Create a `.env` file from `.env.example` and update your MySQL connection string.
-4. Run the server: `uvicorn app.main:app --reload`.
+## 🚀 Local Setup Instructions
 
-### Frontend Setup
-1. Open any HTML file (e.g., `index.html`) in a browser.
-2. Ensure the backend is running at `http://localhost:8000`.
+### 1. Database Setup
+1. Launch your local or remote MySQL client.
+2. Execute the commands provided in `database_schema.sql` to initialize the database and construct the necessary tables.
 
-## Deployment Guide
+### 2. Backend Setup
+1. Open your terminal and navigate to the `backend` folder:
+   ```bash
+   cd quizsphere/backend
+   ```
+2. Install the required Python dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Create a `.env` file based on `.env.example` and update your MySQL connection string (`DATABASE_URL`).
+4. Start the FastAPI development server:
+   ```bash
+   uvicorn app.main:app --reload
+   ```
+   *(The server will run at `http://localhost:8000`)*
 
-### Backend (Render / Vercel)
-1. Push the `backend` folder to a GitHub repository.
-2. Connect the repository to **Render** or **Vercel**.
-3. Set Environment Variables: `DATABASE_URL`, `SECRET_KEY`, etc.
-4. Set Build Command: `pip install -r requirements.txt`.
-5. Set Start Command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
+### 3. Frontend Setup
+1. Open the `frontend` directory in VS Code or your preferred editor.
+2. Serve the directory using a local development server (like VS Code's **Live Server** extension) or simply open the `index.html` file in any modern web browser.
+3. Ensure the backend is running so the frontend can fetch API data successfully.
 
-### Database (Railway / Aiven)
-1. Create a MySQL instance on **Railway**.
-2. Run the `database_schema.sql` script to initialize tables.
-3. Copy the Connection URL to the backend environment variables.
+---
 
-### Frontend (GitHub Pages / Netlify)
-1. Push the `frontend` folder to GitHub.
-2. Deploy using **GitHub Pages** or **Netlify**.
-3. Update `API_URL` in `js/auth.js` to point to your deployed backend.
+## 🌐 Deployment Guidelines
 
-## Author
-**Gopinath G** - CodSoft Web Development Intern
+This project is structured to be easily deployed to modern cloud hosting providers:
+
+- **Database**: Use managed MySQL services like **Railway**, **Aiven**, or **AWS RDS**.
+- **Backend API**: Deploy the FastAPI application to serverless or containerized platforms such as **Render**, **Vercel**, or **Railway**.
+- **Frontend App**: Host the static assets on **GitHub Pages**, **Netlify**, or **Vercel**. Don't forget to update the `API_URL` variable in your frontend JavaScript configuration to point to the live backend domain!
+
+---
+
+## 👤 Author
+**Gopinath G**  
+CodSoft Web Development Intern (June 2026)

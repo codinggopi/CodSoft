@@ -9,50 +9,57 @@ The platform connects employers and job seekers through a professional web appli
 - **Dark Mode**: Fully supported dark/light themes with local storage persistence.
 - **Role-Based Authentication**: Secure JWT authentication and bcrypt password hashing for Candidates, Employers, and Admins.
 - **Job Management**: Employers can post, edit, and delete jobs. Candidates can perform advanced searches and filter jobs.
-- **Resume Upload**: Candidates can upload resumes (PDF, DOC, DOCX) directly to the server.
+- **Cloud File Uploads**: Integrated with Cloudinary for seamless Profile Picture and Resume (PDF, DOC, DOCX) uploads.
 - **Dedicated Dashboards**: Custom views and statistics for tracking applications, jobs, and system-wide analytics.
 - **Password Toggle**: Integrated eye-icon toggle to easily show/hide passwords on all auth forms.
 
 ## 🛠️ Technology Stack
-- **Frontend**: HTML5, CSS3, Vanilla JavaScript, Font Awesome Icons.
-- **Backend**: Python FastAPI, SQLite database.
-- **Libraries/Tools**: SQLAlchemy (ORM), Pydantic (Data validation), python-jose (JWT), passlib (bcrypt password hashing), python-multipart (File uploads).
+- **Frontend**: HTML5, CSS3, Vanilla JavaScript, Font Awesome Icons. Hosted on **Netlify**.
+- **Backend**: Python FastAPI. Hosted on **Vercel**.
+- **Database**: PostgreSQL (managed via **Supabase**).
+- **Libraries/Tools**: SQLAlchemy (ORM), Pydantic (Data validation), python-jose (JWT), passlib (bcrypt password hashing), python-multipart (File uploads), Cloudinary SDK.
 
 ---
 
-## 🚀 Setup Instructions
+## 🚀 Live Demo & Deployment
 
-### 1. Backend Setup
-The backend does not include a pre-built virtual environment to keep the project lightweight. You will need to create one and install the requirements:
+- **Frontend Application**: [https://careerconnect-online.netlify.app](https://careerconnect-online.netlify.app)
+- **Backend API Docs**: [https://careerconnect-navy.vercel.app/docs](https://careerconnect-navy.vercel.app/docs)
 
-1. Open a terminal and navigate to the project root directory.
+*(Note: The backend is hosted on Vercel's serverless infrastructure, which might take a few seconds to warm up on the first request.)*
 
+---
+
+## 💻 Local Setup Instructions
+
+### 1. Database Setup
+The project is configured to use PostgreSQL. You can use a local PostgreSQL instance or a cloud provider like Supabase.
+
+### 2. Backend Setup
+1. Open a terminal and navigate to the `backend` directory.
 2. Install the required dependencies:
    ```bash
-   pip install -r backend/requirements.txt
+   pip install -r requirements.txt
    ```
-3. Start the backend FastAPI server:
+3. Create a `.env` file and fill in your database and Cloudinary credentials:
+   ```env
+   DATABASE_URL="postgresql://user:password@host:port/dbname"
+   SECRET_KEY="your_super_secret_jwt_key"
+   CLOUDINARY_CLOUD_NAME="your_cloud_name"
+   CLOUDINARY_API_KEY="your_api_key"
+   CLOUDINARY_API_SECRET="your_api_secret"
+   FRONTEND_URL="http://127.0.0.1:5500"
+   BACKEND_URL="http://localhost:8000"
+   ```
+4. Start the backend FastAPI server:
    ```bash
-   cd backend
    uvicorn main:app --reload
    ```
-   *The backend API will start running at `https://careerconnect-navy.vercel.app`.*
 
-### 2. Frontend Setup
-1. Simply open the `frontend/index.html` file in your web browser.
-2. Alternatively, serve the `frontend` directory using a local development server (like VS Code's **Live Server** extension) for the best experience.
-3. The frontend utilizes vanilla JavaScript `fetch` to communicate directly with the running FastAPI backend.
-
----
-
-## 🔐 Demo Accounts
-The SQLite database automatically seeds the following accounts on startup. You can use these to test the various dashboards:
-
-| Role | Email | Password |
-|------|-------|----------|
-| **Admin** | `admin@careerconnect.com` | `Admin@123` |
-| **Employer** | `employer@careerconnect.com` | `Employer@123` |
-| **Candidate** | `candidate@careerconnect.com` | `Candidate@123` |
+### 3. Frontend Setup
+1. Open the `frontend` directory in VS Code.
+2. Use the **Live Server** extension to serve the files (usually starts on port 5500).
+3. The frontend utilizes vanilla JavaScript `fetch` to communicate directly with the FastAPI backend.
 
 ---
 
@@ -72,12 +79,13 @@ CareerConnect/
 │   ├── models.py
 │   ├── schemas.py
 │   ├── auth.py
+│   ├── cloudinary_config.py
 │   ├── requirements.txt
-│   ├── routes/
-│   │   ├── users.py
-│   │   ├── jobs.py
-│   │   └── applications.py
-│   └── uploads/ (Created automatically on first resume upload)
+│   ├── .env.example
+│   └── routes/
+│       ├── users.py
+│       ├── jobs.py
+│       └── applications.py
 │
 └── README.md
 ```

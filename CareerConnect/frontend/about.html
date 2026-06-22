@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About | CareerConnect</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/jpeg" href="assets/carrerconnect.jpeg">
 </head>
+
 <body class="flex flex-col" style="min-height: 100vh;">
     <nav class="navbar">
         <div class="container flex justify-between items-center">
@@ -28,20 +31,25 @@
         <h1 class="text-center mb-8" style="font-size: 2.5rem;">About CareerConnect</h1>
         <div class="card mb-8 scroll-reveal">
             <h2 style="color: var(--primary-color);">Our Mission</h2>
-            <p class="mt-4 text-muted text-lg">Our mission is to bridge the gap between top talent and innovative companies. We believe in creating a transparent, efficient, and user-friendly platform that empowers job seekers to find their dream careers and helps employers discover exceptional candidates.</p>
+            <p class="mt-4 text-muted text-lg">Our mission is to bridge the gap between top talent and innovative
+                companies. We believe in creating a transparent, efficient, and user-friendly platform that empowers job
+                seekers to find their dream careers and helps employers discover exceptional candidates.</p>
         </div>
         <div class="card mb-8 scroll-reveal">
             <h2 style="color: var(--primary-color);">Our Vision</h2>
-            <p class="mt-4 text-muted text-lg">We envision a world where finding the right job or the right candidate is a seamless experience, driven by technology and human connection.</p>
+            <p class="mt-4 text-muted text-lg">We envision a world where finding the right job or the right candidate is
+                a seamless experience, driven by technology and human connection.</p>
         </div>
         <div class="card scroll-reveal">
             <h2 style="color: var(--primary-color);">Our Team</h2>
-            <p class="mt-4 text-muted text-lg">Developed by passionate engineers as part of the CodSoft Internship Level 2 Task 1.</p>
+            <p class="mt-4 text-muted text-lg">Developed by passionate engineers as part of the CodSoft Internship Level
+                2 Task 1.</p>
         </div>
     </div>
 
     <!-- Expanded Footer -->
-        <footer class="footer-compact mt-auto" style="background: var(--card-bg); border-top: 1px solid var(--border-color); padding: 1.5rem 0; margin-top: auto;">
+    <footer class="footer-compact mt-auto"
+        style="background: var(--card-bg); border-top: 1px solid var(--border-color); padding: 1.5rem 0; margin-top: auto;">
         <div class="container flex justify-between items-center" style="flex-wrap: wrap; gap: 1rem;">
             <div style="font-weight: bold; color: var(--primary-color);">
                 <i class="fas fa-briefcase"></i> CareerConnect
@@ -64,8 +72,8 @@
         if (token && loginLink) {
             loginLink.textContent = "Dashboard";
             const user = JSON.parse(localStorage.getItem('user') || '{}');
-            if(user.role === 'admin') loginLink.href = 'admin-dashboard.html';
-            else if(user.role === 'employer') loginLink.href = 'employer-dashboard.html';
+            if (user.role === 'admin') loginLink.href = 'admin-dashboard.html';
+            else if (user.role === 'employer') loginLink.href = 'employer-dashboard.html';
             else loginLink.href = 'candidate-dashboard.html';
         }
 
@@ -73,12 +81,12 @@
         setTimeout(() => {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if(entry.isIntersecting) entry.target.classList.add('visible');
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
                 });
             });
             document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
         }, 100);
     </script>
 </body>
-</html>
 
+</html>
