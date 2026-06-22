@@ -36,7 +36,7 @@ The backend does not include a pre-built virtual environment to keep the project
    cd backend
    uvicorn main:app --reload
    ```
-   *The backend API will start running at `http://127.0.0.1:8000`.*
+   *The backend API will start running at `https://careerconnect-navy.vercel.app`.*
 
 ### 2. Frontend Setup
 1. Simply open the `frontend/index.html` file in your web browser.

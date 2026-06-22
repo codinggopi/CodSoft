@@ -7,11 +7,14 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
     email = Column(String, unique=True, index=True)
-    phone = Column(String)
-    password = Column(String)
+    phone = Column(String, nullable=True)
+    password = Column(String, nullable=True)
     role = Column(String) # 'admin', 'employer', 'candidate'
-    security_question = Column(String)
-    security_answer = Column(String)
+    security_question = Column(String, nullable=True)
+    security_answer = Column(String, nullable=True)
+    oauth_provider = Column(String, nullable=True)
+    oauth_id = Column(String, nullable=True, unique=True)
+    profile_picture = Column(String, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 class Company(Base):

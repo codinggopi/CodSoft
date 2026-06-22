@@ -23,20 +23,25 @@ def create_db_and_tables():
 
 app = FastAPI(title="CareerConnect API")
 
+import os
+
+FRONTEND_URL = os.getenv("FRONTEND_URL", "https://careerconnect-online.netlify.app")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[FRONTEND_URL],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-from routes import users, jobs, applications, companies
+from routes import users, jobs, applications, companies, oauth
 
 app.include_router(users.router)
 app.include_router(jobs.router)
 app.include_router(applications.router)
 app.include_router(companies.router)
+app.include_router(oauth.router)
 
 @app.on_event("startup")
 def on_startup():
