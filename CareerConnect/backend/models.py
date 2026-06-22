@@ -12,9 +12,6 @@ class User(Base):
     role = Column(String) # 'admin', 'employer', 'candidate'
     security_question = Column(String, nullable=True)
     security_answer = Column(String, nullable=True)
-    oauth_provider = Column(String, nullable=True)
-    oauth_id = Column(String, nullable=True, unique=True)
-    profile_picture = Column(String, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 class Company(Base):

@@ -35,13 +35,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-from routes import users, jobs, applications, companies, oauth
+from routes import users, jobs, applications, companies
 
 app.include_router(users.router)
 app.include_router(jobs.router)
 app.include_router(applications.router)
 app.include_router(companies.router)
-app.include_router(oauth.router)
 
 @app.on_event("startup")
 def on_startup():

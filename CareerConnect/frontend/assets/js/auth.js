@@ -1,36 +1,5 @@
 const API_URL = "https://careerconnect-navy.vercel.app";
 
-// Handle OAuth redirects
-function handleOAuth(provider) {
-    const btn = provider === 'google' 
-        ? document.querySelector('.fa-google').parentElement 
-        : document.querySelector('.fa-linkedin').parentElement;
-    if (btn) btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirecting...';
-    window.location.href = `${API_URL}/auth/${provider}`;
-}
-
-// Check for OAuth token in URL
-const urlParams = new URLSearchParams(window.location.search);
-const oauthToken = urlParams.get('token');
-if (oauthToken) {
-    localStorage.setItem('token', oauthToken);
-    
-    fetch(`${API_URL}/users/profile`, {
-        headers: { 'Authorization': `Bearer ${oauthToken}` }
-    })
-    .then(res => res.json())
-    .then(profile => {
-        localStorage.setItem('user', JSON.stringify(profile));
-        if (profile.role === 'admin') window.location.href = 'admin-dashboard.html';
-        else if (profile.role === 'employer') window.location.href = 'employer-dashboard.html';
-        else window.location.href = 'candidate-dashboard.html';
-    })
-    .catch(err => {
-        console.error('Error fetching profile after OAuth:', err);
-        alert('Authentication failed');
-        window.location.href = 'login.html';
-    });
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     // Login Form
