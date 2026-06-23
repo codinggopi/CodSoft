@@ -217,7 +217,7 @@
 
             // Fetch company details
             const token = localStorage.getItem('token');
-            fetch(`${window.API_URL || 'https://careerconnect-navy.vercel.app'}/companies/me`, {
+            fetch(`${API_BASE_URL}/companies/me`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             })
                 .then(res => res.json())

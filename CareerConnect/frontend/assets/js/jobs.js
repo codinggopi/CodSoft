@@ -1,4 +1,3 @@
-const API_URL = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : "https://careerconnect-navy.vercel.app";
 
 window.demoJobs = [
     { id: 'demo-1', title: 'Frontend Developer', company: 'TechNova', location: 'San Francisco, CA', salary: '$120k - $140k', job_type: 'Full Time', skills: 'React, HTML, CSS', description: 'Build beautiful UIs.', requirements: '3+ years React' },
@@ -32,12 +31,12 @@ window.generateJobCard = function (job, isDemo = false) {
     return `
         <div class="card job-card flex flex-col justify-between">
             <div>
-                <div class="flex justify-between items-start mb-4">
-                    <div class="flex gap-4 items-center">
+                <div class="flex justify-between items-start mb-4" style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div class="flex gap-4 items-center" style="display: flex; gap: 1rem; align-items: center;">
                         <div class="company-logo-placeholder" style="background: ${color.bg}; color: ${color.text};">${initial}</div>
                         <div>
                             <h3 style="font-size: 1.1rem; color: var(--text-color); margin-bottom: 0.25rem;">${job.title}</h3>
-                            <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-2" style="display: flex; align-items: center; gap: 0.5rem;">
                                 <p class="text-muted" style="font-size: 0.875rem; margin: 0;">${job.company}</p>
                                 ${!isDemo && job.employer_id ? `<a href="public-company-profile.html?employer_id=${job.employer_id}" style="font-size: 0.75rem; color: var(--primary-color); text-decoration: underline;"><i class="fas fa-external-link-alt"></i></a>` : ''}
                             </div>
@@ -45,11 +44,11 @@ window.generateJobCard = function (job, isDemo = false) {
                     </div>
                     <button class="btn btn-outline" style="padding: 0.25rem 0.5rem; border-color: var(--border-color); color: var(--text-muted);"><i class="far fa-bookmark"></i></button>
                 </div>
-                <div class="flex gap-4 text-muted mb-4" style="font-size: 0.875rem; flex-wrap: wrap;">
-                    <span><i class="fas fa-map-marker-alt mr-2"></i>${job.location}</span>
-                    <span><i class="fas fa-money-bill-wave mr-2"></i>${job.salary}</span>
+                <div class="flex gap-4 text-muted mb-4" style="display: flex; gap: 1rem; font-size: 0.875rem; flex-wrap: wrap;">
+                    <span><i class="fas fa-map-marker-alt mr-2" style="margin-right: 0.5rem;"></i>${job.location}</span>
+                    <span><i class="fas fa-money-bill-wave mr-2" style="margin-right: 0.5rem;"></i>${job.salary}</span>
                 </div>
-                <div class="flex gap-2 mb-4 flex-wrap">
+                <div class="flex gap-2 mb-4 flex-wrap" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                     ${badgesHtml}
                 </div>
             </div>
@@ -106,7 +105,7 @@ async function fetchJobs() {
     const isHomePage = window.location.pathname.endsWith('index.html') || window.location.pathname === '/';
 
     try {
-        const response = await fetch(`${API_URL}/jobs/`);
+        const response = await fetch(`${API_BASE_URL}/jobs/`);
         let jobs = [];
         if (response.ok) {
             jobs = await response.json();

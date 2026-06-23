@@ -1,4 +1,3 @@
-const API_URL = "https://careerconnect-navy.vercel.app";
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -15,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('password', password);
 
             try {
-                const response = await fetch(`${API_URL}/users/login`, {
+                const response = await fetch(`${API_BASE_URL}/users/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: formData
@@ -26,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('token', data.access_token);
 
                     // Fetch profile to redirect based on role
-                    const profileRes = await fetch(`${API_URL}/users/profile`, {
+                    const profileRes = await fetch(`${API_BASE_URL}/users/profile`, {
                         headers: { 'Authorization': `Bearer ${data.access_token}` }
                     });
 
@@ -100,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Request Payload:", JSON.stringify(payload, null, 2));
 
             try {
-                const response = await fetch(`${API_URL}/users/register`, {
+                const response = await fetch(`${API_BASE_URL}/users/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
