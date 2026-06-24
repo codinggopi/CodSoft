@@ -34,20 +34,26 @@
             <h1 style="font-size: 2.5rem;">My Profile</h1>
             <button class="btn btn-outline" id="editProfileBtn" onclick="toggleEdit()"><i class="fas fa-edit mr-2"></i>
                 Edit Profile</button>
-            <div id="saveActionDiv" style="display: none; display: flex; gap: 1rem;">
+            <div id="saveActionDiv" style="display: none; gap: 1rem;">
                 <button type="button" class="btn btn-outline" onclick="cancelEdit()">Cancel</button>
                 <button type="submit" form="profileForm" class="btn btn-primary">Save Profile</button>
             </div>
         </div>
 
-        <div class="tabs-header mb-6" style="display: flex; gap: 1rem; border-bottom: 2px solid var(--border-color); overflow-x: auto; white-space: nowrap; padding-bottom: 0.5rem;">
-            <button class="tab-btn active" onclick="switchTab('personal', this)" style="background: none; border: none; color: var(--primary-color); font-weight: 600; cursor: pointer; padding: 0.5rem; border-bottom: 2px solid var(--primary-color);">Personal Info</button>
-            <button class="tab-btn" onclick="switchTab('professional', this)" style="background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer; padding: 0.5rem;">Professional Info</button>
-            <button class="tab-btn" onclick="switchTab('security', this)" style="background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer; padding: 0.5rem;">Security</button>
+        <div class="tabs-header mb-6"
+            style="display: flex; gap: 1rem; border-bottom: 2px solid var(--border-color); overflow-x: auto; white-space: nowrap; padding-bottom: 0.5rem;">
+            <button class="tab-btn active" onclick="switchTab('personal', this)"
+                style="background: none; border: none; color: var(--primary-color); font-weight: 600; cursor: pointer; padding: 0.5rem; border-bottom: 2px solid var(--primary-color);">Personal
+                Info</button>
+            <button class="tab-btn" onclick="switchTab('professional', this)"
+                style="background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer; padding: 0.5rem;">Professional
+                Info</button>
+            <button class="tab-btn" onclick="switchTab('security', this)"
+                style="background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer; padding: 0.5rem;">Security</button>
         </div>
 
         <form id="profileForm">
-            
+
             <div id="tab-personal" class="tab-content profile-main" style="display: block;">
                 <div class="flex flex-col items-center mb-8">
                     <img id="profileImagePreview" src="" alt="Profile"
@@ -92,7 +98,7 @@
                 </div>
             </div>
 
-            
+
             <div id="tab-professional" class="tab-content profile-main" style="display: none;">
                 <h3 class="mb-6" style="border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
                     Professional Details</h3>
@@ -148,26 +154,28 @@
             </div>
         </form>
 
-        
+
         <div id="tab-security" class="tab-content" style="display: none;">
             <div class="danger-zone mt-8"
                 style="background: var(--card-bg); border: 2px solid #DC2626; border-radius: 0.5rem; padding: 2rem;">
-            <div class="flex justify-between items-center" style="flex-wrap: wrap; gap: 1rem;">
-                <div>
-                    <h3 style="color: #DC2626; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                        <i class="fas fa-exclamation-triangle"></i> Danger Zone
-                    </h3>
-                    <p class="text-muted" style="margin: 0;">Permanently delete your account and all associated data.
-                        This action cannot be undone.</p>
+                <div class="flex justify-between items-center" style="flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                        <h3
+                            style="color: #DC2626; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <i class="fas fa-exclamation-triangle"></i> Danger Zone
+                        </h3>
+                        <p class="text-muted" style="margin: 0;">Permanently delete your account and all associated
+                            data.
+                            This action cannot be undone.</p>
+                    </div>
+                    <button type="button" class="btn btn-danger" onclick="openDeleteModal()"
+                        style="background: #DC2626; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; font-weight: bold; transition: background 0.3s;">Delete
+                        Account</button>
                 </div>
-                <button type="button" class="btn btn-danger" onclick="openDeleteModal()"
-                    style="background: #DC2626; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; font-weight: bold; transition: background 0.3s;">Delete
-                    Account</button>
-            </div>
             </div>
         </div>
 
-        
+
         <div id="deleteModal" class="saas-modal-overlay"
             style="display: none; align-items: center; justify-content: center; z-index: 1000; background: rgba(0,0,0,0.6);">
             <div class="card" style="width: 100%; max-width: 450px; padding: 2rem; background: var(--card-bg);">
@@ -192,8 +200,9 @@
         </div>
     </div>
 
-    
-        <footer class="footer-compact mt-auto" style="background: var(--card-bg); border-top: 1px solid var(--border-color); padding: 1.5rem 0; margin-top: auto;">
+
+    <footer class="footer-compact mt-auto"
+        style="background: var(--card-bg); border-top: 1px solid var(--border-color); padding: 1.5rem 0; margin-top: auto;">
         <div class="container flex justify-between items-center" style="flex-wrap: wrap; gap: 1rem;">
             <div style="font-weight: bold; color: var(--primary-color);">
                 <i class="fas fa-briefcase"></i> CareerConnect
@@ -362,7 +371,7 @@
             btn.disabled = true;
 
             const token = localStorage.getItem('token');
-            
+
 
             try {
                 const res = await fetch(`${API_BASE_URL}/users/me`, {

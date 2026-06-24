@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Profile | CareerConnect</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #2a52be 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-radius: 0 0 24px 24px;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .company-logo {
+            width: 150px;
+            height: 150px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            margin-top: -100px;
+            background: white;
+            position: relative;
+            z-index: 10;
+        }
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+        .info-item i {
+            width: 24px;
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+        .job-card {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .job-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+        .tag {
+            background: rgba(var(--primary-color-rgb, 42, 82, 190), 0.1);
+            color: var(--primary-color);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+        @media (max-width: 768px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+            .company-logo {
+                width: 120px;
+                height: 120px;
+                margin-top: -80px;
+            }
+        }
+        .loader {
+            text-align: center;
+            padding: 4rem;
+            color: var(--primary-color);
+        }
+        .hidden {
+            display: none !important;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+        }
+    </style>
+    <link rel="icon" type="image/jpeg" href="assets/carrerconnect.jpeg">
+</head>
+<body class="flex flex-col" style="min-height: 100vh;">
+    <nav class="navbar">
+        <div class="container flex justify-between items-center">
+            <a href="index.html" class="nav-brand"><i class="fas fa-briefcase"></i> CareerConnect</a>
+            <div class="nav-links" id="navLinks">
+                <a href="jobs.html" class="nav-link">Jobs</a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="loader" class="loader">
+        <i class="fas fa-spinner fa-spin fa-3x"></i>
+        <p style="margin-top: 1rem;">Loading company profile...</p>
+    </div>
+
+    <div id="errorState" class="hidden empty-state">
+        <i class="fas fa-building fa-4x" style="color: var(--border-color); margin-bottom: 1rem;"></i>
+        <h2>Company Not Found</h2>
+        <p>This company profile does not exist or has been removed.</p>
+        <a href="jobs.html" class="btn btn-primary" style="margin-top: 1rem; display: inline-block;">Back to Jobs</a>
+    </div>
+
+    <div id="profileContent" class="hidden" style="flex: 1;">
+        <div class="hero-section">
+            <div class="hero-content">
+                <h1 id="heroName" style="font-size: 2.5rem; margin-bottom: 0.5rem;">Company Name</h1>
+                <p id="heroIndustry" style="font-size: 1.2rem; opacity: 0.9;"><i class="fas fa-industry" style="margin-right: 0.5rem;"></i> Industry</p>
+            </div>
+        </div>
+
+        <div style="text-align: center;">
+            <img id="logo" src="https://via.placeholder.com/150" alt="Company Logo" class="company-logo">
+        </div>
+
+        <div class="profile-grid" style="margin-top: 2rem;">
+            <!-- Main Content -->
+            <div>
+                <div class="glass-card">
+                    <h2 style="margin-bottom: 1rem;">About Us</h2>
+                    <p id="description" style="line-height: 1.6; white-space: pre-wrap;">Company description goes here.</p>
+                    
+                    <div style="margin-top: 1.5rem;" id="missionSection">
+                        <h3 style="margin-bottom: 0.5rem;">Our Mission</h3>
+                        <p id="mission" style="line-height: 1.6;"></p>
+                    </div>
+
+                    <div style="margin-top: 1.5rem;" id="visionSection">
+                        <h3 style="margin-bottom: 0.5rem;">Our Vision</h3>
+                        <p id="vision" style="line-height: 1.6;"></p>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h2 style="margin-bottom: 1rem;">Open Positions (<span id="jobCount">0</span>)</h2>
+                    <div id="jobsList">
+                        <!-- Jobs will be injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div>
+                <div class="glass-card">
+                    <h3 style="margin-bottom: 1rem;">Company Overview</h3>
+                    <div class="info-item" id="hqLocation">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Location</span>
+                    </div>
+                    <div class="info-item" id="companySize">
+                        <i class="fas fa-users"></i>
+                        <span>Size</span>
+                    </div>
+                    <div class="info-item" id="founded">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Founded Year</span>
+                    </div>
+                    <div class="info-item" id="websiteLink">
+                        <i class="fas fa-globe"></i>
+                        <a href="#" target="_blank" style="color: var(--primary-color); text-decoration: none;">Website</a>
+                    </div>
+                    <div class="info-item" id="linkedinLink">
+                        <i class="fab fa-linkedin"></i>
+                        <a href="#" target="_blank" style="color: var(--primary-color); text-decoration: none;">LinkedIn</a>
+                    </div>
+                </div>
+
+                <div class="glass-card" id="benefitsCard">
+                    <h3 style="margin-bottom: 1rem;">Benefits</h3>
+                    <p id="benefitsText" style="line-height: 1.6; white-space: pre-wrap;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/config.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const employerId = urlParams.get('employer_id');
+
+            const loader = document.getElementById('loader');
+            const errorState = document.getElementById('errorState');
+            const profileContent = document.getElementById('profileContent');
+
+            if (!employerId) {
+                loader.classList.add('hidden');
+                errorState.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                // Fetch company details
+                const companyRes = await fetch(`${API_BASE_URL}/companies/employer/${employerId}`);
+                if (!companyRes.ok) throw new Error('Company not found');
+                const company = await companyRes.json();
+
+                // Populate UI
+                document.title = `${company.name} | CareerConnect`;
+                document.getElementById('heroName').textContent = company.name;
+                document.getElementById('heroIndustry').innerHTML = `<i class="fas fa-industry" style="margin-right: 0.5rem;"></i> ${company.industry || 'Unknown Industry'}`;
+                
+                if (company.logo_url) {
+                    document.getElementById('logo').src = company.logo_url;
+                } else {
+                    document.getElementById('logo').src = 'assets/carrerconnect.jpeg';
+                }
+
+                document.getElementById('description').textContent = company.description || 'No description provided.';
+                
+                if (company.mission) {
+                    document.getElementById('mission').textContent = company.mission;
+                } else {
+                    document.getElementById('missionSection').style.display = 'none';
+                }
+
+                if (company.vision) {
+                    document.getElementById('vision').textContent = company.vision;
+                } else {
+                    document.getElementById('visionSection').style.display = 'none';
+                }
+
+                // Sidebar
+                document.getElementById('hqLocation').querySelector('span').textContent = company.location || 'Not specified';
+                document.getElementById('companySize').querySelector('span').textContent = company.size || 'Not specified';
+                document.getElementById('founded').querySelector('span').textContent = company.founded_year || 'Not specified';
+
+                if (company.website) {
+                    document.getElementById('websiteLink').querySelector('a').href = company.website;
+                    document.getElementById('websiteLink').querySelector('a').textContent = company.website.replace(/^https?:\/\//, '');
+                } else {
+                    document.getElementById('websiteLink').style.display = 'none';
+                }
+
+                if (company.linkedin) {
+                    document.getElementById('linkedinLink').querySelector('a').href = company.linkedin;
+                    document.getElementById('linkedinLink').querySelector('a').textContent = "LinkedIn Profile";
+                } else {
+                    document.getElementById('linkedinLink').style.display = 'none';
+                }
+
+                if (company.benefits) {
+                    document.getElementById('benefitsText').textContent = company.benefits;
+                } else {
+                    document.getElementById('benefitsCard').style.display = 'none';
+                }
+
+                // Fetch jobs
+                const jobsRes = await fetch(`${API_BASE_URL}/jobs/?employer_id=${employerId}`);
+                if (jobsRes.ok) {
+                    const jobs = await jobsRes.json();
+                    document.getElementById('jobCount').textContent = jobs.length;
+                    
+                    const jobsList = document.getElementById('jobsList');
+                    if (jobs.length === 0) {
+                        jobsList.innerHTML = '<p style="color: var(--text-color); opacity: 0.8;">No open positions currently available.</p>';
+                    } else {
+                        jobsList.innerHTML = jobs.map(job => `
+                            <div class="job-card">
+                                <h3 style="margin-bottom: 0.5rem; color: var(--primary-color);">${job.title}</h3>
+                                <div style="margin-bottom: 1rem; color: var(--text-color); font-size: 0.9rem;">
+                                    <span class="tag"><i class="fas fa-map-marker-alt"></i> ${job.location}</span>
+                                    <span class="tag"><i class="fas fa-briefcase"></i> ${job.job_type}</span>
+                                    <span class="tag"><i class="fas fa-money-bill-wave"></i> ${job.salary}</span>
+                                </div>
+                                <a href="job-details.html?id=${job.id}" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.9rem; text-decoration: none; display: inline-block;">View Details</a>
+                            </div>
+                        `).join('');
+                    }
+                }
+
+                // Show profile
+                loader.classList.add('hidden');
+                profileContent.classList.remove('hidden');
+
+            } catch (err) {
+                console.error(err);
+                loader.classList.add('hidden');
+                errorState.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

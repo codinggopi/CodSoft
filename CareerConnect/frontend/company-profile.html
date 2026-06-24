@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,19 +16,22 @@
             max-width: 800px;
             margin: 0 auto;
         }
+
         .form-grid {
             display: grid;
             gap: 1.5rem;
             grid-template-columns: 1fr 1fr;
         }
+
         .full-width {
             grid-column: 1 / -1;
         }
     </style>
     <link rel="icon" type="image/jpeg" href="assets/carrerconnect.jpeg">
 </head>
+
 <body class="flex flex-col" style="min-height: 100vh;">
-    
+
     <nav class="navbar">
         <div class="container flex justify-between items-center">
             <a href="index.html" class="nav-brand"><i class="fas fa-briefcase"></i> CareerConnect</a>
@@ -41,13 +44,18 @@
         <div class="profile-container">
             <div class="flex justify-between items-center mb-6 border-bottom pb-4">
                 <h1 style="font-size: 1.8rem;">Company Profile</h1>
-                <a href="edit-company-profile.html" class="btn btn-outline" id="editBtn">Edit Profile</a>
+                <button class="btn btn-outline" id="editProfileBtn" onclick="toggleEdit()"><i class="fas fa-edit mr-2"></i> Edit Profile</button>
+                <div id="saveActionDiv" style="display: none; gap: 1rem;">
+                    <button type="button" class="btn btn-outline" onclick="cancelEdit()">Cancel</button>
+                    <button type="submit" form="companyForm" class="btn btn-primary">Save Profile</button>
+                </div>
             </div>
 
             <form id="companyForm">
                 <div class="form-grid">
                     <div class="full-width" style="text-align: center; margin-bottom: 1rem;">
-                        <img id="logoPreview" src="https://via.placeholder.com/150" alt="Company Logo" style="width: 120px; height: 120px; border-radius: 12px; object-fit: cover; border: 3px solid var(--border-color); margin-bottom: 1rem;">
+                        <img id="logoPreview" src="https://via.placeholder.com/150" alt="Company Logo"
+                            style="width: 120px; height: 120px; border-radius: 12px; object-fit: cover; border: 3px solid var(--border-color); margin-bottom: 1rem;">
                     </div>
 
                     <div class="form-group full-width">
@@ -96,7 +104,7 @@
                         <label class="form-label">About Company (Description)</label>
                         <textarea id="description" class="form-control" rows="4" disabled></textarea>
                     </div>
-                    
+
                     <div class="form-group full-width">
                         <label class="form-label">Mission Statement</label>
                         <textarea id="mission" class="form-control" rows="3" disabled></textarea>
@@ -120,6 +128,7 @@
     <script src="assets/js/config.js"></script>
     <script>
         let isEditing = false;
+        let originalCompanyData = null;
 
         document.addEventListener('DOMContentLoaded', async () => {
             const token = localStorage.getItem('token');
@@ -135,23 +144,94 @@
 
                 if (response.ok) {
                     const company = await response.json();
-                    document.getElementById('companyName').value = company.name || '';
-                    document.getElementById('industry').value = company.industry || '';
-                    document.getElementById('size').value = company.size || '';
-                    document.getElementById('location').value = company.location || '';
-                    document.getElementById('foundedYear').value = company.founded_year || '';
-                    document.getElementById('website').value = company.website || '';
-                    document.getElementById('linkedin').value = company.linkedin || '';
-                    document.getElementById('description').value = company.description || '';
-                    document.getElementById('mission').value = company.mission || '';
-                    document.getElementById('vision').value = company.vision || '';
-                    document.getElementById('benefits').value = company.benefits || '';
-                    if (company.logo_url) {
-                        document.getElementById('logoPreview').src = company.logo_url;
-                    }
+                    originalCompanyData = company;
+                    populateFields(company);
                 }
             } catch (err) {
                 console.error('Error fetching company profile:', err);
+            }
+        });
+
+        function populateFields(company) {
+            document.getElementById('companyName').value = company.name || '';
+            document.getElementById('industry').value = company.industry || '';
+            document.getElementById('size').value = company.size || '';
+            document.getElementById('location').value = company.location || '';
+            document.getElementById('foundedYear').value = company.founded_year || '';
+            document.getElementById('website').value = company.website || '';
+            document.getElementById('linkedin').value = company.linkedin || '';
+            document.getElementById('description').value = company.description || '';
+            document.getElementById('mission').value = company.mission || '';
+            document.getElementById('vision').value = company.vision || '';
+            document.getElementById('benefits').value = company.benefits || '';
+            if (company.logo_url) {
+                document.getElementById('logoPreview').src = company.logo_url;
+            }
+        }
+
+        function toggleEdit() {
+            isEditing = true;
+            document.getElementById('editProfileBtn').style.display = 'none';
+            document.getElementById('saveActionDiv').style.display = 'flex';
+
+            const inputs = document.querySelectorAll('#companyForm input, #companyForm textarea, #companyForm select');
+            inputs.forEach(input => input.disabled = false);
+            document.getElementById('companyName').focus();
+        }
+
+        function cancelEdit() {
+            isEditing = false;
+            document.getElementById('editProfileBtn').style.display = 'inline-flex';
+            document.getElementById('saveActionDiv').style.display = 'none';
+
+            const inputs = document.querySelectorAll('#companyForm input, #companyForm textarea, #companyForm select');
+            inputs.forEach(input => input.disabled = true);
+
+            if (originalCompanyData) populateFields(originalCompanyData);
+        }
+
+        document.getElementById('companyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const token = localStorage.getItem('token');
+
+            const payload = {
+                name: document.getElementById('companyName').value,
+                industry: document.getElementById('industry').value,
+                size: document.getElementById('size').value,
+                location: document.getElementById('location').value,
+                founded_year: document.getElementById('foundedYear').value,
+                website: document.getElementById('website').value,
+                linkedin: document.getElementById('linkedin').value,
+                description: document.getElementById('description').value,
+                mission: document.getElementById('mission').value,
+                vision: document.getElementById('vision').value,
+                benefits: document.getElementById('benefits').value
+            };
+
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const oldText = submitBtn.innerText;
+            submitBtn.innerText = 'Saving...';
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/companies/me`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    const updatedCompany = await response.json();
+                    originalCompanyData = updatedCompany;
+                    alert('Company profile updated successfully!');
+                    cancelEdit();
+                } else alert('Failed to update profile');
+            } catch (err) {
+                console.error(err);
+                alert('Error updating profile');
+            } finally {
+                submitBtn.innerText = oldText;
+                submitBtn.disabled = false;
             }
         });
 
@@ -162,5 +242,5 @@
         }
     </script>
 </body>
-</html>
 
+</html>

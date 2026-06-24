@@ -1,14 +1,17 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 import models, schemas, database
 from routes.users import get_current_user
 
 router = APIRouter(prefix="/jobs", tags=["Jobs"])
 
 @router.get("/", response_model=List[schemas.JobResponse])
-def get_jobs(skip: int = 0, limit: int = 100, db: Session = Depends(database.get_db)):
-    jobs = db.query(models.Job).offset(skip).limit(limit).all()
+def get_jobs(skip: int = 0, limit: int = 100, employer_id: Optional[int] = None, db: Session = Depends(database.get_db)):
+    query = db.query(models.Job)
+    if employer_id is not None:
+        query = query.filter(models.Job.employer_id == employer_id)
+    jobs = query.offset(skip).limit(limit).all()
     return jobs
 
 @router.get("/{job_id}", response_model=schemas.JobResponse)

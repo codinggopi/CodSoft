@@ -227,7 +227,7 @@
                 const formData = new FormData(form);
 
                 try {
-                    const res = await fetch('${API_BASE_URL}/applications/apply', {
+                    const res = await fetch(`${API_BASE_URL}/applications/apply`, {
                         method: 'POST',
                         headers: { 'Authorization': `Bearer ${token}` },
                         body: formData
