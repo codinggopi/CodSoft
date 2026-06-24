@@ -42,3 +42,10 @@ def get_company(company_id: int, db: Session = Depends(database.get_db)):
     if not company:
         raise HTTPException(status_code=404, detail="Company not found")
     return company
+
+@router.get("/employer/{employer_id}", response_model=schemas.CompanyResponse)
+def get_company_by_employer(employer_id: int, db: Session = Depends(database.get_db)):
+    company = db.query(models.Company).filter(models.Company.employer_id == employer_id).first()
+    if not company:
+        raise HTTPException(status_code=404, detail="Company profile not found for this employer")
+    return company

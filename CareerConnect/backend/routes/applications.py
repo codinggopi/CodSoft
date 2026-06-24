@@ -41,14 +41,18 @@ async def apply_for_job(
 
     # Upload resume to Cloudinary
     try:
+        print(f"Starting Cloudinary upload for {resume.filename}...")
         upload_result = cloudinary.uploader.upload(
             resume.file,
             folder="careerconnect/resumes",
             resource_type="auto"
         )
         resume_url = upload_result.get("secure_url")
+        print(f"Cloudinary upload successful: {resume_url}")
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to upload resume: {e}")
+        error_msg = str(e)
+        print(f"Cloudinary upload error: {error_msg}")
+        raise HTTPException(status_code=500, detail=f"Failed to upload resume: {error_msg}")
 
 
     new_app = models.Application(

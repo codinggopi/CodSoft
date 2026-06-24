@@ -464,7 +464,7 @@
         document.addEventListener('DOMContentLoaded', async () => {
             const container = document.getElementById('featuredJobsContainer');
             try {
-                const res = await fetch('${API_BASE_URL}/jobs/');
+                const res = await fetch(`${API_BASE_URL}/jobs/`);
                 let jobs = [];
                 if (res.ok) {
                     jobs = await res.json();
