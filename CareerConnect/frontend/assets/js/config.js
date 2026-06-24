@@ -3,7 +3,7 @@ const API_BASE_URL = isLocal ? "http://localhost:8000" : "https://careerconnect-
 
 // Intercept fetch to log request URL
 const originalFetch = window.fetch;
-window.fetch = async function() {
+window.fetch = async function () {
     console.log("Request URL:", arguments[0]);
     return originalFetch.apply(this, arguments);
 };

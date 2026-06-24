@@ -507,6 +507,9 @@
                 if (user.role === 'employer') {
                     if (heroCta) heroCta.innerHTML = `<a href="employer-dashboard.html" class="btn btn-primary" style="${btnStylesPrimary}">Post Jobs</a>`;
                     if (bottomCta) bottomCta.innerHTML = `<a href="employer-dashboard.html" class="btn" style="${btnStylesBottomPrimary}">Post Jobs</a>`;
+                } else if (user.role === 'admin') {
+                    if (heroCta) heroCta.innerHTML = `<a href="admin-dashboard.html" class="btn btn-primary" style="${btnStylesPrimary}">Open Admin Panel</a>`;
+                    if (bottomCta) bottomCta.innerHTML = `<a href="admin-dashboard.html" class="btn" style="${btnStylesBottomPrimary}">Open Admin Panel</a>`;
                 } else {
                     if (heroCta) heroCta.innerHTML = `<a href="jobs.html" class="btn btn-primary" style="${btnStylesPrimary}">Find Jobs</a>`;
                     if (bottomCta) bottomCta.innerHTML = `<a href="jobs.html" class="btn" style="${btnStylesBottomPrimary}">Find Jobs</a>`;

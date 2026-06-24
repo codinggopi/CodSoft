@@ -168,23 +168,12 @@ def forgot_password_reset(req: schemas.ResetPasswordRequest, db: Session = Depen
     del otp_store[email_to_reset]
     return {"message": "Password successfully reset"}
 
-@router.delete("/me", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/me")
 def delete_current_user(current_user: models.User = Depends(get_current_user), db: Session = Depends(database.get_db)):
-    # Cascading deletes
-    if current_user.role == 'employer':
-        # Delete applications to all jobs posted by this employer
-        jobs = db.query(models.Job).filter(models.Job.employer_id == current_user.id).all()
-        job_ids = [job.id for job in jobs]
-        if job_ids:
-            db.query(models.Application).filter(models.Application.job_id.in_(job_ids)).delete(synchronize_session=False)
-        # Delete the jobs themselves
-        db.query(models.Job).filter(models.Job.employer_id == current_user.id).delete(synchronize_session=False)
-    
-    # Delete applications by this candidate
-    db.query(models.Application).filter(models.Application.candidate_id == current_user.id).delete(synchronize_session=False)
-    
-    # Finally, delete the user
-    db.query(models.User).filter(models.User.id == current_user.id).delete(synchronize_session=False)
-    
-    db.commit()
-    return None
+    try:
+        db.delete(current_user)
+        db.commit()
+        return {"message": "Account and all associated personal data have been permanently deleted."}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to delete account: {str(e)}")

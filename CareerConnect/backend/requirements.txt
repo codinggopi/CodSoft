@@ -5,16 +5,10 @@ passlib[bcrypt]
 python-jose[cryptography]
 python-multipart
 pydantic
-fastapi
-uvicorn
-sqlalchemy
-passlib[bcrypt]
-python-jose[cryptography]
-python-multipart
-pydantic
 email-validator
 psycopg2-binary
 cloudinary
 python-dotenv
 passlib==1.7.4
 bcrypt==4.0.1
+alembic
