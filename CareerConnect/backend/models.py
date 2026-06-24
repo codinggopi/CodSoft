@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime, Boolean
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 from database import Base
 
 class User(Base):
@@ -9,10 +10,20 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     phone = Column(String, nullable=True)
     password = Column(String, nullable=True)
-    role = Column(String) # 'admin', 'employer', 'candidate'
+    role = Column(String)
     security_question = Column(String, nullable=True)
     security_answer = Column(String, nullable=True)
+    is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    # Relationships
+    company = relationship("Company", back_populates="employer", uselist=False)
+    jobs = relationship("Job", back_populates="employer", cascade="all, delete-orphan")
+    applications = relationship("Application", back_populates="candidate", cascade="all, delete-orphan")
+    notifications = relationship("Notification", back_populates="user", cascade="all, delete-orphan")
+    profile_views_as_employer = relationship("ProfileView", foreign_keys="[ProfileView.employer_id]", cascade="all, delete-orphan")
+    profile_views_as_candidate = relationship("ProfileView", foreign_keys="[ProfileView.candidate_id]", cascade="all, delete-orphan")
+
 
 class Company(Base):
     __tablename__ = "companies"
@@ -30,7 +41,12 @@ class Company(Base):
     vision = Column(Text)
     benefits = Column(Text)
     description = Column(Text)
+    status = Column(String, default="Active") # 'Active', 'Disabled', 'Pending'
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    # Relationships
+    employer = relationship("User", back_populates="company")
+
 
 class Job(Base):
     __tablename__ = "jobs"
@@ -48,6 +64,11 @@ class Job(Base):
     employer_id = Column(Integer, ForeignKey("users.id"))
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
+    # Relationships
+    employer = relationship("User", back_populates="jobs")
+    applications = relationship("Application", back_populates="job", cascade="all, delete-orphan")
+
+
 class Application(Base):
     __tablename__ = "applications"
     id = Column(Integer, primary_key=True, index=True)
@@ -58,6 +79,12 @@ class Application(Base):
     status = Column(String, default="Pending") # 'Pending', 'Reviewed', 'Shortlisted', 'Interview', 'Hired', 'Rejected'
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
+    # Relationships
+    job = relationship("Job", back_populates="applications")
+    candidate = relationship("User", back_populates="applications")
+    interviews = relationship("Interview", back_populates="application", cascade="all, delete-orphan")
+
+
 class Interview(Base):
     __tablename__ = "interviews"
     id = Column(Integer, primary_key=True, index=True)
@@ -66,6 +93,10 @@ class Interview(Base):
     meeting_link = Column(String)
     notes = Column(Text)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    # Relationships
+    application = relationship("Application", back_populates="interviews")
+
 
 class Notification(Base):
     __tablename__ = "notifications"
@@ -76,9 +107,15 @@ class Notification(Base):
     is_read = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
+    # Relationships
+    user = relationship("User", back_populates="notifications")
+
+
 class ProfileView(Base):
     __tablename__ = "profile_views"
     id = Column(Integer, primary_key=True, index=True)
     employer_id = Column(Integer, ForeignKey("users.id"))
     candidate_id = Column(Integer, ForeignKey("users.id"))
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    # We do not strictly need back_populates here since we only cascade delete from User

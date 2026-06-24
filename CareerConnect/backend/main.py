@@ -35,16 +35,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-from routes import users, jobs, applications, companies
+from routes import users, jobs, applications, companies, admin
 
 app.include_router(users.router)
 app.include_router(jobs.router)
 app.include_router(applications.router)
 app.include_router(companies.router)
+app.include_router(admin.router)
 
 @app.on_event("startup")
 def on_startup():
     create_db_and_tables()
+    
+    import schema_validator
+    schema_validator.validate_schema()
+    
     db = next(get_db())
     admin_email = "admin@careerconnect.com"
     employer_email = "employer@careerconnect.com"

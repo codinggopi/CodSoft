@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,139 +7,667 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/jpeg" href="assets/carrerconnect.jpeg">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --sidebar-width: 250px;
+        }
+        body {
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+        }
+        /* Sidebar */
+        .admin-sidebar {
+            width: var(--sidebar-width);
+            background: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        .admin-sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .admin-nav {
+            flex: 1;
+            padding: 1rem 0;
+            overflow-y: auto;
+        }
+        .admin-nav-item {
+            padding: 0.75rem 1.5rem;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+            cursor: pointer;
+        }
+        .admin-nav-item:hover, .admin-nav-item.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        /* Main Content */
+        .admin-main {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            width: calc(100% - var(--sidebar-width));
+        }
+        .admin-header {
+            background: var(--card-bg);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .admin-content {
+            padding: 2rem;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        /* View toggling */
+        .admin-view {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .admin-view.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Stats Cards */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .stat-info h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: var(--text-color);
+        }
+        .stat-info p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Charts Grid */
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .chart-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+            background: var(--card-bg);
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+        }
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .admin-table th, .admin-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .admin-table th {
+            background: rgba(0,0,0,0.05);
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        .badge-active { background: #dcfce7; color: #166534; }
+        .badge-inactive { background: #fee2e2; color: #991b1b; }
+        .badge-pending { background: #fef9c3; color: #854d0e; }
+
+        /* Mobile Toggle */
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+            }
+            .admin-sidebar.open {
+                transform: translateX(0);
+            }
+            .admin-main {
+                margin-left: 0;
+                width: 100%;
+            }
+            .mobile-toggle {
+                display: block;
+            }
+        }
+
+        /* Search and Filter Row */
+        .filter-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .filter-input {
+            flex: 1;
+            min-width: 200px;
+        }
+    </style>
 </head>
-<body class="flex flex-col" style="min-height: 100vh;">
-    <nav class="navbar" style="border-bottom: 2px solid #374151;">
-        <div class="container flex justify-between items-center">
-            <a href="index.html" class="nav-brand"><i class="fas fa-briefcase"></i> CareerConnect Admin</a>
-            <div class="nav-links">
-                <span id="userNameDisplay" style="font-weight: 600; color: var(--primary-color);"></span>
-                <button onclick="logout()" class="btn btn-outline" style="padding: 0.5rem 1rem;">Logout</button>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="sidebar">
+        <div class="admin-sidebar-header">
+            <a href="index.html" class="nav-brand" style="text-decoration: none;"><i class="fas fa-briefcase"></i> Admin</a>
+            <button class="mobile-toggle" onclick="toggleSidebar()" style="display: none;"><i class="fas fa-times"></i></button>
+        </div>
+        <nav class="admin-nav">
+            <a class="admin-nav-item active" onclick="switchView('overview')"><i class="fas fa-home"></i> Dashboard</a>
+            <a class="admin-nav-item" onclick="switchView('users')"><i class="fas fa-users"></i> Manage Users</a>
+            <a class="admin-nav-item" onclick="switchView('companies')"><i class="fas fa-building"></i> Companies</a>
+            <a class="admin-nav-item" onclick="switchView('jobs')"><i class="fas fa-briefcase"></i> Manage Jobs</a>
+            <a class="admin-nav-item" onclick="switchView('applications')"><i class="fas fa-file-alt"></i> Applications</a>
+        </nav>
+        <div style="padding: 1rem; border-top: 1px solid var(--border-color);">
+            <button onclick="logout()" class="btn btn-outline" style="width: 100%;"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <header class="admin-header">
+            <div class="flex items-center gap-4">
+                <button class="mobile-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+                <h2 id="pageTitle" style="margin: 0; font-size: 1.25rem;">Dashboard Overview</h2>
+            </div>
+            <div class="flex items-center gap-4">
+                <span id="userNameDisplay" style="font-weight: 600;">Admin User</span>
                 <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
                     <i id="theme-icon" class="fas fa-moon"></i>
                 </button>
             </div>
-        </div>
-    </nav>
+        </header>
 
-    <div class="container animate-fade-in mt-8 mb-8" style="flex: 1;">
-        <h1 class="mb-8" style="font-size: 2rem;">System Administration</h1>
-        
-        
-        <div class="flex gap-4 mb-8" style="flex-wrap: wrap;">
-            <div class="card text-center flex-col justify-center" style="flex: 1; min-width: 200px; border-left: 5px solid #475569;">
-                <i class="fas fa-users text-muted mb-2" style="font-size: 2rem;"></i>
-                <h2 id="totalUsers" style="font-size: 2.5rem; color: var(--text-color);">0</h2>
-                <p class="text-muted">Total Users</p>
-            </div>
-            <div class="card text-center flex-col justify-center" style="flex: 1; min-width: 200px; border-left: 5px solid #64748B;">
-                <i class="fas fa-briefcase text-muted mb-2" style="font-size: 2rem;"></i>
-                <h2 id="totalJobs" style="font-size: 2.5rem; color: var(--text-color);">0</h2>
-                <p class="text-muted">Total Jobs</p>
-            </div>
-            <div class="card text-center flex-col justify-center" style="flex: 1; min-width: 200px; border-left: 5px solid #94A3B8;">
-                <i class="fas fa-file-alt text-muted mb-2" style="font-size: 2rem;"></i>
-                <h2 id="totalApps" style="font-size: 2.5rem; color: var(--text-color);">0</h2>
-                <p class="text-muted">Total Applications</p>
-            </div>
-        </div>
+        <div class="admin-content">
+            
+            <!-- OVERVIEW VIEW -->
+            <div id="view-overview" class="admin-view active">
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                        <div class="stat-info">
+                            <h3 id="stat-users">0</h3>
+                            <p>Total Users</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-briefcase"></i></div>
+                        <div class="stat-info">
+                            <h3 id="stat-jobs">0</h3>
+                            <p>Active Jobs</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-building"></i></div>
+                        <div class="stat-info">
+                            <h3 id="stat-companies">0</h3>
+                            <p>Companies</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+                        <div class="stat-info">
+                            <h3 id="stat-apps">0</h3>
+                            <p>Applications</p>
+                        </div>
+                    </div>
+                </div>
 
-        
-        <div class="card mb-8">
-            <h2 class="mb-4" style="font-size: 1.25rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">System Jobs Management</h2>
-            <div id="adminJobsList" class="flex flex-col gap-4">
-                <p class="text-muted">Loading all jobs in system...</p>
-            </div>
-        </div>
-    </div>
+                <div class="chart-grid">
+                    <div class="chart-card">
+                        <h3 class="mb-4">User Demographics</h3>
+                        <canvas id="userChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3 class="mb-4">Application Status</h3>
+                        <canvas id="appChart"></canvas>
+                    </div>
+                </div>
 
-        <footer class="footer-compact mt-auto" style="background: var(--card-bg); border-top: 1px solid var(--border-color); padding: 1.5rem 0; margin-top: auto;">
-        <div class="container flex justify-between items-center" style="flex-wrap: wrap; gap: 1rem;">
-            <div style="font-weight: bold; color: var(--primary-color);">
-                <i class="fas fa-briefcase"></i> CareerConnect
+                <div class="chart-card">
+                    <h3 class="mb-4">Recent Registrations</h3>
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Registered</th></tr></thead>
+                            <tbody id="recentUsersTable"></tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <div class="flex gap-4" style="font-size: 0.875rem;">
-                <a href="javascript:void(0)" style="color: var(--text-color); text-decoration: none;">About</a>
-                <a href="contact.html" style="color: var(--text-color); text-decoration: none;">Contact</a>
-                <a href="javascript:void(0)" style="color: var(--text-color); text-decoration: none;">Privacy</a>
-                <a href="javascript:void(0)" style="color: var(--text-color); text-decoration: none;">Terms</a>
+
+            <!-- USERS VIEW -->
+            <div id="view-users" class="admin-view">
+                <div class="filter-row">
+                    <input type="text" id="userSearch" class="form-control filter-input" placeholder="Search by name or email..." onkeyup="filterUsers()">
+                    <select id="userRoleFilter" class="form-control filter-input" onchange="filterUsers()">
+                        <option value="all">All Roles</option>
+                        <option value="candidate">Candidate</option>
+                        <option value="employer">Employer</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+                        <tbody id="usersTableBody"></tbody>
+                    </table>
+                </div>
             </div>
-            <div style="font-size: 0.875rem; color: var(--text-muted);">
-                &copy; 2026 CareerConnect
+
+            <!-- COMPANIES VIEW -->
+            <div id="view-companies" class="admin-view">
+                <div class="filter-row">
+                    <input type="text" id="companySearch" class="form-control filter-input" placeholder="Search by company name..." onkeyup="filterCompanies()">
+                </div>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead><tr><th>Company Name</th><th>Industry</th><th>Status</th><th>Actions</th></tr></thead>
+                        <tbody id="companiesTableBody"></tbody>
+                    </table>
+                </div>
             </div>
+
+            <!-- JOBS VIEW -->
+            <div id="view-jobs" class="admin-view">
+                <div class="filter-row">
+                    <input type="text" id="jobSearch" class="form-control filter-input" placeholder="Search jobs..." onkeyup="filterJobs()">
+                </div>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead><tr><th>Title</th><th>Company</th><th>Status</th><th>Actions</th></tr></thead>
+                        <tbody id="jobsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- APPLICATIONS VIEW -->
+            <div id="view-applications" class="admin-view">
+                <div class="filter-row">
+                    <input type="text" id="appSearch" class="form-control filter-input" placeholder="Search candidate or job..." onkeyup="filterApps()">
+                </div>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead><tr><th>Candidate</th><th>Job Title</th><th>Company</th><th>Status</th><th>Actions</th></tr></thead>
+                        <tbody id="appsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
-    </footer>
+    </main>
 
     <script src="assets/js/theme.js"></script>
     <script src="assets/js/config.js"></script>
     <script>
+        let globalUsers = [];
+        let globalCompanies = [];
+        let globalJobs = [];
+        let globalApps = [];
+        let userChartInstance = null;
+        let appChartInstance = null;
+
         document.addEventListener('DOMContentLoaded', async () => {
             const token = localStorage.getItem('token');
             const userStr = localStorage.getItem('user');
-            if (!token || !userStr) {
-                window.location.href = 'login.html';
-                return;
-            }
+            if (!token || !userStr) { window.location.href = 'login.html'; return; }
             const user = JSON.parse(userStr);
-            if (user.role !== 'admin') {
-                window.location.href = 'index.html';
-                return;
-            }
+            if (user.role !== 'admin') { window.location.href = 'index.html'; return; }
             
-            document.getElementById('userNameDisplay').textContent = `Hi, Admin ${user.name}`;
-
-            await loadAdminData(token);
+            document.getElementById('userNameDisplay').textContent = user.name;
+            await loadAnalytics();
         });
 
-        async function loadAdminData(token) {
-            try {
-                
-                const jobsRes = await fetch(`${API_BASE_URL}/jobs/`);
-                if (jobsRes.ok) {
-                    const jobs = await jobsRes.json();
-                    document.getElementById('totalJobs').textContent = jobs.length;
-                    
-                    const jobsList = document.getElementById('adminJobsList');
-                    if(jobs.length === 0) {
-                        jobsList.innerHTML = `<p class="text-muted text-center py-4">No jobs in the system.</p>`;
-                    } else {
-                        jobsList.innerHTML = jobs.map(job => `
-                            <div class="flex justify-between items-center" style="padding: 1rem; border: 1px solid var(--border-color); border-radius: 0.375rem; background: var(--input-bg); flex-wrap: wrap; gap: 1rem;">
-                                <div>
-                                    <h4 style="color: var(--primary-color);">${job.title}</h4>
-                                    <p class="text-sm text-muted mt-1"><i class="fas fa-building"></i> ${job.company} | ID: #${job.id}</p>
-                                </div>
-                                <button onclick="deleteJob(${job.id})" class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.875rem; color: var(--danger); border-color: var(--danger);">Force Delete</button>
-                            </div>
-                        `).join('');
-                    }
-                }
-
-                
-                const appsRes = await fetch(`${API_BASE_URL}/applications/`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                if (appsRes.ok) {
-                    const apps = await appsRes.json();
-                    document.getElementById('totalApps').textContent = apps.length;
-                    
-                    document.getElementById('totalUsers').textContent = Math.max(3, apps.length + 2);
-                }
-            } catch(e) { console.error(e); }
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
         }
 
-        async function deleteJob(jobId) {
-            if(!confirm("SYSTEM WARNING: Are you sure you want to permanently delete this job?")) return;
+        async function switchView(viewName) {
+            document.querySelectorAll('.admin-view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.admin-nav-item').forEach(i => i.classList.remove('active'));
+            
+            document.getElementById(`view-${viewName}`).classList.add('active');
+            event.currentTarget.classList.add('active');
+            
+            const titles = {
+                'overview': 'Dashboard Overview',
+                'users': 'Manage Users',
+                'companies': 'Company Directory',
+                'jobs': 'Job Listings',
+                'applications': 'Job Applications'
+            };
+            document.getElementById('pageTitle').textContent = titles[viewName];
+
+            if(window.innerWidth <= 768) toggleSidebar();
+
+            // Load data
+            if(viewName === 'overview') await loadAnalytics();
+            if(viewName === 'users') await loadUsers();
+            if(viewName === 'companies') await loadCompanies();
+            if(viewName === 'jobs') await loadJobs();
+            if(viewName === 'applications') await loadApplications();
+        }
+
+        async function fetchAdmin(endpoint, method='GET', body=null) {
+            console.log(`[API CALL] ${method} /admin/${endpoint}`);
             const token = localStorage.getItem('token');
-            const res = await fetch(`${API_BASE_URL}/jobs/${jobId}`, {
-                method: 'DELETE',
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            if(res.ok) {
-                window.location.reload();
-            } else {
-                alert("Failed to delete job");
+            const opts = { method, headers: { 'Authorization': `Bearer ${token}` } };
+            if(body) {
+                opts.headers['Content-Type'] = 'application/json';
+                opts.body = JSON.stringify(body);
             }
+            try {
+                const res = await fetch(`${API_BASE_URL}/admin/${endpoint}`, opts);
+                if(res.status === 401 || res.status === 403) { logout(); return null; }
+                if(!res.ok) {
+                    console.error(`[API ERROR] ${res.status} on /admin/${endpoint}`);
+                    return null;
+                }
+                return res;
+            } catch (err) {
+                console.error(`[API FAILURE] /admin/${endpoint}`, err);
+                return null;
+            }
+        }
+
+        /* Analytics */
+        async function loadAnalytics() {
+            document.getElementById('stat-users').textContent = "Loading...";
+            document.getElementById('stat-jobs').textContent = "Loading...";
+            document.getElementById('stat-companies').textContent = "Loading...";
+            document.getElementById('stat-apps').textContent = "Loading...";
+            document.getElementById('recentUsersTable').innerHTML = '<tr><td colspan="4">Loading dashboard data...</td></tr>';
+
+            const [statsRes, usersRes, demoRes, appsRes] = await Promise.all([
+                fetchAdmin('dashboard/stats'),
+                fetchAdmin('recent-users'),
+                fetchAdmin('user-demographics'),
+                fetchAdmin('application-stats')
+            ]);
+
+            if (statsRes) {
+                const stats = await statsRes.json();
+                console.log("[DATA] Dashboard Stats:", stats);
+                document.getElementById('stat-users').textContent = stats.total_users;
+                document.getElementById('stat-jobs').textContent = stats.active_jobs;
+                document.getElementById('stat-companies').textContent = stats.total_companies;
+                document.getElementById('stat-apps').textContent = stats.total_applications;
+            } else {
+                document.getElementById('stat-users').textContent = "Error";
+            }
+
+            if (usersRes) {
+                const users = await usersRes.json();
+                console.log("[DATA] Recent Users:", users);
+                const rUsers = document.getElementById('recentUsersTable');
+                if (users.length === 0) {
+                    rUsers.innerHTML = '<tr><td colspan="4">No recent users found.</td></tr>';
+                } else {
+                    rUsers.innerHTML = users.map(u => `
+                        <tr><td>#${u.id}</td><td>${u.name}</td><td>${u.role}</td><td>${new Date(u.created_at).toLocaleDateString()}</td></tr>
+                    `).join('');
+                }
+            }
+
+            if (demoRes && appsRes) {
+                const demo = await demoRes.json();
+                const apps = await appsRes.json();
+                console.log("[DATA] Demographics:", demo);
+                console.log("[DATA] App Stats:", apps);
+                renderCharts(demo, apps);
+            }
+        }
+
+        function renderCharts(demo, apps) {
+            if(userChartInstance) userChartInstance.destroy();
+            if(appChartInstance) appChartInstance.destroy();
+
+            const ctxUser = document.getElementById('userChart').getContext('2d');
+            userChartInstance = new Chart(ctxUser, {
+                type: 'pie',
+                data: {
+                    labels: ['Candidates', 'Employers', 'Admins'],
+                    datasets: [{
+                        data: [demo.candidates, demo.employers, demo.admins],
+                        backgroundColor: ['#3b82f6', '#10b981', '#f59e0b']
+                    }]
+                }
+            });
+
+            const ctxApp = document.getElementById('appChart').getContext('2d');
+            appChartInstance = new Chart(ctxApp, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Applied', 'Under Review', 'Shortlisted', 'Accepted', 'Rejected'],
+                    datasets: [{
+                        data: [apps['Applied'], apps['Under Review'], apps['Shortlisted'], apps['Accepted'], apps['Rejected']],
+                        backgroundColor: ['#f59e0b', '#3b82f6', '#8b5cf6', '#10b981', '#ef4444']
+                    }]
+                }
+            });
+        }
+
+        /* Users */
+        async function loadUsers() {
+            document.getElementById('usersTableBody').innerHTML = '<tr><td colspan="5">Loading users...</td></tr>';
+            const res = await fetchAdmin('users');
+            if(res && res.ok) {
+                globalUsers = await res.json();
+                filterUsers();
+            }
+        }
+        function filterUsers() {
+            const q = document.getElementById('userSearch').value.toLowerCase();
+            const role = document.getElementById('userRoleFilter').value;
+            const filtered = globalUsers.filter(u => 
+                (role === 'all' || u.role === role) &&
+                (u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q))
+            );
+            const tb = document.getElementById('usersTableBody');
+            tb.innerHTML = filtered.map(u => `
+                <tr>
+                    <td>${u.name}</td>
+                    <td>${u.email}</td>
+                    <td style="text-transform: capitalize;">${u.role}</td>
+                    <td><span class="status-badge ${u.is_active ? 'badge-active' : 'badge-inactive'}">${u.is_active ? 'Active' : 'Suspended'}</span></td>
+                    <td>
+                        <button onclick="toggleUserStatus(${u.id}, ${!u.is_active})" class="btn btn-outline" style="padding:0.25rem 0.5rem; font-size:0.75rem;">
+                            ${u.is_active ? 'Suspend' : 'Activate'}
+                        </button>
+                        <button onclick="deleteUser(${u.id})" class="btn btn-outline" style="padding:0.25rem 0.5rem; font-size:0.75rem; color:red; border-color:red;">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        async function toggleUserStatus(id, newStatus) {
+            if(!confirm(`Are you sure you want to ${newStatus ? 'activate' : 'suspend'} this user?`)) return;
+            const res = await fetchAdmin(`users/${id}/status`, 'PUT', {is_active: newStatus});
+            if(res && res.ok) { await loadUsers(); await loadAnalytics(); }
+        }
+        async function deleteUser(id) {
+            if(!confirm(`SYSTEM WARNING: Permanently delete this user and all data? This cannot be undone.`)) return;
+            const res = await fetchAdmin(`users/${id}`, 'DELETE');
+            if(res && res.ok) { await loadUsers(); await loadAnalytics(); }
+            else alert("Error deleting user.");
+        }
+
+        /* Companies */
+        async function loadCompanies() {
+            document.getElementById('companiesTableBody').innerHTML = '<tr><td colspan="4">Loading companies...</td></tr>';
+            const res = await fetchAdmin('companies');
+            if(res && res.ok) {
+                globalCompanies = await res.json();
+                filterCompanies();
+            }
+        }
+        function filterCompanies() {
+            const q = document.getElementById('companySearch').value.toLowerCase();
+            const filtered = globalCompanies.filter(c => c.name.toLowerCase().includes(q));
+            document.getElementById('companiesTableBody').innerHTML = filtered.map(c => `
+                <tr>
+                    <td>${c.name}</td>
+                    <td>${c.industry || 'N/A'}</td>
+                    <td><span class="status-badge ${c.status === 'Active' ? 'badge-active' : (c.status === 'Disabled' ? 'badge-inactive' : 'badge-pending')}">${c.status}</span></td>
+                    <td>
+                        <button onclick="changeCompanyStatus(${c.id}, 'Active')" class="btn btn-outline" style="padding:0.25rem 0.5rem; font-size:0.75rem;">Approve</button>
+                        <button onclick="changeCompanyStatus(${c.id}, 'Disabled')" class="btn btn-outline" style="padding:0.25rem 0.5rem; font-size:0.75rem;">Disable</button>
+                        <button onclick="deleteCompany(${c.id})" class="btn btn-outline" style="padding:0.25rem 0.5rem; font-size:0.75rem; color:red; border-color:red;">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        async function changeCompanyStatus(id, status) {
+            const res = await fetchAdmin(`companies/${id}/status`, 'PUT', {status});
+            if(res && res.ok) { await loadCompanies(); await loadAnalytics(); }
+        }
+        async function deleteCompany(id) {
+            if(!confirm(`SYSTEM WARNING: Permanently delete this company? All associated records, including the employer account, jobs, and applications will be wiped. This CANNOT be undone.`)) return;
+            const res = await fetchAdmin(`companies/${id}`, 'DELETE');
+            if(res && res.ok) { await loadCompanies(); await loadAnalytics(); }
+            else alert("Error deleting company.");
+        }
+
+        /* Jobs */
+        async function loadJobs() {
+            document.getElementById('jobsTableBody').innerHTML = '<tr><td colspan="4">Loading jobs...</td></tr>';
+            const res = await fetchAdmin('jobs');
+            if(res && res.ok) { globalJobs = await res.json(); filterJobs(); }
+        }
+        function filterJobs() {
+            const q = document.getElementById('jobSearch').value.toLowerCase();
+            const filtered = globalJobs.filter(j => j.title.toLowerCase().includes(q) || j.company.toLowerCase().includes(q));
+            document.getElementById('jobsTableBody').innerHTML = filtered.map(j => `
+                <tr>
+                    <td>${j.title}</td>
+                    <td>${j.company}</td>
+                    <td><span class="status-badge ${j.status === 'Active' ? 'badge-active' : 'badge-inactive'}">${j.status}</span></td>
+                    <td>
+                        <button onclick="changeJobStatus(${j.id}, '${j.status === 'Active' ? 'Closed' : 'Active'}')" class="btn btn-outline" style="padding:0.25rem 0.5rem; font-size:0.75rem;">
+                            ${j.status === 'Active' ? 'Close' : 'Reopen'}
+                        </button>
+                        <button onclick="deleteJob(${j.id})" class="btn btn-outline" style="padding:0.25rem 0.5rem; font-size:0.75rem; color:red; border-color:red;">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        async function changeJobStatus(id, status) {
+            const res = await fetchAdmin(`jobs/${id}/status`, 'PUT', {status});
+            if(res && res.ok) { await loadJobs(); await loadAnalytics(); }
+        }
+        async function deleteJob(id) {
+            if(!confirm("Permanently delete job?")) return;
+            const res = await fetchAdmin(`jobs/${id}`, 'DELETE');
+            if(res && res.ok) { await loadJobs(); await loadAnalytics(); }
+        }
+
+        /* Applications */
+        async function loadApplications() {
+            document.getElementById('appsTableBody').innerHTML = '<tr><td colspan="5">Loading applications...</td></tr>';
+            const res = await fetchAdmin('applications');
+            if(res && res.ok) { globalApps = await res.json(); filterApps(); }
+        }
+        function filterApps() {
+            const q = document.getElementById('appSearch').value.toLowerCase();
+            const filtered = globalApps.filter(a => a.job_title.toLowerCase().includes(q) || a.candidate_name.toLowerCase().includes(q));
+            document.getElementById('appsTableBody').innerHTML = filtered.map(a => `
+                <tr>
+                    <td>${a.candidate_name}</td>
+                    <td>${a.job_title}</td>
+                    <td>${a.company}</td>
+                    <td><span class="status-badge ${a.status==='Accepted'?'badge-active':(a.status==='Rejected'?'badge-inactive':'badge-pending')}">${a.status}</span></td>
+                    <td>
+                        <button onclick="changeAppStatus(${a.id}, 'Accepted')" class="btn btn-outline" style="padding:0.25rem 0.5rem; font-size:0.75rem;">Accept</button>
+                        <button onclick="changeAppStatus(${a.id}, 'Rejected')" class="btn btn-outline" style="padding:0.25rem 0.5rem; font-size:0.75rem;">Reject</button>
+                        <button onclick="deleteApp(${a.id})" class="btn btn-outline" style="padding:0.25rem 0.5rem; font-size:0.75rem; color:red; border-color:red;">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        async function changeAppStatus(id, status) {
+            const res = await fetchAdmin(`applications/${id}/status`, 'PUT', {status});
+            if(res && res.ok) { await loadApplications(); await loadAnalytics(); }
+        }
+        async function deleteApp(id) {
+            if(!confirm("Permanently delete application?")) return;
+            const res = await fetchAdmin(`applications/${id}`, 'DELETE');
+            if(res && res.ok) { await loadApplications(); await loadAnalytics(); }
         }
 
         function logout() {
@@ -151,4 +678,3 @@
     </script>
 </body>
 </html>
-
