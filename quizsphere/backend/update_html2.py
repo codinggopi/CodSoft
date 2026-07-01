@@ -1,7 +1,7 @@
 import glob
 import re
 
-html_files = glob.glob('*.html')
+html_files = glob.glob('../frontend/*.html')
 viewport_meta = '<meta name="viewport" content="width=device-width, initial-scale=1.0">'
 menu_btn = '\n            <button class="mobile-menu-toggle" id="mobile-menu-btn"><i class="fas fa-bars"></i></button>'
 
