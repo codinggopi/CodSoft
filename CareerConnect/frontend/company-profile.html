@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -56,6 +56,13 @@
                     <div class="full-width" style="text-align: center; margin-bottom: 1rem;">
                         <img id="logoPreview" src="https://via.placeholder.com/150" alt="Company Logo"
                             style="width: 120px; height: 120px; border-radius: 12px; object-fit: cover; border: 3px solid var(--border-color); margin-bottom: 1rem;">
+                        <div class="form-group mb-0" id="logoInputGroup" style="display: none;">
+                            <label class="btn btn-outline" style="cursor: pointer;">
+                                Upload Logo
+                                <input type="file" id="logoUpload" accept="image/*" style="display: none;" disabled>
+                            </label>
+                            <input type="hidden" id="logoUrl">
+                        </div>
                     </div>
 
                     <div class="form-group full-width">
@@ -137,6 +144,19 @@
                 return;
             }
 
+            document.getElementById('logoUpload').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (evt) {
+                        const dataUrl = evt.target.result;
+                        document.getElementById('logoPreview').src = dataUrl;
+                        document.getElementById('logoUrl').value = dataUrl;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
             try {
                 const response = await fetch(`${API_BASE_URL}/companies/me`, {
                     headers: { 'Authorization': `Bearer ${token}` }
@@ -166,6 +186,7 @@
             document.getElementById('benefits').value = company.benefits || '';
             if (company.logo_url) {
                 document.getElementById('logoPreview').src = company.logo_url;
+                document.getElementById('logoUrl').value = company.logo_url;
             }
         }
 
@@ -176,6 +197,7 @@
 
             const inputs = document.querySelectorAll('#companyForm input, #companyForm textarea, #companyForm select');
             inputs.forEach(input => input.disabled = false);
+            document.getElementById('logoInputGroup').style.display = 'block';
             document.getElementById('companyName').focus();
         }
 
@@ -186,6 +208,7 @@
 
             const inputs = document.querySelectorAll('#companyForm input, #companyForm textarea, #companyForm select');
             inputs.forEach(input => input.disabled = true);
+            document.getElementById('logoInputGroup').style.display = 'none';
 
             if (originalCompanyData) populateFields(originalCompanyData);
         }
@@ -205,7 +228,8 @@
                 description: document.getElementById('description').value,
                 mission: document.getElementById('mission').value,
                 vision: document.getElementById('vision').value,
-                benefits: document.getElementById('benefits').value
+                benefits: document.getElementById('benefits').value,
+                logo_url: document.getElementById('logoUrl').value
             };
 
             const submitBtn = e.target.querySelector('button[type="submit"]');
