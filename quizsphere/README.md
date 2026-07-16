@@ -1,7 +1,6 @@
 # QuizSphere – Full Stack Online Quiz Maker
 
-QuizSphere is a comprehensive, production-ready full-stack web application designed for creating, taking, and managing interactive online quizzes. It was developed as part of the **CodSoft Web Development Internship (Level 2 Task 2)**.
-
+QuizSphere is a comprehensive, production-ready full-stack web application designed for creating, taking, and managing interactive online quizzes.
 ## ✨ Key Features
 
 - **Robust User Authentication**: Secure registration, login, and session management powered by JSON Web Tokens (JWT) and bcrypt hashing.

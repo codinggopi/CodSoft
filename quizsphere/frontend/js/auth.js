@@ -1,4 +1,5 @@
 const API_URL = 'https://quizsphere-bay.vercel.app';
+// const API_URL = 'http://localhost:8000';
 
 const auth = {
     getToken: () => localStorage.getItem('access_token'),
@@ -12,12 +13,12 @@ const auth = {
                 headers: { 'Authorization': `Bearer ${auth.getToken()}` }
             });
             if (response.ok) return await response.json();
-            
+
             if (response.status === 401) {
                 console.warn('Session expired, clearing token');
                 auth.removeToken();
-                const isAuthPage = window.location.pathname.includes('login.html') || 
-                                    window.location.pathname.includes('register.html');
+                const isAuthPage = window.location.pathname.includes('login.html') ||
+                    window.location.pathname.includes('register.html');
                 if (!isAuthPage) {
                     window.location.href = 'login.html';
                 }
@@ -245,7 +246,7 @@ const initAuth = async () => {
                     console.log('Login successful');
                     auth.setToken(data.access_token);
                     showToast('Success', 'Login Successful!', 'success');
-                    
+
                     const redirect = new URLSearchParams(window.location.search).get('redirect') || 'dashboard.html';
                     setTimeout(() => window.location.href = redirect, 1000);
                 } else {
